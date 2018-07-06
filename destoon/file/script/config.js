@@ -1,0 +1,1 @@
+var DTPath = "http://localhost/sxw-master/destoon/";var DTMob = "";var SKPath = "http://localhost/sxw-master/destoon/skin/default/";var MEPath = "http://localhost/sxw-master/destoon/member/";var DTEditor = "fckeditor";var CKDomain = "";var CKPath = "/";var CKPrex = "cdf_";

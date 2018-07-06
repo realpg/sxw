@@ -23,8 +23,11 @@ class MemberManager
 	 */
 	public static function createObject(){
 		$member=new Member();
+		$member->username='xcx'.time().randomSalt();
+		$member->passport='xcx'.time().randomSalt();
 		$member->passsalt=randomSalt();
 		$member->paysalt=randomSalt();
+		$member->note="小程序用户";
 		return $member;
 	}
 	

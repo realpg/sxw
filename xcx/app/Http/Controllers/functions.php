@@ -43,7 +43,7 @@ function randomSalt($len = 8,$chars=null)
 	if (is_null($chars)){
 		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	}
-	$random_max=strlen($chars);
+	$random_max=strlen($chars)-1;
 	$salt='';
 	for($i=0;$i<$len;$i++){
 		$salt.=$chars[mt_rand(0.,$random_max)];

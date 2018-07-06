@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Components\MBGL\XTCJManager;
+
 use App\Components\MemberManager;
 use App\Components\TestManager;
 use App\Models\Member;
@@ -28,6 +28,11 @@ class DemoController extends Controller
 		$user=new Test();
 		$user->save();
 		return ApiResponse::makeResponse(true,$user,ApiResponse::SUCCESS_CODE);
+	}
+	
+	public function getAllMembers(){
+		$testdata=MemberManager::getList();
+		return $testdata;
 	}
 	
 	public function newMember(){

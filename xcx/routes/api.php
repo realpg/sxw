@@ -18,4 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::get('test', 'DemoController@test');  //测试接口
 Route::get('create', 'DemoController@create');  //
+Route::get('getAllMembers', 'DemoController@getAllMembers');
 Route::get('newMember', 'DemoController@newMember');
+
+Route::get('getOpenid', 'LoginController@getOpenid');
