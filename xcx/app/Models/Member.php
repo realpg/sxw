@@ -17,5 +17,6 @@ class Member extends Model
     protected $connection = 'sxwdb';   //慢病管理数据库名
     protected $table = 't_member';
     public $timestamps = false;
+	protected $primaryKey = 'userid';
 //    protected $dates = ['deleted_at'];  //软删除
 }
