@@ -41,7 +41,7 @@ class LoginController extends Controller
 			$member->save();
 		}
 //		$member->username = 'xcx' . md5($member->user_id);
-		$member->passport = 'xcx'.$member->userid.$data['userInfo']['nickName'];
+		$member->passport = $data['userInfo']['nickName'];
 		$member->gender = $data['userInfo']['gender'];
 		$member->save();
 		

@@ -56,3 +56,13 @@ function getTokenLifetimeTimestemp(){
 	$nextDay = intval(($now / 86400) + 1) * 86400 - 28800;
 	return $nextDay;
 }
+
+//检查参数
+function checkParam($Array,$params=['']){
+	foreach ($params as $param){
+		if(!array_key_exists($Array,$param)){
+			return false;
+		}
+	}
+	return true;
+}

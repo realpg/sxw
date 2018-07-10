@@ -25,7 +25,7 @@ class ApiResponse
     const TOKEN_ERROR = 102;     //token校验失败
     const USER_ID_LOST = 103;   //用户编码丢失
     const REGISTER_FAILED = 104;     //注册失败
-    const NO_USER = 105;    //未找到用户
+    const NO_USER = 105;    //未找到用户或用户被封禁
     const VERTIFY_ERROR = 106;   //验证码验证失败
     const PHONENUM_DUP = 107;   //手机号重复
     const PHONENUM_HAS_BEEN_SELECTED = 108; //号码已经被申请
@@ -60,7 +60,7 @@ class ApiResponse
         self::TOKEN_ERROR => 'token校验失败',
         self::USER_ID_LOST => '缺少用户编码',
         self::REGISTER_FAILED => '注册失败',
-        self::NO_USER => '未找到用户',
+        self::NO_USER => '未找到用户或用户被封禁',
         self::VERTIFY_ERROR => '验证码验证失败',
         self::PHONENUM_DUP => '手机号重复',
         self::PHONENUM_HAS_BEEN_SELECTED => '号码已经被申请',

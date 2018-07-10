@@ -14,12 +14,20 @@ use Illuminate\Http\Request;
 */
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+	return $request->user();
 });
-Route::get('test', 'DemoController@test')->middleware('checkXCXToken'); //测试接口
+
+//测试接口，随时删除
+Route::get('test', 'DemoController@test')->middleware('checkXCXToken');
 Route::get('create', 'DemoController@create');  //
 Route::get('getAllMembers', 'DemoController@getAllMembers');
 Route::get('newMember', 'DemoController@newMember');
 
+
 Route::get('getOpenid', 'LoginController@getOpenid');
 Route::post('user/login', 'LoginController@login');
+
+Route::group(['middleware' => ['checkXCXToken']], function () {
+
+
+});

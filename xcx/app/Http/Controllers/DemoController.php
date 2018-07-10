@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Components\BuyDataManager;
+use App\Components\BuyManager;
+use App\Components\CommentManager;
 use App\Components\MemberManager;
 use App\Components\TestManager;
+use App\Models\Comment;
 use App\Models\Member;
 use App\Models\Test;
 use Illuminate\Http\Request;
@@ -21,16 +25,27 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$data=$request->all();
+		$data = $request->all();
 		$testdata = $data;
 		return $testdata;
 	}
 	
-	public function create()
+	public function create(Request $request)
 	{
-		$user = new Test();
-		$user->save();
-		return ApiResponse::makeResponse(true, $user, ApiResponse::SUCCESS_CODE);
+		$data=$request->all();
+		
+		$buy=BuyManager::createObject();
+		$buy_data=BuyDataManager::createObject();
+		
+		$buy=BuyManager::setUserInfo($buy,1);
+		$buy=BuyManager::setBuy($buy,$data);
+		$buy->save();
+		
+		
+		$buy_data=BuyDataManager::setBuyData($buy_data,$data);
+		$buy_data->itemid=$buy->itemid;
+		$buy_data->save();
+		return [$buy.$buy_data];
 	}
 	
 	public function getAllMembers()

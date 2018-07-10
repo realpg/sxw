@@ -11,12 +11,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Member extends Model
+class Sell_search extends Model
 {
 //    use SoftDeletes;    //使用软删除
-    protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_member';
+    protected $connection = 'sxwdb';   //慢病管理数据库名
+    protected $table = 't_sell_search_5';
     public $timestamps = false;
-	protected $primaryKey = 'userid';
+	protected $primaryKey = 'itemid';
 //    protected $dates = ['deleted_at'];  //软删除
 }
