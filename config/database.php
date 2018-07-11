@@ -95,10 +95,10 @@ return [
 	
 	    'sxwdb' => [
 		    'driver' => 'mysql',
-		    'host' => env('DB_HOST', '127.0.0.1'),
+		    'host' => env('DB_HOST', '121.196.208.185'),
 		    'port' => env('DB_PORT', '3306'),
-		    'database' => env('DB_DATABASE', 'sxwdb'),
-		    'username' => env('DB_USERNAME', 'root'),
+		    'database' => env('DB_DATABASE', 'xcx_hzmuji_com'),
+		    'username' => env('DB_USERNAME', 'xcx_hzmuji_com'),
 		    'password' => env('DB_PASSWORD', 'Aa123456'),
 		    'unix_socket' => env('DB_SOCKET', ''),
 		    'charset' => 'utf8',
