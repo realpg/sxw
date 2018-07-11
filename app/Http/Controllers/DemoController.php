@@ -61,4 +61,17 @@ class DemoController extends Controller
 		return ApiResponse::makeResponse(true, $member, ApiResponse::SUCCESS_CODE);
 	}
 	
+	public static function functionName(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, [ 'itemid'])) {
+			$ret="请求成功";
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
 }
