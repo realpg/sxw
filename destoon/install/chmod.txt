@@ -1,6 +1,0 @@
-about/
-file/*
-baidunews.xml
-config.inc.php
-index.html
-sitemaps.xml
