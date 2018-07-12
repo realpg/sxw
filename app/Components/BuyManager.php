@@ -12,6 +12,7 @@ namespace App\Components;
 
 use App\Models\Buy;
 use App\Models\Buy_data;
+use App\Models\Buy_search;
 
 class BuyManager
 {
@@ -149,5 +150,17 @@ class BuyManager
 		$buy->edittime = time();
 		
 		return $buy;
+	}
+	public static function createSearchInfo($buy){
+		$searchInfo=BuySearchManager::getByItemId($buy->itemid);
+		$searchInfo->content='供应，';
+		
+		$searchInfo->content.=$buy->title.',';
+		
+		$searchInfo->catid=$buy->catid;
+		$cat=CategoryManager::getById($buy->catid);
+		$searchInfo->content.=$cat->catname.',';
+		
+		return $searchInfo;
 	}
 }

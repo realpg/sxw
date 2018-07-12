@@ -52,11 +52,16 @@ class BuyController
 			$buy_data->itemid = $buy->itemid;
 			$buy_data->save();
 			
+			$searchInfo=BuyManager::createSearchInfo($buy);
+			if(array_key_exists('keywords',$data)){
+				$searchInfo->content.=$data['keywords'];
+			}
+			$searchInfo->save();
+			
 			return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
-		
 	}
 	
 	public static function getById(Request $request)
