@@ -27,6 +27,7 @@ class MemberManager
 		$member->passport='xcx'.time().randomSalt();
 		$member->passsalt=randomSalt();
 		$member->paysalt=randomSalt();
+		$member->groupid="5";//普通会员
 		$member->note="小程序用户";
 		return $member;
 	}

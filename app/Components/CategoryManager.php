@@ -10,9 +10,9 @@
 
 namespace App\Components;
 
-use App\Models\Buy_data;
+use App\Models\Category;
 
-class BuyDataManager
+class CategoryManager
 {
 	/*
 	 * 创建新的对象
@@ -22,15 +22,15 @@ class BuyDataManager
 	 * 2018/07/05
 	 */
 	public static function createObject(){
-		$buyData=new Buy_data();
+		$category=new Category();
 		//这里可以对新建记录进行一定的默认设置
 		
-		return $buyData;
+		return $category;
 	}
 	
 	
 	/*
-	 * 获取buyData的list
+	 * 获取category的list
 	 *
 	 * By Zhangli
 	 *
@@ -38,8 +38,8 @@ class BuyDataManager
 	 */
 	public static function getList()
 	{
-		$buyDatas = Buy_data::orderby('itemid', 'desc')->get();
-		return $buyDatas;
+		$categorys = Category::orderby('catid', 'desc')->get();
+		return $categorys;
 	}
 	
 	/*
@@ -51,8 +51,8 @@ class BuyDataManager
 	 */
 	public static function getById($id)
 	{
-		$buyData = Buy_data::where('itemid', '=', $id)->first();
-		return $buyData;
+		$category = Category::where('catid', '=', $id)->first();
+		return $category;
 	}
 	
 	/*
@@ -62,13 +62,13 @@ class BuyDataManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
+	public static function getByCon($ConArr, $orderby = ['catid', 'asc'])
 	{
-		$buyDatas = Buy_data::orderby($orderby['0'], $orderby['1'])->get();
+		$categorys = Category::orderby($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
-			$buyDatas = $buyDatas->whereIn($key, $value);
+			$categorys = $categorys->whereIn($key, $value);
 		}
-		return $buyDatas;
+		return $categorys;
 	}
 	
 	
@@ -79,11 +79,11 @@ class BuyDataManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setBuyData($buyData, $data)
+	public static function setCategory($category, $data)
 	{
-		if (array_key_exists('content', $data)) {
-			$buyData->content = array_get($data, 'content');
+		if (array_key_exists('name', $data)) {
+			$category->name = array_get($data, 'name');
 		}
-		return $buyData;
+		return $category;
 	}
 }
