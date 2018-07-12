@@ -30,7 +30,11 @@ Route::post('user/login', 'LoginController@login');
 Route::group(['middleware' => ['checkXCXToken']], function () {
 	
 	//求购
+	Route::get('buy/getList', 'BuyController@getList');//根据id获取求购内容
 	Route::get('buy/getById', 'BuyController@getById');//根据id获取求购内容
 	Route::get('buy/edit', 'BuyController@edit');//获得编辑所需信息
-	Route::post('buy/edit', 'BuyController@edit');//编辑POST
+	Route::post('buy/edit', 'BuyController@editPost');//编辑POST
+	
+	Route::post('comment', 'CommentController@comment');//评论
+	Route::post('agree', 'CommentController@agree');//点赞
 });

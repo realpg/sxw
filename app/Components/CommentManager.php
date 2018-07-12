@@ -11,6 +11,7 @@
 namespace App\Components;
 
 use App\Models\Comment;
+use Illuminate\Http\Request;
 
 class CommentManager
 {
@@ -25,7 +26,8 @@ class CommentManager
 		$comment=new Comment();
 		//这里可以对新建记录进行一定的默认设置
 		$comment->quotation='';
-		$comment->status=3;
+		$comment->reply='';
+		$comment->status=3;//默认通过审核
 		return $comment;
 	}
 	
@@ -39,7 +41,7 @@ class CommentManager
 	 */
 	public static function getList()
 	{
-		$comments = Comment::orderby('id', 'desc')->get();
+		$comments = Comment::orderby('itemid', 'desc')->get();
 		return $comments;
 	}
 	
@@ -52,7 +54,7 @@ class CommentManager
 	 */
 	public static function getById($id)
 	{
-		$comment = Comment::where('id', '=', $id)->first();
+		$comment = Comment::where('itemid', '=', $id)->first();
 		return $comment;
 	}
 	
@@ -63,7 +65,7 @@ class CommentManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['id', 'asc'])
+	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
 		$comments = Comment::orderby($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
@@ -97,6 +99,22 @@ class CommentManager
 		else{
 			$comment->star = 3;
 		}
+//		if (array_key_exists('qid', $data)) {
+//			$comment->qid = array_get($data, 'qid');
+//		}
+		$comment->addtime=time();
+		return $comment;
+	}
+	
+	public static function setUserInfo($comment,$user){
+		$comment->username=$user->username;
+		$comment->passport=$user->passport;
+		return $comment;
+	}
+	
+	public static function setItemInfo($comment,$item){
+		$comment->item_title=$item->title;
+		$comment->item_username=$item->username;
 		return $comment;
 	}
 }

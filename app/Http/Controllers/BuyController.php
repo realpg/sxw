@@ -17,7 +17,12 @@ use Illuminate\Http\Request;
 
 class BuyController
 {
-	public function edit(request $request)
+	public function getList(Request $request)
+	{
+		return ApiResponse::makeResponse(true, BuyManager::getList(), ApiResponse::SUCCESS_CODE);
+	}
+	
+	public function edit(Request $request)
 	{
 		$ret = [];
 		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [6]]);
@@ -57,22 +62,23 @@ class BuyController
 	public static function getById(Request $request)
 	{
 		$data = $request->all();
-		$user=MemberManager::getById($data['userid']);
+		$user = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['itemid'])) {
 			$buy = BuyManager::getById($data['itemid']);
-			if ($buy){
+			if ($buy) {
 				//增加浏览次数
 				$buy->hits++;
 				$buy->save();
-				$lljl=LLJLManager::createObject($user,$buy,6);
+				$lljl = LLJLManager::createObject($user, $buy, 6);
 				$lljl->save();
-				$buy=BuyManager::getData($buy);
+				$buy = BuyManager::getData($buy);
 				return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
-			}else
+			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
+	
 }

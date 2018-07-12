@@ -68,7 +68,7 @@ class BuyManager
 	 */
 	public static function getList()
 	{
-		$buys = Buy::orderby('id', 'desc')->get();
+		$buys = Buy::orderby('itemid', 'desc')->paginate();
 		return $buys;
 	}
 	
@@ -100,7 +100,7 @@ class BuyManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['id', 'asc'])
+	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
 		$buys = Buy::orderby($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
