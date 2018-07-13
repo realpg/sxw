@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Components\BuyDataManager;
 use App\Components\BuyManager;
+use App\Components\BuySearchManager;
 use App\Components\CategoryManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
@@ -52,9 +53,9 @@ class BuyController
 			$buy_data->itemid = $buy->itemid;
 			$buy_data->save();
 			
-			$searchInfo=BuyManager::createSearchInfo($buy);
-			if(array_key_exists('keywords',$data)){
-				$searchInfo->content.=$data['keywords'];
+			$searchInfo = BuyManager::createSearchInfo($buy);
+			if (array_key_exists('keywords', $data)) {
+				$searchInfo->content .= $data['keywords'];
 			}
 			$searchInfo->save();
 			
@@ -81,6 +82,27 @@ class BuyController
 				return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function searchPost(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['keyword'])) {
+			$ret = null;
+			$keyword = $data['keyword'];
+			$searchResults = BuySearchManager::search($keyword);
+			if ($searchResults->count() > 0) {
+				$buys=[];
+				foreach ($searchResults as $result){
+					array_push($buys,BuyManager::getById($result->itemid));
+				}
+					return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
+			} else
+				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}

@@ -138,6 +138,9 @@ class BuyManager
 		if (array_key_exists('pack', $data)) {
 			$buy->pack = array_get($data, 'pack');
 		}
+		if (array_key_exists('tag', $data)) {
+			$buy->tag = array_get($data, 'tag');
+		}
 		if (array_key_exists('thumb', $data)) {
 			$buy->thumb = array_get($data, 'thumb');
 		}
@@ -153,7 +156,7 @@ class BuyManager
 	}
 	public static function createSearchInfo($buy){
 		$searchInfo=BuySearchManager::getByItemId($buy->itemid);
-		$searchInfo->content='供应，';
+		$searchInfo->content='求购，';
 		
 		$searchInfo->content.=$buy->title.',';
 		

@@ -104,4 +104,14 @@ class BuySearchManager
 		}
 		return $buy_search;
 	}
+	/*
+	 * 搜索
+	 *
+	 * 2018/7/13
+	 */
+	public static function search($keyword)
+	{
+		$results=Buy_search::where('content','like','%'.$keyword."%")->get();
+		return $results;
+	}
 }

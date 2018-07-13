@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Components\AgreeManager;
 use App\Components\BuyManager;
 use App\Components\CommentManager;
 use App\Components\MemberManager;
@@ -67,6 +68,7 @@ class CommentController extends Controller
 	public static function agree(Request $request)
 	{
 		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['item_mid', 'item_id'])) {
 			$ret="请求成功";
@@ -80,8 +82,14 @@ class CommentController extends Controller
 				$item = BuyManager::getById($data['item_id']);
 			}
 			if ($item) {
+				$agree=AgreeManager::createObject();
+				$agree=AgreeManager::setAgree($agree,$data,$item);
+				$agree=AgreeManager::setUserInfo($agree,$user);
+				$agree->addtime=time();
 				$item->agree++;
+				$agree->save();
 				$item->save();
+				
 			} else {
 				return ApiResponse::makeResponse(false, "参数错误", ApiResponse::MISSING_PARAM);
 			}
