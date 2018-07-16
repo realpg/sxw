@@ -65,7 +65,7 @@ class MemberManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['id', 'asc'])
+	public static function getByCon($ConArr, $orderby = ['userid', 'asc'])
 	{
 		$members = Member::orderby($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {

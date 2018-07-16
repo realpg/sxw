@@ -96,11 +96,11 @@ class BuyController
 			$keyword = $data['keyword'];
 			$searchResults = BuySearchManager::search($keyword);
 			if ($searchResults->count() > 0) {
-				$buys=[];
-				foreach ($searchResults as $result){
-					array_push($buys,BuyManager::getById($result->itemid));
+				$buys = [];
+				foreach ($searchResults as $result) {
+					array_push($buys, BuyManager::getById($result->itemid));
 				}
-					return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
 		} else {
@@ -108,4 +108,26 @@ class BuyController
 		}
 	}
 	
+	public static function getByCon(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['conditions'])) {
+			$ret = "请求成功";
+			
+			$conditions1 = $data['conditions'];
+			$conditions = json_decode($conditions1);
+			$Con=[];
+			foreach ($conditions->key as $num=>$key){
+				$Con[$key]=explode(',',$conditions->value[$num]);
+			}
+			
+			$buys=BuyManager::getByCon($Con);
+			
+			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
 }

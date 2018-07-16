@@ -13,6 +13,7 @@ namespace App\Components;
 use App\Models\Buy;
 use App\Models\Buy_data;
 use App\Models\Buy_search;
+use App\Models\Member;
 
 class BuyManager
 {
@@ -86,8 +87,9 @@ class BuyManager
 		return $buy;
 	}
 	
-	public static function getData($buy){
-		if ($buy){
+	public static function getData($buy)
+	{
+		if ($buy) {
 			
 			$buy->data = BuyDataManager::getById($buy->itemid);
 		}
@@ -105,7 +107,17 @@ class BuyManager
 	{
 		$buys = Buy::orderby($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
-			$buys = $buys->whereIn($key, $value);
+			if ($key == 'userid') {
+				$users = MemberManager::getByCon([$key => $value]);
+				$usernames = [];
+				foreach ($users as $user) {
+					array_push($usernames, $user->username);
+				}
+				
+				$buys = $buys->whereIn('username', $usernames);
+			} else {
+				$buys = $buys->whereIn($key, $value);
+			}
 		}
 		return $buys;
 	}
@@ -154,15 +166,17 @@ class BuyManager
 		
 		return $buy;
 	}
-	public static function createSearchInfo($buy){
-		$searchInfo=BuySearchManager::getByItemId($buy->itemid);
-		$searchInfo->content='求购，';
+	
+	public static function createSearchInfo($buy)
+	{
+		$searchInfo = BuySearchManager::getByItemId($buy->itemid);
+		$searchInfo->content = '求购，';
 		
-		$searchInfo->content.=$buy->title.',';
+		$searchInfo->content .= $buy->title . ',';
 		
-		$searchInfo->catid=$buy->catid;
-		$cat=CategoryManager::getById($buy->catid);
-		$searchInfo->content.=$cat->catname.',';
+		$searchInfo->catid = $buy->catid;
+		$cat = CategoryManager::getById($buy->catid);
+		$searchInfo->content .= $cat->catname . ',';
 		
 		return $searchInfo;
 	}
