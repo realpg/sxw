@@ -105,7 +105,7 @@ class BuyManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$buys = Buy::orderby($orderby['0'], $orderby['1'])->get();
+		$buys = Buy::orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'userid') {
 				$users = MemberManager::getByCon([$key => $value]);
@@ -119,6 +119,7 @@ class BuyManager
 				$buys = $buys->whereIn($key, $value);
 			}
 		}
+		$buys=$buys->paginate();
 		return $buys;
 	}
 	

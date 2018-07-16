@@ -96,11 +96,11 @@ class BuyController
 			$keyword = $data['keyword'];
 			$searchResults = BuySearchManager::search($keyword);
 			if ($searchResults->count() > 0) {
-				$buys = [];
 				foreach ($searchResults as $result) {
-					array_push($buys, BuyManager::getById($result->itemid));
+					$result->item = BuyManager::getById($result->itemid);
 				}
-				return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
+				
+				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
 		} else {
@@ -117,12 +117,12 @@ class BuyController
 			
 			$conditions1 = $data['conditions'];
 			$conditions = json_decode($conditions1);
-			$Con=[];
-			foreach ($conditions->key as $num=>$key){
-				$Con[$key]=explode(',',$conditions->value[$num]);
+			$Con = [];
+			foreach ($conditions->key as $num => $key) {
+				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
 			
-			$buys=BuyManager::getByCon($Con);
+			$buys = BuyManager::getByCon($Con);
 			
 			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 			

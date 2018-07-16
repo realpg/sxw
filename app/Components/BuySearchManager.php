@@ -111,7 +111,7 @@ class BuySearchManager
 	 */
 	public static function search($keyword)
 	{
-		$results=Buy_search::where('content','like','%'.$keyword."%")->get();
+		$results=Buy_search::where('content','like','%'.$keyword."%")->paginate();
 		return $results;
 	}
 }
