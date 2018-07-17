@@ -35,20 +35,29 @@ class LoginController extends Controller
 //		return $data;
 		$openId = $data['openId'];
 		$member = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
-		if ($member==null) {
+		if ($member == null) {
 			$member = MemberManager::createObject();
 			$member->wx_openId = $openId;
 			$member->save();
 		}
+		
+		if (gettype($data['userInfo']) == 'string') {
+			$userInfo = json_decode($data['userInfo']);
 //		$member->username = 'xcx' . md5($member->user_id);
-		$member->passport = $data['userInfo']['nickName'];
-		$member->gender = $data['userInfo']['gender'];
-		$member->save();
+			$member->passport = $userInfo->nickName;
+			$member->gender = $userInfo->gender;
+			$member->save();
+		} else {
+//		$member->username = 'xcx' . md5($member->user_id);
+			$member->passport = $data['userInfo']['nickName'];
+			$member->gender = $data['userInfo']['gender'];
+			$member->save();
+		}
 		
 		$userid = $member->userid;
-		$jsonstr=json_encode(['userid'=>$userid,'lifetime'=>getTokenLifetimeTimestemp()]);
+		$jsonstr = json_encode(['userid' => $userid, 'lifetime' => getTokenLifetimeTimestemp()]);
 		$_token = base64_encode($jsonstr);
-		$ret=['userid'=>$userid,'_token'=>$_token];
+		$ret = ['userid' => $userid, '_token' => $_token];
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	

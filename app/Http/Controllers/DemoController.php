@@ -25,9 +25,10 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$data = $request->all();
-		$testdata = $data;
-		return $testdata;
+//		$data = $request->all();
+//		$testdata = $data;
+//		return $testdata;
+		return view('test');
 	}
 	
 	public function create(Request $request)
