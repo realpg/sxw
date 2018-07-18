@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('systemKeyValues', 'SystemController@systemKeyValues_get');//设置系统关键变量
+
