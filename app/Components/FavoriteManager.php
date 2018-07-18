@@ -68,16 +68,16 @@ class FavoriteManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon(array $ConArr, $paginage = false, $orderby = ['itemid', 'asc'])
+	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['itemid', 'asc'])
 	{
 		
 		$favorites = Favorite::orderby($orderby['0'], $orderby['1']);
-		if (!$paginage)
+		if (!$paginate)
 			$favorites = $favorites->get();
 		foreach ($ConArr as $key => $value) {
 			$favorites = $favorites->whereIn($key, $value);
 		}
-		if ($paginage) {
+		if ($paginate) {
 			$favorites = $favorites->paginate();
 		}
 		return $favorites;

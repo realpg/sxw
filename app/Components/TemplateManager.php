@@ -60,13 +60,19 @@ class TemplateManager
 	 *
 	 * By Zhangli
 	 *
-	 * 2018-04-19
+	 * 2018-07-18
 	 */
-	public static function getByCon($ConArr, $orderby = ['id', 'asc'])
+	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['itemid', 'asc'])
 	{
-		$templates = Template::orderby($orderby['0'], $orderby['1'])->get();
+		
+		$templates = Template::orderby($orderby['0'], $orderby['1']);
+		if (!$paginate)
+			$templates = $templates->get();
 		foreach ($ConArr as $key => $value) {
 			$templates = $templates->whereIn($key, $value);
+		}
+		if ($paginate) {
+			$templates = $templates->paginate();
 		}
 		return $templates;
 	}

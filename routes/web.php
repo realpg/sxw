@@ -16,4 +16,6 @@ Route::get('/', function () {
 });
 
 Route::get('systemKeyValues', 'SystemController@systemKeyValues_get');//设置系统关键变量
+Route::post('systemKeyValues', 'SystemController@systemKeyValues_post');//设置系统关键变量
 
+Route::get('lljl', 'SystemController@xcx_lljl');//小程序浏览记录

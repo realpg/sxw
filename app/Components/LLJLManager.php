@@ -21,15 +21,16 @@ class LLJLManager
 	 *
 	 * 2018/07/12
 	 */
-	public static function createObject($user,$item,$moduleid){
-		$lljl=new LLJL();
+	public static function createObject($user, $item, $moduleid)
+	{
+		$lljl = new LLJL();
 		//这里可以对新建记录进行一定的默认设置
-		$lljl->moduleid=$moduleid;
-		$lljl->itemid	=$item->itemid;
-		$lljl->userid=$user->userid;
-		$lljl->username=$user->username;
-		$lljl->passport=$user->passport;
-		$lljl->time=time();
+		$lljl->moduleid = $moduleid;
+		$lljl->itemid = $item->itemid;
+		$lljl->userid = $user->userid;
+		$lljl->username = $user->username;
+		$lljl->passport = $user->passport;
+		$lljl->time = time();
 		return $lljl;
 	}
 	
@@ -43,7 +44,7 @@ class LLJLManager
 	 */
 	public static function getList()
 	{
-		$lljls = LLJL::orderby('id', 'desc')->get();
+		$lljls = LLJL::orderby('id', 'desc')->paginate();
 		return $lljls;
 	}
 	
@@ -67,11 +68,23 @@ class LLJLManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['id', 'asc'])
+	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
-		$lljls = LLJL::orderby($orderby['0'], $orderby['1'])->get();
+		
+		$lljls = LLJL::orderby($orderby['0'], $orderby['1']);
+		if (!$paginate)
+			$lljls = $lljls->get();
 		foreach ($ConArr as $key => $value) {
-			$lljls = $lljls->whereIn($key, $value);
+			if ($key == 'timefrom') {
+				$lljls = $lljls->where('time', '>=', $value);
+			} elseif ($key == 'timeto') {
+				$lljls = $lljls->where('time', '<=', $value);
+			} else{
+				$lljls = $lljls->whereIn($key, $value);
+			}
+		}
+		if ($paginate) {
+			$lljls = $lljls->paginate();
 		}
 		return $lljls;
 	}

@@ -36,9 +36,9 @@ class SystemManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function getList()
+	public static function getList($orderby=['id','desc'])
 	{
-		$systems = System::orderby('id', 'desc')->get();
+		$systems = System::orderby($orderby[0], $orderby[1])->get();
 		return $systems;
 	}
 	
@@ -81,8 +81,8 @@ class SystemManager
 	 */
 	public static function setSystem($system, $data)
 	{
-		if (array_key_exists('name', $data)) {
-			$system->name = array_get($data, 'name');
+		if (array_key_exists('value', $data)) {
+			$system->value = array_get($data, 'value');
 		}
 		return $system;
 	}
