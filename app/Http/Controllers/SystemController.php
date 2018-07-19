@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Components\LLJLManager;
+use App\Components\Member_updateManager;
 use App\Components\SystemManager;
 use Illuminate\Http\Request;
 
@@ -38,17 +39,27 @@ class SystemController extends Controller
 	
 	public static function xcx_lljl(Request $request)
 	{
-		$data=$request->all();
-		$con=[];
-		if(array_key_exists('moduleid',$data)&$data['moduleid']!=0)
-			$con['moduleid']=[$data['moduleid']];
-		if(array_key_exists('timefrom',$data)&$data['timefrom']!=null){
-			$con['timefrom']=strtotime($data['timefrom'])-28800;
+		$data = $request->all();
+		$con = [];
+		if (array_key_exists('moduleid', $data)) if ($data['moduleid'] != 0)
+			$con['moduleid'] = [$data['moduleid']];
+		if (array_key_exists('timefrom', $data) ) if ( $data['timefrom'] != null) {
+			$con['timefrom'] = strtotime($data['timefrom']) - 28800;
 		}
-		if(array_key_exists('timeto',$data)&$data['timeto']!=null){
-			$con['timeto']=strtotime($data['timeto'])+57600;
+		if (array_key_exists('timeto', $data)) if ( $data['timeto'] != null) {
+			$con['timeto'] = strtotime($data['timeto']) + 57600;
 		}
 		$lljls = LLJLManager::getByCon($con);
-		return view('lljl',['lljls'=>$lljls,'datas'=>$con]);
+		return view('lljl', ['lljls' => $lljls, 'datas' => $con]);
+	}
+	
+	public static function memberUpdate(Request $request)
+	{
+		$data = $request->all();
+		$con = [];
+		if (array_key_exists('status', $data)) if ( $data['status'] != 0)
+			$con['status'] = [$data['status']];
+		$updates = Member_updateManager::getByCon($con);
+		return view('member_update', ['datas' => $updates]);
 	}
 }
