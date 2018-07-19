@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Components\Member_miscManager;
 use App\Components\MemberManager;
 use App\Components\TestManager;
 use App\Models\Member;
@@ -41,6 +42,7 @@ class LoginController extends Controller
 			$member->save();
 		}
 		
+		
 		if (gettype($data['userInfo']) == 'string') {
 			$userInfo = json_decode($data['userInfo']);
 //		$member->username = 'xcx' . md5($member->user_id);
@@ -54,10 +56,17 @@ class LoginController extends Controller
 			$member->save();
 		}
 		
+		$member = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
+		$member->username='xcx'.$member->userid;
+		$member->save();
+		$member_misc=Member_miscManager::getById($member->userid);
+		$member_misc->save();
+		
 		$userid = $member->userid;
 		$jsonstr = json_encode(['userid' => $userid, 'lifetime' => getTokenLifetimeTimestemp()]);
 		$_token = base64_encode($jsonstr);
 		$ret = ['userid' => $userid, '_token' => $_token];
+//		$ret=$member;
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	

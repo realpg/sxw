@@ -84,8 +84,18 @@ class MemberManager
 	 */
 	public static function setMember($member, $data)
 	{
-		if (array_key_exists('name', $data)) {
-			$member->name = array_get($data, 'name');
+		if (array_key_exists('truename', $data)) {
+			$member->truename = array_get($data, 'truename');
+			$member->company = array_get($data, 'truename');
+		}
+		if (array_key_exists('company', $data)) {
+		
+		}
+		if (array_key_exists('career', $data)) {
+			$member->career = array_get($data, 'career');
+		}
+		if (array_key_exists('wxqr', $data)) {
+			$member->wxqr = array_get($data, 'wxqr');
 		}
 		return $member;
 	}
