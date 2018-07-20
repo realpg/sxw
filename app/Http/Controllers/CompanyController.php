@@ -67,6 +67,7 @@ class CompanyController extends Controller
 			
 			$update=Member_updateManager::createObject();
 			$update=Member_updateManager::setMember_update($update,$data,$user);
+			$update->history=json_encode( Member_updateManager::getHistory($update->userid));
 			$update->save();
 			
 			$ret="修改信息申请已提交，请等待审核";

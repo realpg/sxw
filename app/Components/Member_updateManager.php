@@ -10,7 +10,10 @@
 
 namespace App\Components;
 
+use App\Models\Company;
 use App\Models\Member_update;
+use App\Models\Member;
+use Illuminate\Support\Facades\DB;
 
 class Member_updateManager
 {
@@ -21,11 +24,12 @@ class Member_updateManager
 	 *
 	 * 2018/07/05
 	 */
-	public static function createObject(){
-		$member_update=new Member_update();
+	public static function createObject()
+	{
+		$member_update = new Member_update();
 		//这里可以对新建记录进行一定的默认设置
-		$member_update->status=2;
-		$member_update->thumb=$member_update->wxqr='';
+		$member_update->status = 2;
+		$member_update->thumb = $member_update->wxqr = '';
 		return $member_update;
 	}
 	
@@ -86,10 +90,10 @@ class Member_updateManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setMember_update($member_update, $data,$user)
+	public static function setMember_update($member_update, $data, $user)
 	{
-		$member_update->userid=$user->userid;
-		$member_update->username=$user->username;
+		$member_update->userid = $user->userid;
+		$member_update->username = $user->username;
 		if (array_key_exists('truename', $data)) {
 			$member_update->truename = array_get($data, 'truename');
 		}
@@ -117,7 +121,47 @@ class Member_updateManager
 		if (array_key_exists('wxqr', $data)) {
 			$member_update->wxqr = array_get($data, 'wxqr');
 		}
-		$member_update->addtime=time();
+		$member_update->addtime = time();
 		return $member_update;
+	}
+	
+	public static function getHistory($userid)
+	{
+		$member = Member::where('userid', '=', $userid)->first();
+		$company = Company::where('userid', '=', $userid)->first();
+		
+		$history = [
+			'truename' => $member->company,
+//			'mobile'=>$member->mobile,
+			'company' => $member->company,
+			'career' => $member->career,
+			'wxqr' => $member->wxqr,
+			'business' => $company->business,
+			'address' => $company->address,
+			'sell' => $company->sell,
+			'introduce' => $company->introduce,
+			'thumb' => $company->thumb
+		];
+		return $history;
+	}
+	
+	public static function setMember($member, $update)
+	{
+		$member->truename = $update->truename;
+		$member->company = $update->company;
+		$member->career = $update->career;
+		$member->wxqr = $update->wxqr;
+		return $member;
+	}
+	
+	public static function setCompany($company, $update)
+	{
+		$company->company = $update->company;
+		$company->business = $update->business;
+		$company->address = $update->address;
+		$company->sell = $update->sell;
+		$company->introduce = $update->introduce;
+		$company->thumb = $update->thumb;
+		return $company;
 	}
 }

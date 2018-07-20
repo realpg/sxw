@@ -70,7 +70,7 @@
                         <td>{{$lljl->userid}}</td>
                         <td>{{$lljl->username}}</td>
                         <td>{{$lljl->passport}}</td>
-                        <td>{{$lljl->time}}</td>
+                        <td>{{getPRCdate($lljl->time)}}</td>
                     </tr>
                 @endforeach
                 </tbody>

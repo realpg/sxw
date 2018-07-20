@@ -66,3 +66,8 @@ function checkParam($Array,$params=['']){
 	}
 	return true;
 }
+
+function getPRCdate($timestemp,$format="Y-m-d H:i:s"){
+	return date($format,$timestemp+28800);
+	
+}

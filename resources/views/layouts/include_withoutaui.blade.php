@@ -34,9 +34,34 @@
 <body>
 
 
+<div id="modal-demo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+</div>
+
+<script id="interpolationtmpl" type="text/x-dot-template">
+    <div class="modal-dialog">
+        <div class="modal-content radius">
+            <div class="modal-header">
+                <h3 class="modal-title">@{{=it.title}}</h3>
+                <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+            </div>
+            <div class="modal-body">
+                <p>@{{=it.content}}</p>
+            </div>
+            <div class="modal-footer">
+                @{{~it.buttons :button:index }}
+                <button class="btn btn-primary" onclick="@{{=it.success[index]}}">@{{=button}}</button>
+                @{{~}}
+                <button class="btn" data-dismiss="modal" aria-hidden="true" onclick="@{{=it.fail}}">取消</button>
+            </div>
+        </div>
+    </div>
+</script>
+
 @yield('content')
 
 <script type="text/javascript" src="{{ URL::asset('js/app.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('js/doT.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/jquery-3.3.1.min.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('hui/static/h-ui/js/H-ui.js') }}"></script>
 <script type="text/javascript" src="{{ URL::asset('js/aui-dialog.js') }}"></script>
@@ -48,20 +73,15 @@
 
 <script type="text/javascript">
     $.ajaxSetup({headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});
-    var dialog = new auiDialog();
+
     function modaldemo() {
         $("#modal-demo").modal("show")
     }
 
-    function showDalog(callback){
-        var dialog = new auiDialog();
-
-        dialog.alert({
-            title:"弹出提示",
-            msg:'这里是内容',
-        },function(ret){
-            console.log(ret)
-        })
+    function showModal(it) {
+        console.log("333333333333");
+        var interText = doT.template($("#interpolationtmpl").text());
+        $("#modal-demo").html(interText(it)).modal("show")
     }
 
 </script>

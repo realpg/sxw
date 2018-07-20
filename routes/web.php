@@ -21,3 +21,4 @@ Route::post('systemKeyValues', 'SystemController@systemKeyValues_post');//设置
 Route::get('lljl', 'SystemController@xcx_lljl');//小程序浏览记录
 
 Route::get('memberUpdate', 'SystemController@memberUpdate');//小程序浏览记录
+Route::post('memberUpdate', 'SystemController@memberUpdate_post');//小程序浏览记录
