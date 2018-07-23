@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use App\Components\AgreeManager;
 use App\Components\MemberManager;
 use App\Components\RankingManager;
+use Illuminate\Http\Request;
 
 class RankingController extends Controller
 {
@@ -19,12 +20,13 @@ class RankingController extends Controller
 		$oldranks = RankingManager::getByCon(['type' => [$type]]);
 		foreach ($oldranks as $oldrank)
 			$oldrank->delete();
-		if ($type == 1)
-			$start_time = time() - 86400;
-		elseif ($type == 2) {
-			$start_time = time() - 7 * 86400;
-		} else {
-			$start_time = time() - 30 * 86400;
+		$start_time = time();
+		if ($type == 1) {
+			$start_time -= 86400;
+		} elseif ($type == 2) {
+			$start_time -= 7 * 86400;
+		} elseif ($type == 3) {
+			$start_time -= 30 * 86400;
 		}
 		$ranking_container = new SortContainer([], 'userid', ['cost_credit', 'get_agree'], 10);
 		$ranking_container->push(['userid' => 1, 'cost_credit' => 93]);
@@ -53,5 +55,21 @@ class RankingController extends Controller
 			array_push($arr, $rank);
 		}
 		return $arr;
+	}
+	
+	public static function getRanking(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['type'])) {
+			$ranks = RankingManager::getByCon(['type' => [$data['type']]]);
+			
+			$ret = $ranks;
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
 	}
 }
