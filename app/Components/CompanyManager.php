@@ -11,6 +11,7 @@
 namespace App\Components;
 
 use App\Models\Company;
+use App\Models\Favorite;
 
 class CompanyManager
 {
@@ -21,8 +22,9 @@ class CompanyManager
 	 *
 	 * 2018/07/05
 	 */
-	public static function createObject(){
-		$company=new Company();
+	public static function createObject()
+	{
+		$company = new Company();
 		//这里可以对新建记录进行一定的默认设置
 		
 		return $company;
@@ -36,9 +38,12 @@ class CompanyManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function getList()
+	public static function getList($paginate = false)
 	{
-		$companys = Company::orderby('userid', 'desc')->get();
+		if ($paginate)
+			$companys = Company::orderby('userid', 'desc')->paginate();
+		else
+			$companys = Company::orderby('userid', 'desc')->get();
 		return $companys;
 	}
 	
@@ -52,8 +57,8 @@ class CompanyManager
 	public static function getById($id)
 	{
 		$company = Company::where('userid', '=', $id)->first();
-		if ($company==null){
-			$company=self::createObject();
+		if ($company == null) {
+			$company = self::createObject();
 			$company->userid = $id;
 		}
 		return $company;
@@ -89,7 +94,7 @@ class CompanyManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setCompany($company, $data,$user)
+	public static function setCompany($company, $data, $user)
 	{
 //		if (array_key_exists('company', $data)) {
 //			$company->company = array_get($data, 'company');
@@ -111,10 +116,34 @@ class CompanyManager
 			$company->thumb = array_get($data, 'thumb');
 		}
 		
-		$company->userid=$user->userid;
-		$company->username=$user->username;
-		$company->groupid=5;
-		$company->company=$user->company;
+		$company->userid = $user->userid;
+		$company->username = $user->username;
+		$company->groupid = 5;
+		$company->company = $user->company;
 		return $company;
+	}
+	
+	public static function getBussinessCard($company)
+	{
+		$member = MemberManager::getById($company->userid);
+		
+		if ($member)
+			$bussinessCard = [
+				'userid' => $member->userid,
+				'truename' => $member->truename,
+				'career' => $member->career,
+				'company' => $member->company,
+				'address' => $company->address,
+				'sell' => $company->sell,
+				'introduce' => $company->introduce,
+				'business' => $company->business,
+				'telephone' => $member->telephone,
+				'view' => LLJLManager::getByCon(['item_userid' => [$member->userid]])->count(),
+				'agree' => AgreeManager::getByCon(['item_username' => [$member->username]])->count(),
+//				'favorite'=>Favorite::
+			];
+		else
+			$bussinessCard = null;
+		return $bussinessCard;
 	}
 }

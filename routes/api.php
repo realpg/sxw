@@ -46,5 +46,6 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::post('member/editInfo', 'CompanyController@edit');//升级为会员
 	Route::post('member/updateInfo', 'CompanyController@update');//升级为会员
 	
-	Route::get('ranking', 'RankingController@getRanking');//我的收藏
+	Route::get('bussinessCard', 'CompanyController@bussinessCard');//名片列表
+	Route::get('ranking', 'RankingController@getRanking');//排行榜
 });
