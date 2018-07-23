@@ -12,7 +12,7 @@ use App\Models\Comment;
 use App\Models\Member;
 use App\Models\Test;
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\RankingController;
 
 class DemoController extends Controller
 {
@@ -25,10 +25,16 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
+		return RankingController::createDailyRanking();
+		$rank=new SortContainer([],'cost_credit',10);
+		for($i=1;$i<=50;$i++){
+			$rank->push(['cost_credit'=>rand(1,1000)]);
+		}
+		$testdata=$rank->getArray();
 //		$data = $request->all();
 //		$testdata = $data;
-//		return $testdata;
-		return view('test');
+		return $testdata;
+//		return view('test');
 	}
 	
 	public function create(Request $request)
@@ -75,4 +81,5 @@ class DemoController extends Controller
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
+	
 }

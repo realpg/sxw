@@ -34,7 +34,7 @@ class BuyController
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'catid', 'amount', 'price', 'pack', 'content', 'thumb', 'telephone'])) {
+		if (checkParam($data, ['title', 'introduce', 'amount', 'price', 'pack', 'content', 'thumb', 'telephone'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$buy = BuyManager::getById($data['itemid']);
@@ -45,7 +45,7 @@ class BuyController
 			}
 			
 			
-			$buy = BuyManager::setUserInfo($buy, 1);
+			$buy = BuyManager::setUserInfo($buy, $data['userid']);
 			$buy = BuyManager::setBuy($buy, $data);
 			$buy->save();
 			
@@ -61,7 +61,7 @@ class BuyController
 			
 			return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 		} else {
-			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+			return ApiResponse::makeResponse(false, "缺少参数" , ApiResponse::MISSING_PARAM);
 		}
 	}
 	

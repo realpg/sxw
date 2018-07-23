@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Http\Controllers\RankingController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,8 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+	    $schedule->call(function () {
+	    	//每周一早6点生成上周排行榜
+		    RankingController::createDailyRanking(1);
+	    })->everyThirtyMinutes()->hourlyAt(30);
     }
 
     /**
