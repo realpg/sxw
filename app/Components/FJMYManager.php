@@ -10,12 +10,12 @@
 
 namespace App\Components;
 
-use App\Models\Sell;
-use App\Models\Sell_data;
-use App\Models\Sell_search;
+use App\Models\FJMY;
+use App\Models\FJMY_data;
+use App\Models\FJMY_search;
 use App\Models\Member;
 
-class SellManager
+class FJMYManager
 {
 	/*
 	 * 创建新的对象
@@ -26,43 +26,43 @@ class SellManager
 	 */
 	public static function createObject()
 	{
-		$sell = new Sell();
+		$fjmy = new FJMY();
 		//这里可以对新建记录进行一定的默认设置
-		$sell->catid = 2;//默认值
-		$sell->typeid = 0;//默认值
-		$sell->n1 = $sell->n2 = $sell->n3 = '';
-		$sell->v1 = $sell->v2 = $sell->v3 = '';
-		$sell->thumbs = '';
-		$sell->vip = 0;
-		$sell->validated = 0;
-		$sell->editdate = $sell->adddate = date("Y-m-d");
-		$sell->addtime = time();
-		$sell->template = '';
-		$sell->status = 3;
+		$fjmy->catid = 2;//默认值
+		$fjmy->typeid = 0;//默认值
+		$fjmy->n1 = $fjmy->n2 = $fjmy->n3 = '';
+		$fjmy->v1 = $fjmy->v2 = $fjmy->v3 = '';
+		$fjmy->thumbs = '';
+		$fjmy->vip = 0;
+		$fjmy->validated = 0;
+		$fjmy->editdate = $fjmy->adddate = date("Y-m-d");
+		$fjmy->addtime = time();
+		$fjmy->template = '';
+		$fjmy->status = 3;
 		
-		return $sell;
+		return $fjmy;
 	}
 	
-	public static function setUserInfo($sell, $user_id)
+	public static function setUserInfo($fjmy, $user_id)
 	{
 		$member = MemberManager::getById($user_id);
-		$sell->username = $member->username;
-		$sell->groupid = $member->groupid;
-		$sell->company = $member->company;
-		$sell->truename = $member->truename;
-		$sell->telephone = $member->telephone;
-		$sell->mobile = $member->mobile;
-		$sell->address = $member->address ? $member->address : "未知";
-		$sell->email = $member->email;
-		$sell->qq = $member->qq;
-		$sell->wx = $member->wx;
-		$sell->ali = $member->ali;
-		$sell->skype = $member->skype;
-		return $sell;
+		$fjmy->username = $member->username;
+		$fjmy->groupid = $member->groupid;
+		$fjmy->company = $member->company;
+		$fjmy->truename = $member->truename;
+		$fjmy->telephone = $member->telephone;
+		$fjmy->mobile = $member->mobile;
+		$fjmy->address = $member->address ? $member->address : "未知";
+		$fjmy->email = $member->email;
+		$fjmy->qq = $member->qq;
+		$fjmy->wx = $member->wx;
+		$fjmy->ali = $member->ali;
+		$fjmy->skype = $member->skype;
+		return $fjmy;
 	}
 	
 	/*
-	 * 获取sell的list
+	 * 获取fjmy的list
 	 *
 	 * By Zhangli
 	 *
@@ -70,8 +70,8 @@ class SellManager
 	 */
 	public static function getList()
 	{
-		$sells = Sell::orderby('itemid', 'desc')->paginate();
-		return $sells;
+		$fjmys = FJMY::orderby('itemid', 'desc')->paginate();
+		return $fjmys;
 	}
 	
 	/*
@@ -83,17 +83,17 @@ class SellManager
 	 */
 	public static function getById($id)
 	{
-		$sell = Sell::where('itemid', '=', $id)->first();
-		return $sell;
+		$fjmy = FJMY::where('itemid', '=', $id)->first();
+		return $fjmy;
 	}
 	
-	public static function getData($sell)
+	public static function getData($fjmy)
 	{
-		if ($sell) {
+		if ($fjmy) {
 			
-			$sell->data = SellDataManager::getById($sell->itemid);
+			$fjmy->data = FJMYDataManager::getById($fjmy->itemid);
 		}
-		return $sell;
+		return $fjmy;
 	}
 	
 	/*
@@ -105,7 +105,7 @@ class SellManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$sells = Sell::orderby($orderby['0'], $orderby['1']);
+		$fjmys = FJMY::orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'userid') {
 				$users = MemberManager::getByCon([$key => $value]);
@@ -114,13 +114,13 @@ class SellManager
 					array_push($usernames, $user->username);
 				}
 				
-				$sells = $sells->whereIn('username', $usernames);
+				$fjmys = $fjmys->whereIn('username', $usernames);
 			} else {
-				$sells = $sells->whereIn($key, $value);
+				$fjmys = $fjmys->whereIn($key, $value);
 			}
 		}
-		$sells=$sells->paginate();
-		return $sells;
+		$fjmys=$fjmys->paginate();
+		return $fjmys;
 	}
 	
 	
@@ -131,49 +131,49 @@ class SellManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setSell($sell, $data)
+	public static function setFJMY($fjmy, $data)
 	{
 		if (array_key_exists('title', $data)) {
-			$sell->title = array_get($data, 'title');
+			$fjmy->title = array_get($data, 'title');
 		}
 		if (array_key_exists('introduce', $data)) {
-			$sell->introduce = array_get($data, 'introduce');
+			$fjmy->introduce = array_get($data, 'introduce');
 		}
 		if (array_key_exists('catid', $data)) {
-			$sell->catid = array_get($data, 'catid');
+			$fjmy->catid = array_get($data, 'catid');
 		}
 		if (array_key_exists('amount', $data)) {
-			$sell->amount = array_get($data, 'amount');
+			$fjmy->amount = array_get($data, 'amount');
 		}
 		if (array_key_exists('price', $data)) {
-			$sell->price = array_get($data, 'price');
+			$fjmy->price = array_get($data, 'price');
 		}
 		if (array_key_exists('tag', $data)) {
-			$sell->tag = array_get($data, 'tag');
+			$fjmy->tag = array_get($data, 'tag');
 		}
 		if (array_key_exists('thumb', $data)) {
-			$sell->thumb = array_get($data, 'thumb');
+			$fjmy->thumb = array_get($data, 'thumb');
 		}
 		if (array_key_exists('telephone', $data)) {
-			$sell->telephone = array_get($data, 'telephone');
+			$fjmy->telephone = array_get($data, 'telephone');
 		}
-		$sell->keyword = $sell->title . ',' . '求购' . '求购分类';//*****需要改动*****
-		$sell->editor = MemberManager::getById($data['userid'])->username;
-		$sell->editdate = date("Y-m-d");
-		$sell->edittime = time();
+		$fjmy->keyword = $fjmy->title . ',' . '求购' . '求购分类';//*****需要改动*****
+		$fjmy->editor = MemberManager::getById($data['userid'])->username;
+		$fjmy->editdate = date("Y-m-d");
+		$fjmy->edittime = time();
 		
-		return $sell;
+		return $fjmy;
 	}
 	
-	public static function createSearchInfo($sell)
+	public static function createSearchInfo($fjmy)
 	{
-		$searchInfo = SellSearchManager::getByItemId($sell->itemid);
+		$searchInfo = FJMYSearchManager::getByItemId($fjmy->itemid);
 		$searchInfo->content = '求购，';
 		
-		$searchInfo->content .= $sell->title . ',';
+		$searchInfo->content .= $fjmy->title . ',';
 		
-		$searchInfo->catid = $sell->catid;
-		$cat = CategoryManager::getById($sell->catid);
+		$searchInfo->catid = $fjmy->catid;
+		$cat = CategoryManager::getById($fjmy->catid);
 		$searchInfo->content .= $cat->catname . ',';
 		
 		return $searchInfo;

@@ -8,25 +8,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Components\SellDataManager;
-use App\Components\SellManager;
-use App\Components\SellSearchManager;
+use App\Components\FJMYDataManager;
+use App\Components\FJMYManager;
+use App\Components\FJMYSearchManager;
 use App\Components\CategoryManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
 use Illuminate\Http\Request;
 
-class SellController
+class FJMYController
 {
 	public function getList(Request $request)
 	{
-		return ApiResponse::makeResponse(true, SellManager::getList(), ApiResponse::SUCCESS_CODE);
+		return ApiResponse::makeResponse(true, FJMYManager::getList(), ApiResponse::SUCCESS_CODE);
 	}
 	
 	public function edit(Request $request)
 	{
 		$ret = [];
-		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [5]]);
+		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [88]]);
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
@@ -37,32 +37,32 @@ class SellController
 		if (checkParam($data, ['title', 'introduce', 'amount', 'price', 'content', 'thumb', 'telephone'])) {
 			
 			if (array_key_exists('itemid', $data)) {
-				$sell = SellManager::getById($data['itemid']);
-				$sell_data = SellDataManager::getById($data['itemid']);
+				$fjmy = FJMYManager::getById($data['itemid']);
+				$fjmy_data = FJMYDataManager::getById($data['itemid']);
 			} else {
-				$sell = SellManager::createObject();
-				$sell_data = SellDataManager::createObject();
+				$fjmy = FJMYManager::createObject();
+				$fjmy_data = FJMYDataManager::createObject();
 			}
-			if($sell==null){
+			if($fjmy==null){
 				return ApiResponse::makeResponse(false, "错误的itemid" , ApiResponse::UNKNOW_ERROR);
 			}
 			
 			
-			$sell = SellManager::setUserInfo($sell, $data['userid']);
-			$sell = SellManager::setSell($sell, $data);
-			$sell->save();
+			$fjmy = FJMYManager::setUserInfo($fjmy, $data['userid']);
+			$fjmy = FJMYManager::setFJMY($fjmy, $data);
+			$fjmy->save();
 			
-			$sell_data = SellDataManager::setSellData($sell_data, $data);
-			$sell_data->itemid = $sell->itemid;
-			$sell_data->save();
+			$fjmy_data = FJMYDataManager::setFJMYData($fjmy_data, $data);
+			$fjmy_data->itemid = $fjmy->itemid;
+			$fjmy_data->save();
 			
-			$searchInfo = SellManager::createSearchInfo($sell);
+			$searchInfo = FJMYManager::createSearchInfo($fjmy);
 			if (array_key_exists('keywords', $data)) {
 				$searchInfo->content .= $data['keywords'];
 			}
 			$searchInfo->save();
 			
-			return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
+			return ApiResponse::makeResponse(true, $fjmy, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数" , ApiResponse::MISSING_PARAM);
 		}
@@ -74,15 +74,15 @@ class SellController
 		$user = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['itemid'])) {
-			$sell = SellManager::getById($data['itemid']);
-			if ($sell) {
+			$fjmy = FJMYManager::getById($data['itemid']);
+			if ($fjmy) {
 				//增加浏览次数
-				$sell->hits++;
-				$sell->save();
-				$lljl = LLJLManager::createObject($user, $sell, 5);
+				$fjmy->hits++;
+				$fjmy->save();
+				$lljl = LLJLManager::createObject($user, $fjmy, 88);
 				$lljl->save();
-				$sell = SellManager::getData($sell);
-				return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
+				$fjmy = FJMYManager::getData($fjmy);
+				return ApiResponse::makeResponse(true, $fjmy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
 		} else {
@@ -97,10 +97,10 @@ class SellController
 		if (checkParam($data, ['keyword'])) {
 			$ret = null;
 			$keyword = $data['keyword'];
-			$searchResults = SellSearchManager::search($keyword);
+			$searchResults = FJMYSearchManager::search($keyword);
 			if ($searchResults->count() > 0) {
 				foreach ($searchResults as $result) {
-					$result->item = SellManager::getById($result->itemid);
+					$result->item = FJMYManager::getById($result->itemid);
 				}
 				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
@@ -125,9 +125,9 @@ class SellController
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
 			
-			$sells = SellManager::getByCon($Con);
+			$fjmys = FJMYManager::getByCon($Con);
 			
-			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
+			return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);

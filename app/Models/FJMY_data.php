@@ -11,11 +11,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Sell_data extends Model
+class FJMY_data extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_sell_data_5';
+    protected $table = 't_fjmy_data_88';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
 //    protected $dates = ['deleted_at'];  //软删除

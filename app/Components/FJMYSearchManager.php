@@ -10,9 +10,9 @@
 
 namespace App\Components;
 
-use App\Models\Sell_search;
+use App\Models\FJMY_search;
 
-class SellSearchManager
+class FJMYSearchManager
 {
 	/*
 	 * 创建新的对象
@@ -23,10 +23,10 @@ class SellSearchManager
 	 */
 	public static function createObject()
 	{
-		$sell_search = new Sell_search();
+		$fjmy_search = new FJMY_search();
 		//这里可以对新建记录进行一定的默认设置
 		
-		return $sell_search;
+		return $fjmy_search;
 	}
 	
 	
@@ -39,8 +39,8 @@ class SellSearchManager
 	 */
 	public static function getList()
 	{
-		$sell_searchs = Sell_search::orderby('itemid', 'desc')->get();
-		return $sell_searchs;
+		$fjmy_searchs = FJMY_search::orderby('itemid', 'desc')->get();
+		return $fjmy_searchs;
 	}
 	
 	/*
@@ -52,8 +52,8 @@ class SellSearchManager
 	 */
 	public static function getById($id)
 	{
-		$sell_search = Sell_search::where('itemid', '=', $id)->first();
-		return $sell_search;
+		$fjmy_search = FJMY_search::where('itemid', '=', $id)->first();
+		return $fjmy_search;
 	}
 	
 	/*
@@ -65,12 +65,12 @@ class SellSearchManager
 	*/
 	public static function getByItemId($id)
 	{
-		$sell_search = Sell_search::where('itemid', '=', $id)->first();
-		if (!$sell_search) {
-			$sell_search = new Sell_search();
+		$fjmy_search = FJMY_search::where('itemid', '=', $id)->first();
+		if (!$fjmy_search) {
+			$fjmy_search = new FJMY_search();
 		}
-		$sell_search->itemid=$id;
-		return $sell_search;
+		$fjmy_search->itemid=$id;
+		return $fjmy_search;
 	}
 	
 	/*
@@ -82,11 +82,11 @@ class SellSearchManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$sell_searchs = Sell_search::orderby($orderby['0'], $orderby['1'])->get();
+		$fjmy_searchs = FJMY_search::orderby($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
-			$sell_searchs = $sell_searchs->whereIn($key, $value);
+			$fjmy_searchs = $fjmy_searchs->whereIn($key, $value);
 		}
-		return $sell_searchs;
+		return $fjmy_searchs;
 	}
 	
 	
@@ -97,12 +97,12 @@ class SellSearchManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setSellSearch($sell_search, $data)
+	public static function setFJMYSearch($fjmy_search, $data)
 	{
 		if (array_key_exists('name', $data)) {
-			$sell_search->name = array_get($data, 'name');
+			$fjmy_search->name = array_get($data, 'name');
 		}
-		return $sell_search;
+		return $fjmy_search;
 	}
 	/*
 	 * 搜索
@@ -111,7 +111,7 @@ class SellSearchManager
 	 */
 	public static function search($keyword)
 	{
-		$results=Sell_search::where('content','like','%'.$keyword."%")->paginate();
+		$results=FJMY_search::where('content','like','%'.$keyword."%")->paginate();
 		return $results;
 	}
 }

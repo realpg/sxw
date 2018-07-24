@@ -10,9 +10,9 @@
 
 namespace App\Components;
 
-use App\Models\Sell_data;
+use App\Models\FJMY_data;
 
-class SellDataManager
+class FJMYDataManager
 {
 	/*
 	 * 创建新的对象
@@ -22,15 +22,15 @@ class SellDataManager
 	 * 2018/07/05
 	 */
 	public static function createObject(){
-		$sellData=new Sell_data();
+		$fjmyData=new FJMY_data();
 		//这里可以对新建记录进行一定的默认设置
 		
-		return $sellData;
+		return $fjmyData;
 	}
 	
 	
 	/*
-	 * 获取sellData的list
+	 * 获取fjmyData的list
 	 *
 	 * By Zhangli
 	 *
@@ -38,8 +38,8 @@ class SellDataManager
 	 */
 	public static function getList()
 	{
-		$sellDatas = Sell_data::orderby('itemid', 'desc')->get();
-		return $sellDatas;
+		$fjmyDatas = FJMY_data::orderby('itemid', 'desc')->get();
+		return $fjmyDatas;
 	}
 	
 	/*
@@ -51,8 +51,8 @@ class SellDataManager
 	 */
 	public static function getById($id)
 	{
-		$sellData = Sell_data::where('itemid', '=', $id)->first();
-		return $sellData;
+		$fjmyData = FJMY_data::where('itemid', '=', $id)->first();
+		return $fjmyData;
 	}
 	
 	/*
@@ -64,11 +64,11 @@ class SellDataManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$sellDatas = Sell_data::orderby($orderby['0'], $orderby['1'])->get();
+		$fjmyDatas = FJMY_data::orderby($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
-			$sellDatas = $sellDatas->whereIn($key, $value);
+			$fjmyDatas = $fjmyDatas->whereIn($key, $value);
 		}
-		return $sellDatas;
+		return $fjmyDatas;
 	}
 	
 	
@@ -79,11 +79,11 @@ class SellDataManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setSellData($sellData, $data)
+	public static function setFJMYData($fjmyData, $data)
 	{
 		if (array_key_exists('content', $data)) {
-			$sellData->content = array_get($data, 'content');
+			$fjmyData->content = array_get($data, 'content');
 		}
-		return $sellData;
+		return $fjmyData;
 	}
 }
