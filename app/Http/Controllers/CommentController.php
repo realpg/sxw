@@ -8,6 +8,7 @@ use App\Components\BuyManager;
 use App\Components\CommentManager;
 use App\Components\FavoriteManager;
 use App\Components\MemberManager;
+use App\Components\SellManager;
 use App\Components\TestManager;
 use App\Models\Member;
 use App\Models\Test;
@@ -39,6 +40,7 @@ class CommentController extends Controller
 			//获得被评论的信息
 			if ($data['item_mid'] == 5) {
 				//供应
+				$item = SellManager::getById($data['item_id']);
 //				$item=5;
 			} elseif ($data['item_mid'] == 6) {
 				//求购
@@ -77,6 +79,7 @@ class CommentController extends Controller
 			//获得被评论的信息
 			if ($data['item_mid'] == 5) {
 				//供应
+				$item = SellManager::getById($data['item_id']);
 //				$item=5;
 			} elseif ($data['item_mid'] == 6) {
 				//求购
@@ -113,6 +116,7 @@ class CommentController extends Controller
 			//获得被评论的信息
 			if ($data['mid'] == 5) {
 				//供应
+				$item = SellManager::getById($data['tid']);
 //				$item=5;
 			} elseif ($data['mid'] == 6) {
 				//求购
@@ -149,6 +153,18 @@ class CommentController extends Controller
 	{
 		$data = $request->all();
 		$myFavorites = FavoriteManager::getByCon(['userid' => [$data['userid']]], true);
+		foreach ($myFavorites as $favorite) {
+			switch ($favorite->mid) {
+				case '5':
+					$favorite->item = SellManager::getById($favorite->tid);
+					break;
+				case '6':
+					$favorite->item = BuyManager::getById($favorite->tid);
+					break;
+				default:
+					break;
+			}
+		}
 		return ApiResponse::makeResponse(true, $myFavorites, ApiResponse::SUCCESS_CODE);
 	}
 	

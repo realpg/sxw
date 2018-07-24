@@ -39,6 +39,7 @@ class BuyManager
 		$buy->addtime = time();
 		$buy->template = '';
 		$buy->status = 3;
+		$buy->pack = '';
 		
 		return $buy;
 	}
@@ -147,9 +148,6 @@ class BuyManager
 		}
 		if (array_key_exists('price', $data)) {
 			$buy->price = array_get($data, 'price');
-		}
-		if (array_key_exists('pack', $data)) {
-			$buy->pack = array_get($data, 'pack');
 		}
 		if (array_key_exists('tag', $data)) {
 			$buy->tag = array_get($data, 'tag');

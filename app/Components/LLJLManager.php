@@ -27,7 +27,7 @@ class LLJLManager
 		//这里可以对新建记录进行一定的默认设置
 		$lljl->moduleid = $moduleid;
 		$lljl->itemid = $item->itemid;
-		$lljl->itemuserid = $item->userid;
+		$lljl->itemusername = $item->username;
 		$lljl->userid = $user->userid;
 		$lljl->username = $user->username;
 		$lljl->passport = $user->passport;

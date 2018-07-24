@@ -8,25 +8,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Components\BuyDataManager;
-use App\Components\BuyManager;
-use App\Components\BuySearchManager;
+use App\Components\SellDataManager;
+use App\Components\SellManager;
+use App\Components\SellSearchManager;
 use App\Components\CategoryManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
 use Illuminate\Http\Request;
 
-class BuyController
+class SellController
 {
 	public function getList(Request $request)
 	{
-		return ApiResponse::makeResponse(true, BuyManager::getList(), ApiResponse::SUCCESS_CODE);
+		return ApiResponse::makeResponse(true, SellManager::getList(), ApiResponse::SUCCESS_CODE);
 	}
 	
 	public function edit(Request $request)
 	{
 		$ret = [];
-		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [6]]);
+		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [5]]);
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
@@ -34,34 +34,35 @@ class BuyController
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'amount', 'price',  'content', 'thumb', 'telephone'])) {
+		if (checkParam($data, ['title', 'introduce', 'amount', 'price', 'content', 'thumb', 'telephone'])) {
 			
 			if (array_key_exists('itemid', $data)) {
-				$buy = BuyManager::getById($data['itemid']);
-				$buy_data = BuyDataManager::getById($data['itemid']);
+				$sell = SellManager::getById($data['itemid']);
+				$sell_data = SellDataManager::getById($data['itemid']);
 			} else {
-				$buy = BuyManager::createObject();
-				$buy_data = BuyDataManager::createObject();
+				$sell = SellManager::createObject();
+				$sell_data = SellDataManager::createObject();
 			}
-			if($buy==null){
+			if($sell==null){
 				return ApiResponse::makeResponse(false, "错误的itemid" , ApiResponse::UNKNOW_ERROR);
 			}
 			
-			$buy = BuyManager::setUserInfo($buy, $data['userid']);
-			$buy = BuyManager::setBuy($buy, $data);
-			$buy->save();
 			
-			$buy_data = BuyDataManager::setBuyData($buy_data, $data);
-			$buy_data->itemid = $buy->itemid;
-			$buy_data->save();
+			$sell = SellManager::setUserInfo($sell, $data['userid']);
+			$sell = SellManager::setSell($sell, $data);
+			$sell->save();
 			
-			$searchInfo = BuyManager::createSearchInfo($buy);
+			$sell_data = SellDataManager::setSellData($sell_data, $data);
+			$sell_data->itemid = $sell->itemid;
+			$sell_data->save();
+			
+			$searchInfo = SellManager::createSearchInfo($sell);
 			if (array_key_exists('keywords', $data)) {
 				$searchInfo->content .= $data['keywords'];
 			}
 			$searchInfo->save();
 			
-			return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
+			return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数" , ApiResponse::MISSING_PARAM);
 		}
@@ -73,15 +74,15 @@ class BuyController
 		$user = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['itemid'])) {
-			$buy = BuyManager::getById($data['itemid']);
-			if ($buy) {
+			$sell = SellManager::getById($data['itemid']);
+			if ($sell) {
 				//增加浏览次数
-				$buy->hits++;
-				$buy->save();
-				$lljl = LLJLManager::createObject($user, $buy, 6);
+				$sell->hits++;
+				$sell->save();
+				$lljl = LLJLManager::createObject($user, $sell, 5);
 				$lljl->save();
-				$buy = BuyManager::getData($buy);
-				return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
+				$sell = SellManager::getData($sell);
+				return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
 		} else {
@@ -96,10 +97,10 @@ class BuyController
 		if (checkParam($data, ['keyword'])) {
 			$ret = null;
 			$keyword = $data['keyword'];
-			$searchResults = BuySearchManager::search($keyword);
+			$searchResults = SellSearchManager::search($keyword);
 			if ($searchResults->count() > 0) {
 				foreach ($searchResults as $result) {
-					$result->item = BuyManager::getById($result->itemid);
+					$result->item = SellManager::getById($result->itemid);
 				}
 				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
@@ -124,9 +125,9 @@ class BuyController
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
 			
-			$buys = BuyManager::getByCon($Con);
+			$sells = SellManager::getByCon($Con);
 			
-			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
+			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);

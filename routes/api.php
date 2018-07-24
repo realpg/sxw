@@ -29,7 +29,14 @@ Route::post('user/login', 'LoginController@login');
 
 Route::group(['middleware' => ['checkXCXToken']], function () {
 	
-	//求购
+	//供应
+	Route::get('sell/getList', 'SellController@getList');//根据id获取供应内容
+	Route::get('sell/getById', 'SellController@getById');//根据id获取供应内容
+	Route::get('sell/getByCondition', 'SellController@getByCon');//根据条件获取供应内容
+	Route::get('sell/edit', 'SellController@edit');//获得编辑所需信息
+	Route::post('sell/edit', 'SellController@editPost');//编辑POST
+	Route::post('sell/search', 'SellController@searchPost');//查询POST
+	
 	Route::get('buy/getList', 'BuyController@getList');//根据id获取求购内容
 	Route::get('buy/getById', 'BuyController@getById');//根据id获取求购内容
 	Route::get('buy/getByCondition', 'BuyController@getByCon');//根据条件获取求购内容
