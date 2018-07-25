@@ -107,11 +107,21 @@ class SellSearchManager
 	/*
 	 * 搜索
 	 *
-	 * 2018/7/13
+	 * 2018/7/25
 	 */
 	public static function search($keyword)
 	{
-		$results=Sell_search::where('content','like','%'.$keyword."%")->paginate();
+		$results=Sell_search::where('content','like','%'.$keyword."%");
+		
+		$thesauru = ThesauruManager::getByKeyword($keyword);
+		if ($thesauru)
+		{
+			$words=explode('=',$thesauru->content);
+			foreach ($words as $word){
+				$results = $results->orWhere('content', 'like', '%' . $word . "%");
+			}
+		}
+		$results = $results->paginate();
 		return $results;
 	}
 }

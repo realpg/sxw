@@ -14,7 +14,7 @@ use App\Components\Member_updateManager;
 use App\Components\MemberManager;
 use App\Components\SystemManager;
 use App\Components\TagManager;
-use App\Models\Tag;
+use App\Components\ThesauruManager;
 use Illuminate\Http\Request;
 
 class SystemController extends Controller
@@ -105,7 +105,7 @@ class SystemController extends Controller
 		if (array_key_exists('moduleid', $data)) if ($data['moduleid'] != 0)
 			$con['moduleid'] = [$data['moduleid']];
 		$tags = TagManager::getByCon($con);
-		return view('tag', ['datas' => $tags]);
+		return view('tag.index', ['datas' => $tags]);
 	}
 	
 	public static function tag_edit_get(Request $request)
@@ -115,7 +115,7 @@ class SystemController extends Controller
 			$tag = TagManager::getById($data['tagid']);
 		else
 			$tag = TagManager::createObject();
-		return view('tag_edit', ['data' => $tag]);
+		return view('tag.edit', ['data' => $tag]);
 	}
 	
 	public static function tag_edit_post(Request $request)
@@ -135,19 +135,49 @@ class SystemController extends Controller
 			return ApiResponse::makeResponse(true, $tag, ApiResponse::SUCCESS_CODE);
 			
 		}
-//		elseif (checkParam($data, ['tagid', 'status'])) {
-//			$ret = "请求成功";
-//			if (array_key_exists('tagid', $data))
-//				$tag = TagManager::getById($data['tagid']);
-//			else
-//				$tag = TagManager::createObject();
-//			$tag = TagManager::setTag($tag, $data);
-//			$tag->save();
-//			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
-//
-//		}
 		else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
+	
+	public static function thesauru(Request $request)
+	{
+		$data = $request->all();
+		$con = [];
+		$thesaurus = ThesauruManager::getByCon($con);
+		return view('thesauru.index', ['datas' => $thesaurus]);
+	}
+	
+	public static function thesauru_edit_get(Request $request)
+	{
+		$data = $request->all();
+		if (array_key_exists('id', $data))
+			$thesauru = ThesauruManager::getById($data['id']);
+		else
+			$thesauru = ThesauruManager::createObject();
+		return view('thesauru.edit', ['data' => $thesauru]);
+	}
+	
+	public static function thesauru_edit_post(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, [ 'content'])) {
+			
+			$ret = "请求成功";
+			if (array_key_exists('id', $data) && $data['id'] != null)
+				$thesauru = ThesauruManager::getById($data['id']);
+			else
+				$thesauru = ThesauruManager::createObject();
+			
+			$thesauru = ThesauruManager::setThesauru($thesauru, $data);
+			$thesauru->save();
+			return ApiResponse::makeResponse(true, $thesauru, ApiResponse::SUCCESS_CODE);
+			
+		}
+		else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
 }

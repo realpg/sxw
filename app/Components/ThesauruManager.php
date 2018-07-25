@@ -10,9 +10,9 @@
 
 namespace App\Components;
 
-use App\Models\Template;
+use App\Models\Thesauru;
 
-class TemplateManager
+class ThesauruManager
 {
 	/*
 	 * 创建新的对象
@@ -22,15 +22,15 @@ class TemplateManager
 	 * 2018/07/05
 	 */
 	public static function createObject(){
-		$template=new Template();
+		$thesauru=new Thesauru();
 		//这里可以对新建记录进行一定的默认设置
 		
-		return $template;
+		return $thesauru;
 	}
 	
 	
 	/*
-	 * 获取template的list
+	 * 获取thesauru的list
 	 *
 	 * By Zhangli
 	 *
@@ -38,8 +38,8 @@ class TemplateManager
 	 */
 	public static function getList()
 	{
-		$templates = Template::orderby('id', 'desc')->get();
-		return $templates;
+		$thesaurus = Thesauru::orderby('id', 'desc')->get();
+		return $thesaurus;
 	}
 	
 	/*
@@ -51,8 +51,8 @@ class TemplateManager
 	 */
 	public static function getById($id)
 	{
-		$template = Template::where('id', '=', $id)->first();
-		return $template;
+		$thesauru = Thesauru::where('id', '=', $id)->first();
+		return $thesauru;
 	}
 	
 	/*
@@ -65,16 +65,16 @@ class TemplateManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$templates = Template::orderby($orderby['0'], $orderby['1']);
+		$thesaurus = Thesauru::orderby($orderby['0'], $orderby['1']);
 		if (!$paginate)
-			$templates = $templates->get();
+			$thesaurus = $thesaurus->get();
 		foreach ($ConArr as $key => $value) {
-			$templates = $templates->whereIn($key, $value);
+			$thesaurus = $thesaurus->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$templates = $templates->paginate();
+			$thesaurus = $thesaurus->paginate();
 		}
-		return $templates;
+		return $thesaurus;
 	}
 	
 	
@@ -85,11 +85,16 @@ class TemplateManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setTemplate($template, $data)
+	public static function setThesauru($thesauru, $data)
 	{
-		if (array_key_exists('name', $data)) {
-			$template->name = array_get($data, 'name');
+		if (array_key_exists('content', $data)) {
+			$thesauru->content = array_get($data, 'content');
 		}
-		return $template;
+		return $thesauru;
+	}
+	
+	public static function getByKeyword($keyword){
+		$thesauru=Thesauru::where('content','like','%'.$keyword.'%')->first();
+		return $thesauru;
 	}
 }

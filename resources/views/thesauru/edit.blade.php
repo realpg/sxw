@@ -40,62 +40,28 @@
         <div class="row cl hidden">
             <label class="form-label col-xs-4 col-sm-2">id：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{{$data->tagid?$data->tagid:''}}" placeholder=""
+                <input type="text" class="input-text" value="{{$data->id?$data->id:''}}" placeholder=""
                        id="tagid" name="tagid">
             </div>
         </div>
 
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">所属模块：</label>
-            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
-			<select class="select" name="moduleid" size="1">
-				<option value="5" {{$data->moduleid==5?'selected':''}}>供应</option>
-				<option value="6" {{$data->moduleid==6?'selected':''}}>求购</option>
-				<option value="88" {{$data->moduleid==88?'selected':''}}>纺机贸易</option>
-                {{--<option value="3">栏目编辑</option>--}}
-			</select>
-			</span></div>
-        </div>
+
 
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标签名称：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>同义词表：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{{$data->tagname?$data->tagname:''}}" placeholder=""
-                       id="articletitle2" name="tagname">
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文字描述：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <textarea name="desc" cols="" rows="" class="textarea" placeholder="点击标签生成的描述"
+                <textarea name="content" cols="" rows="" class="textarea" placeholder="多个同义词用 = 连接"
                           datatype="*10-100" dragonfly="true" nullmsg="不能为空！"
-                          onKeyUp="$.Huitextarealength(this,140)">{{$data->desc?$data->desc:''}}</textarea>
+                          onKeyUp="">{{$data->content?$data->content:''}}</textarea>
                 <p class="textarea-numberbar"><em class="textarea-length">0</em>/140</p>
             </div>
         </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">排序值：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" class="input-text" value="{{$data->listorder?$data->listorder:0}}" placeholder=""
-                       id="articlesort" name="listorder">
-            </div>
-        </div>
 
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">状态：</label>
-            <div class="formControls col-xs-8 col-sm-9 bs-docs-example">
-                <div class="switch">
-                    <input id="create-switch" name="status" type="checkbox"
-                           value="3" {{$data->status==3?'checked':''}}/>
-                </div>
-            </div>
-        </div>
 
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-                <button onClick="tag_save_submit();" class="btn btn-primary radius" type="button"><i
-                            class="Hui-iconfont">&#xe632;</i> 保存并提交审核
+                <button onClick="thesauru_save_submit();" class="btn btn-primary radius" type="button"><i
+                            class="Hui-iconfont">&#xe632;</i> 保存并提交
                 </button>
                 {{--<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i--}}
                 {{--class="Hui-iconfont">&#xe632;</i> 保存草稿--}}
@@ -125,13 +91,14 @@
 <script type="text/javascript" src="{{ URL::asset('hui/bootstrapSwitch.js')}}"></script>
 <script>
     //    $('#create-switch').wrap('<div class="switch" />').parent().bootstrapSwitch();
-    function tag_save_submit() {
+    function thesauru_save_submit() {
         $.post({
             url: '',
             data: $("form").serialize(),
             success: function (ret) {
                 var index = parent.layer.getFrameIndex(window.name);
                 parent.Hui_alert(ret.message, 2000);
+                parent.refresh();
                 console.log(ret,ret.ret, typeof(ret));
                 if (ret.result) {
                     layer_close();
@@ -145,8 +112,10 @@
 
     function layer_close() {
         var index = parent.layer.getFrameIndex(window.name);
-        parent.$('.btn-refresh').click();
+
         parent.layer.close(index);
+        parent.refresh();
+        parent.$('.btn-refresh').click();
     }
 </script>
 </body>

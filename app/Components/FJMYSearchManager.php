@@ -69,7 +69,7 @@ class FJMYSearchManager
 		if (!$fjmy_search) {
 			$fjmy_search = new FJMY_search();
 		}
-		$fjmy_search->itemid=$id;
+		$fjmy_search->itemid = $id;
 		return $fjmy_search;
 	}
 	
@@ -104,14 +104,25 @@ class FJMYSearchManager
 		}
 		return $fjmy_search;
 	}
+	
 	/*
 	 * 搜索
 	 *
-	 * 2018/7/13
+	 * 2018/7/25
 	 */
 	public static function search($keyword)
 	{
-		$results=FJMY_search::where('content','like','%'.$keyword."%")->paginate();
+		$results = FJMY_search::where('content', 'like', '%' . $keyword . "%");
+		
+		$thesauru = ThesauruManager::getByKeyword($keyword);
+		if ($thesauru)
+		{
+			$words=explode('=',$thesauru->content);
+			foreach ($words as $word){
+				$results = $results->orWhere('content', 'like', '%' . $word . "%");
+			}
+		}
+			$results = $results->paginate();
 		return $results;
 	}
 }
