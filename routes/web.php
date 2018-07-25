@@ -22,3 +22,7 @@ Route::get('lljl', 'SystemController@xcx_lljl');//小程序浏览记录
 
 Route::get('memberUpdate', 'SystemController@memberUpdate');//小程序浏览记录
 Route::post('memberUpdate', 'SystemController@memberUpdate_post');//小程序浏览记录
+
+Route::get('tag', 'SystemController@tag');//小程序浏览记录
+Route::get('tag_edit', 'SystemController@tag_edit_get');//小程序浏览记录
+Route::post('tag_edit', 'SystemController@tag_edit_post');//小程序浏览记录

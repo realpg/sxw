@@ -62,6 +62,8 @@ function checkParam($Array,$params=['']){
 	foreach ($params as $param){
 		if(!array_key_exists($param,$Array)){
 			return false;
+		}elseif(array_get($Array, $param)==null){
+			return false;
 		}
 	}
 	return true;

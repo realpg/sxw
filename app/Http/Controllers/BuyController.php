@@ -14,6 +14,7 @@ use App\Components\BuySearchManager;
 use App\Components\CategoryManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
+use App\Components\TagManager;
 use Illuminate\Http\Request;
 
 class BuyController
@@ -27,6 +28,7 @@ class BuyController
 	{
 		$ret = [];
 		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [6]]);
+		$ret['tags'] = TagManager::getByCon(['moduleid' => [6]]);
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	

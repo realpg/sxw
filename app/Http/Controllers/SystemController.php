@@ -13,6 +13,8 @@ use App\Components\LLJLManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
 use App\Components\SystemManager;
+use App\Components\TagManager;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class SystemController extends Controller
@@ -63,10 +65,10 @@ class SystemController extends Controller
 			$con['status'] = [$data['status']];
 		$updates = Member_updateManager::getByCon($con);
 		$histories = array();
-		foreach ($updates as $index=>$update) {
-			$histories[$index]=json_decode($update->history);
-			$update->history='';
-			$update->user=MemberManager::getById($update->userid);
+		foreach ($updates as $index => $update) {
+			$histories[$index] = json_decode($update->history);
+			$update->history = '';
+			$update->user = MemberManager::getById($update->userid);
 		}
 		return view('member_update', ['datas' => $updates, 'histories' => $histories]);
 	}
@@ -83,16 +85,68 @@ class SystemController extends Controller
 				$company = CompanyManager::getById($userid);
 				Member_updateManager::setMember($member, $update)->save();
 				Member_updateManager::setCompany($company, $update)->save();
-				$update->status=3;
+				$update->status = 3;
 				$update->save();
-			}
-			else{
-				$update->status=1;
+			} else {
+				$update->status = 1;
 				$update->save();
 			}
 			
 			return ApiResponse::makeResponse(true, $update, ApiResponse::SUCCESS_CODE);
 		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function tag(Request $request)
+	{
+		$data = $request->all();
+		$con = [];
+		if (array_key_exists('moduleid', $data)) if ($data['moduleid'] != 0)
+			$con['moduleid'] = [$data['moduleid']];
+		$tags = TagManager::getByCon($con);
+		return view('tag', ['datas' => $tags]);
+	}
+	
+	public static function tag_edit_get(Request $request)
+	{
+		$data = $request->all();
+		if (array_key_exists('tagid', $data))
+			$tag = TagManager::getById($data['tagid']);
+		else
+			$tag = TagManager::createObject();
+		return view('tag_edit', ['data' => $tag]);
+	}
+	
+	public static function tag_edit_post(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['moduleid', 'tagname', 'desc', 'listorder'])) {
+			
+			$ret = "请求成功";
+			if (array_key_exists('tagid', $data) && $data['tagid'] != null)
+				$tag = TagManager::getById($data['tagid']);
+			else
+				$tag = TagManager::createObject();
+			
+			$tag = TagManager::setTag($tag, $data);
+			$tag->save();
+			return ApiResponse::makeResponse(true, $tag, ApiResponse::SUCCESS_CODE);
+			
+		}
+//		elseif (checkParam($data, ['tagid', 'status'])) {
+//			$ret = "请求成功";
+//			if (array_key_exists('tagid', $data))
+//				$tag = TagManager::getById($data['tagid']);
+//			else
+//				$tag = TagManager::createObject();
+//			$tag = TagManager::setTag($tag, $data);
+//			$tag->save();
+//			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+//
+//		}
+		else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}

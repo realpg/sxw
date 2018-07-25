@@ -13,8 +13,7 @@
         <form>
             <div class="text-c">
                 {{--<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>--}}
-                <span class="select-box inline">
-		<select name="moduleid" class="select">
+                <span class="select-box inline"><select name="moduleid" class="select">
 			<option value="0">全部分类</option>
 			<option value="5">分类一</option>
 			<option value="6">分类二</option>
@@ -33,48 +32,50 @@
             </div>
         </form>
         <div class="cl pd-5 bg-1 bk-gray mt-20">
-            <span class="l">
-                {{--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> --}}
-                {{--<a class="btn btn-primary radius" data-title="添加资讯" data-href="article-add.html" onclick="Hui_admin_tab(this)" href="javascript:;">--}}
-                {{--<i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> --}}
-                <span class="r">共有数据：<strong>{{$lljls->count()}}</strong> 条</span></div>
+            {{--<span class="l">--}}
+            {{--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> --}}
+            {{--<a class="btn btn-primary radius" data-title="添加资讯" data-href="article-add.html" onclick="Hui_admin_tab(this)" href="javascript:;">--}}
+            {{--<i class="Hui-iconfont">&#xe600;</i> 添加资讯</a></span> --}}
+            <span class="r">共有数据：<strong>{{$lljls->count()}}</strong> 条</span></div>
         <div class="mt-20">
-            <table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
-                <thead>
+        <table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+            <thead>
+            <tr class="text-c">
+                {{--<th width="25"><input type="checkbox" name="" value=""></th>--}}
+                <th width="60">ID</th>
+                <th width="60">模块</th>
+                <th width="60">信息ID</th>
+                <th width="80">会员ID</th>
+                <th width="80">会员名</th>
+                <th width="120">昵称</th>
+                <th width="120">浏览时间</th>
+                {{--<th width="120">操作</th>--}}
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($lljls as $lljl)
                 <tr class="text-c">
-                    {{--<th width="25"><input type="checkbox" name="" value=""></th>--}}
-                    <th width="60">ID</th>
-                    <th width="60">模块</th>
-                    <th width="60">信息ID</th>
-                    <th width="80">会员ID</th>
-                    <th width="80">会员名</th>
-                    <th width="120">昵称</th>
-                    <th width="120">浏览时间</th>
-                    {{--<th width="120">操作</th>--}}
+                    {{--<td><input type="checkbox" value="" name=""></td>--}}
+                    <td>{{$lljl->id}}</td>
+                    <td>@if($lljl->moduleid==5)
+                            <span class="label label-primary radius">供应</span>
+                        @elseif($lljl->moduleid==6)
+                            <span class="label label-success radius">求购</span>
+                        @elseif($lljl->moduleid==88)
+                            <span class="label label-warning radius">纺机贸易</span>
+                        @else
+                            <span class="label label-default radius">未知</span>
+                        @endif
+                    </td>
+                    <td>{{$lljl->itemid}}</td>
+                    <td>{{$lljl->userid}}</td>
+                    <td>{{$lljl->username}}</td>
+                    <td>{{$lljl->passport}}</td>
+                    <td>{{getPRCdate($lljl->time)}}</td>
                 </tr>
-                </thead>
-                <tbody>
-                @foreach($lljls as $lljl)
-                    <tr class="text-c">
-                        {{--<td><input type="checkbox" value="" name=""></td>--}}
-                        <td>{{$lljl->id}}</td>
-                        <td>@if($lljl->moduleid==5)
-                                <span class="label label-primary radius">供应</span>
-                                @elseif($lljl->moduleid==6)
-                                <span class="label label-success radius">求购</span>
-                                @else
-                                <span class="label label-default radius">未知</span>
-                                @endif
-                        </td>
-                        <td>{{$lljl->itemid}}</td>
-                        <td>{{$lljl->userid}}</td>
-                        <td>{{$lljl->username}}</td>
-                        <td>{{$lljl->passport}}</td>
-                        <td>{{getPRCdate($lljl->time)}}</td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
+            @endforeach
+            </tbody>
+        </table>
         </div>
     </div>
 @endsection

@@ -14,6 +14,7 @@ use App\Components\SellSearchManager;
 use App\Components\CategoryManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
+use App\Components\TagManager;
 use Illuminate\Http\Request;
 
 class SellController
@@ -27,6 +28,7 @@ class SellController
 	{
 		$ret = [];
 		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [5]]);
+		$ret['tags'] = TagManager::getByCon(['moduleid' => [5]]);
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
