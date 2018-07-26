@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Components\XCXLogManager;
 use App\Http\Controllers\RankingController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -36,7 +37,11 @@ class Kernel extends ConsoleKernel
 		$schedule->call(function () {
 			//每天生成月榜
 			RankingController::createDailyRanking(3);
-		})->dailyAt('3:00');;
+		})->dailyAt('3:00');
+		$schedule->call(function () {
+			//每周一清理log
+			XCXLogManager::clearLog();
+		})->weekly()->mondays()->at('02:00');
 	}
 	
 	/**

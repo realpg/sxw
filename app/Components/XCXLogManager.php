@@ -24,19 +24,6 @@ class XCXLogManager
 		$xcx_log->save();
 		return $xcx_log;
 	}
-	/*
-	 * 创建新的对象
-	 *
-	 * by Zhangli
-	 *
-	 * 2018/07/05
-	 */
-	public static function createObject(){
-		$XCXlog=new XCXLog();
-		//这里可以对新建记录进行一定的默认设置
-		
-		return $XCXlog;
-	}
 	
 	
 	/*
@@ -87,19 +74,13 @@ class XCXLogManager
 		return $XCXlogs;
 	}
 	
-	
-	/*
-	 * 设置信息，用于编辑
-	 *
-	 * By Zhangli
-	 *
-	 * 2018-04-02
-	 */
-	public static function setXCXLog($XCXlog, $data)
-	{
-		if (array_key_exists('name', $data)) {
-			$XCXlog->name = array_get($data, 'name');
+	//清理log，默认清理一星期以前的
+	public static function clearLog($time_before=604800){
+		$time_until=time()-$time_before;
+		$logs=XCXLog::where('time','<=',$time_until);
+		foreach ($logs as $log){
+			$log->delete();
 		}
-		return $XCXlog;
+		return;
 	}
 }
