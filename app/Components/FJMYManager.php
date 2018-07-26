@@ -38,7 +38,11 @@ class FJMYManager
 		$fjmy->editdate = $fjmy->adddate = date("Y-m-d");
 		$fjmy->addtime = time();
 		$fjmy->template = '';
-		$fjmy->status = 3;
+		$fjmysh = SystemManager::getById(3);
+		if ($fjmysh->value == 1)
+			$fjmy->status = 2;
+		else
+			$fjmy->status = 3;
 		
 		return $fjmy;
 	}
@@ -119,7 +123,7 @@ class FJMYManager
 				$fjmys = $fjmys->whereIn($key, $value);
 			}
 		}
-		$fjmys=$fjmys->paginate();
+		$fjmys = $fjmys->paginate();
 		return $fjmys;
 	}
 	

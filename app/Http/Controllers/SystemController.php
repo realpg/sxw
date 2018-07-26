@@ -134,8 +134,7 @@ class SystemController extends Controller
 			$tag->save();
 			return ApiResponse::makeResponse(true, $tag, ApiResponse::SUCCESS_CODE);
 			
-		}
-		else {
+		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
@@ -162,7 +161,7 @@ class SystemController extends Controller
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, [ 'content'])) {
+		if (checkParam($data, ['content'])) {
 			
 			$ret = "请求成功";
 			if (array_key_exists('id', $data) && $data['id'] != null)
@@ -174,10 +173,50 @@ class SystemController extends Controller
 			$thesauru->save();
 			return ApiResponse::makeResponse(true, $thesauru, ApiResponse::SUCCESS_CODE);
 			
-		}
-		else {
+		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
 	
+	public static function rebind()
+	{
+		return view('rebind.index');
+	}
+	
+	public static function rebind_post(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, [ 'userid_1','userid_2'])) {
+			$user1=MemberManager::getById($data['userid_1']);
+			$user2=MemberManager::getById($data['userid_2']);
+			$user1->wx_openId=$user2->wx_openId;
+			$user2->wx_openId='';
+			$user2->groupid=2;//
+			
+			$user1->save();
+			$user2->save();
+			
+			return ApiResponse::makeResponse(true, [$user1,$user2], ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数".json_encode($data), ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function getUserByUserid(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['userid'])) {
+			$ret = MemberManager::getById($data['userid']);
+			
+			if ($ret)
+				return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			else
+				return ApiResponse::makeResponse(false, "userid错误", ApiResponse::MISSING_PARAM);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
 }

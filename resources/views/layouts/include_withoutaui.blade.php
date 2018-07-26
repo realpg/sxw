@@ -84,7 +84,7 @@
     }
 
     function showModal(it) {
-        console.log("333333333333");
+//        console.log("333333333333");
         var interText = doT.template($("#interpolationtmpl").text());
         $("#modal-demo").html(interText(it)).modal("show")
     }

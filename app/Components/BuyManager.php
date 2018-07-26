@@ -38,7 +38,11 @@ class BuyManager
 		$buy->editdate = $buy->adddate = date("Y-m-d");
 		$buy->addtime = time();
 		$buy->template = '';
-		$buy->status = 3;
+		$buysh = SystemManager::getById('2');
+		if ($buysh->value == 1)
+			$buy->status = 2;
+		else
+			$buy->status = 3;
 		$buy->pack = '';
 		
 		return $buy;
@@ -120,7 +124,7 @@ class BuyManager
 				$buys = $buys->whereIn($key, $value);
 			}
 		}
-		$buys=$buys->paginate();
+		$buys = $buys->paginate();
 		return $buys;
 	}
 	

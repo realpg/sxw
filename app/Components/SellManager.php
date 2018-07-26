@@ -38,7 +38,11 @@ class SellManager
 		$sell->editdate = $sell->adddate = date("Y-m-d");
 		$sell->addtime = time();
 		$sell->template = '';
-		$sell->status = 3;
+		$sellsh = SystemManager::getById('1');
+		if ($sellsh->value == 1)
+			$sell->status = 2;
+		else
+			$sell->status = 3;
 		
 		return $sell;
 	}
@@ -119,7 +123,7 @@ class SellManager
 				$sells = $sells->whereIn($key, $value);
 			}
 		}
-		$sells=$sells->paginate();
+		$sells = $sells->paginate();
 		return $sells;
 	}
 	
