@@ -34,3 +34,7 @@ Route::post('thesauru_edit', 'SystemController@thesauru_edit_post');//同义词�
 Route::get('rebind', 'SystemController@rebind');//重绑小程序
 Route::post('rebind', 'SystemController@rebind_post');//重绑小程序
 Route::get('getUserByUserid', 'SystemController@getUserByUserid');//重绑小程序
+
+Route::get('zyyw', 'SystemController@zyyw');//主营业务
+Route::get('zyyw_edit', 'SystemController@zyyw_edit_get');//主营业务编辑get
+Route::post('zyyw_edit', 'SystemController@zyyw_edit_post');//主营业务编辑post

@@ -40,47 +40,19 @@
         <div class="row cl hidden">
             <label class="form-label col-xs-4 col-sm-2">id：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{{$data->tagid?$data->tagid:''}}" placeholder=""
-                       id="tagid" name="tagid">
+                <input type="text" class="input-text" value="{{$data->id?$data->id:''}}" placeholder=""
+                       id="id" name="id">
             </div>
         </div>
-
+        
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">所属模块：</label>
-            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
-			<select class="select" name="moduleid" size="1">
-				<option value="5" {{$data->moduleid==5?'selected':''}}>供应</option>
-				<option value="6" {{$data->moduleid==6?'selected':''}}>求购</option>
-				<option value="88" {{$data->moduleid==88?'selected':''}}>纺机贸易</option>
-                {{--<option value="3">栏目编辑</option>--}}
-			</select>
-			</span></div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标签名称：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>主营业务名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{{$data->tagname?$data->tagname:''}}" placeholder=""
-                       id="articletitle2" name="tagname">
+                <input type="text" class="input-text" value="{{$data->content?$data->content:''}}" placeholder=""
+                       id="articletitle2" name="content">
             </div>
         </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文字描述：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <textarea name="desc" cols="" rows="" class="textarea" placeholder="点击标签生成的描述"
-                          datatype="*10-100" dragonfly="true" nullmsg="不能为空！"
-                          onKeyUp="$.Huitextarealength(this,140)">{{$data->desc?$data->desc:''}}</textarea>
-                <p class="textarea-numberbar"><em class="textarea-length">0</em>/140</p>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">排序值：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" class="input-text" value="{{$data->listorder?$data->listorder:0}}" placeholder=""
-                       id="articlesort" name="listorder">
-            </div>
-        </div>
+        
 
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2">状态：</label>
@@ -94,7 +66,7 @@
 
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-                <button onClick="tag_save_submit();" class="btn btn-primary radius" type="button"><i
+                <button onClick="zyyw_save_submit();" class="btn btn-primary radius" type="button"><i
                             class="Hui-iconfont">&#xe632;</i> 保存并提交
                 </button>
                 {{--<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i--}}
@@ -125,7 +97,7 @@
 <script type="text/javascript" src="{{ URL::asset('hui/bootstrapSwitch.js')}}"></script>
 <script>
     //    $('#create-switch').wrap('<div class="switch" />').parent().bootstrapSwitch();
-    function tag_save_submit() {
+    function zyyw_save_submit() {
         $.post({
             url: '',
             data: $("form").serialize(),

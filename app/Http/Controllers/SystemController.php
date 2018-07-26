@@ -15,6 +15,7 @@ use App\Components\MemberManager;
 use App\Components\SystemManager;
 use App\Components\TagManager;
 use App\Components\ThesauruManager;
+use App\Components\ZYYWManager;
 use Illuminate\Http\Request;
 
 class SystemController extends Controller
@@ -97,7 +98,6 @@ class SystemController extends Controller
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
-	
 	public static function tag(Request $request)
 	{
 		$data = $request->all();
@@ -133,6 +133,47 @@ class SystemController extends Controller
 			$tag = TagManager::setTag($tag, $data);
 			$tag->save();
 			return ApiResponse::makeResponse(true, $tag, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function zyyw(Request $request)
+	{
+		$data = $request->all();
+		$con = [];
+		if (array_key_exists('moduleid', $data)) if ($data['moduleid'] != 0)
+			$con['moduleid'] = [$data['moduleid']];
+		$zyyws = ZYYWManager::getByCon($con);
+		return view('zyyw.index', ['datas' => $zyyws]);
+	}
+	
+	public static function zyyw_edit_get(Request $request)
+	{
+		$data = $request->all();
+		if (array_key_exists('id', $data))
+			$zyyw = ZYYWManager::getById($data['id']);
+		else
+			$zyyw = ZYYWManager::createObject();
+		return view('zyyw.edit', ['data' => $zyyw]);
+	}
+	
+	public static function zyyw_edit_post(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['content'])) {
+			
+			$ret = "请求成功";
+			if (array_key_exists('id', $data) && $data['id'] != null)
+				$zyyw = ZYYWManager::getById($data['id']);
+			else
+				$zyyw = ZYYWManager::createObject();
+			
+			$zyyw = ZYYWManager::setZYYW($zyyw, $data);
+			$zyyw->save();
+			return ApiResponse::makeResponse(true, $zyyw, ApiResponse::SUCCESS_CODE);
 			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
