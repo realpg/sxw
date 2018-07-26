@@ -187,6 +187,12 @@ class CommentController extends Controller
 				case '6':
 					$favorite->item = BuyManager::getById($favorite->tid);
 					break;
+				case '21':
+					$favorite->item = ArticleManager::getById($favorite->tid);
+					break;
+				case '88':
+					$favorite->item = FJMYManager::getById($favorite->tid);
+					break;
 				default:
 					break;
 			}
