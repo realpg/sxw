@@ -25,14 +25,14 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		return RankingController::createDailyRanking();
-		$rank=new SortContainer([],'cost_credit',10);
-		for($i=1;$i<=50;$i++){
-			$rank->push(['cost_credit'=>rand(1,1000)]);
-		}
-		$testdata=$rank->getArray();
-//		$data = $request->all();
-//		$testdata = $data;
+//		return RankingController::createDailyRanking();
+//		$rank=new SortContainer([],'cost_credit',10);
+//		for($i=1;$i<=50;$i++){
+//			$rank->push(['cost_credit'=>rand(1,1000)]);
+//		}
+//		$testdata=$rank->getArray();
+		$data = $request->all();
+		$testdata = $data;
 		return $testdata;
 //		return view('test');
 	}

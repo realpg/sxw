@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 
 use App\Components\AgreeManager;
+use App\Components\ArticleManager;
 use App\Components\BuyManager;
 use App\Components\CommentManager;
 use App\Components\FavoriteManager;
+use App\Components\FJMYManager;
 use App\Components\MemberManager;
 use App\Components\SellManager;
 use App\Components\TestManager;
@@ -45,6 +47,14 @@ class CommentController extends Controller
 			} elseif ($data['item_mid'] == 6) {
 				//求购
 				$item = BuyManager::getById($data['item_id']);
+			}
+			elseif ($data['item_mid'] == 21) {
+				//资讯
+				$item = ArticleManager::getById($data['item_id']);
+			}
+			elseif ($data['item_mid'] == 88) {
+				//求购
+				$item = FJMYManager::getById($data['item_id']);
 			}
 			if ($item) {
 				$comment = CommentManager::setItemInfo($comment, $item);
@@ -85,6 +95,14 @@ class CommentController extends Controller
 				//求购
 				$item = BuyManager::getById($data['item_id']);
 			}
+			elseif ($data['item_mid'] == 21) {
+				//资讯
+				$item = ArticleManager::getById($data['item_id']);
+			}
+			elseif ($data['item_mid'] == 88) {
+				//求购
+				$item = FJMYManager::getById($data['item_id']);
+			}
 			if ($item) {
 				$agree = AgreeManager::createObject();
 				$agree = AgreeManager::setAgree($agree, $data, $item);
@@ -121,6 +139,14 @@ class CommentController extends Controller
 			} elseif ($data['mid'] == 6) {
 				//求购
 				$item = BuyManager::getById($data['tid']);
+			}
+			elseif ($data['mid'] == 21) {
+				//资讯
+				$item = ArticleManager::getById($data['tid']);
+			}
+			elseif ($data['mid'] == 88) {
+				//求购
+				$item = FJMYManager::getById($data['tid']);
 			}
 			
 			if ($item) {
