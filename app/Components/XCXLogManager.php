@@ -14,13 +14,14 @@ use App\Models\XCXLog;
 
 class XCXLogManager
 {
-	public static function log($url,$method,$ip,$param){
+	public static function log($url,$method,$ip,$param,$response){
 		$xcx_log=new XCXLog();
 		$xcx_log->url=$url;
 		$xcx_log->method=$method;
 		$xcx_log->ip=$ip;
 		$xcx_log->param=$param;
 		$xcx_log->time=time();
+		$xcx_log->response=$response;
 		$xcx_log->save();
 		return $xcx_log;
 	}

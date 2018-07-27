@@ -15,7 +15,7 @@ use App\Components\MemberManager;
 use App\Components\SystemManager;
 use App\Components\TagManager;
 use App\Components\ThesauruManager;
-use App\Components\ZYYWManager;
+use App\Components\YWLBManager;
 use Illuminate\Http\Request;
 
 class SystemController extends Controller
@@ -139,27 +139,27 @@ class SystemController extends Controller
 		}
 	}
 	
-	public static function zyyw(Request $request)
+	public static function ywlb(Request $request)
 	{
 		$data = $request->all();
 		$con = [];
 		if (array_key_exists('moduleid', $data)) if ($data['moduleid'] != 0)
 			$con['moduleid'] = [$data['moduleid']];
-		$zyyws = ZYYWManager::getByCon($con);
-		return view('zyyw.index', ['datas' => $zyyws]);
+		$ywlbs = YWLBManager::getByCon($con);
+		return view('ywlb.index', ['datas' => $ywlbs]);
 	}
 	
-	public static function zyyw_edit_get(Request $request)
+	public static function ywlb_edit_get(Request $request)
 	{
 		$data = $request->all();
 		if (array_key_exists('id', $data))
-			$zyyw = ZYYWManager::getById($data['id']);
+			$ywlb = YWLBManager::getById($data['id']);
 		else
-			$zyyw = ZYYWManager::createObject();
-		return view('zyyw.edit', ['data' => $zyyw]);
+			$ywlb = YWLBManager::createObject();
+		return view('ywlb.edit', ['data' => $ywlb]);
 	}
 	
-	public static function zyyw_edit_post(Request $request)
+	public static function ywlb_edit_post(Request $request)
 	{
 		$data = $request->all();
 		//检验参数
@@ -167,13 +167,13 @@ class SystemController extends Controller
 			
 			$ret = "请求成功";
 			if (array_key_exists('id', $data) && $data['id'] != null)
-				$zyyw = ZYYWManager::getById($data['id']);
+				$ywlb = YWLBManager::getById($data['id']);
 			else
-				$zyyw = ZYYWManager::createObject();
+				$ywlb = YWLBManager::createObject();
 			
-			$zyyw = ZYYWManager::setZYYW($zyyw, $data);
-			$zyyw->save();
-			return ApiResponse::makeResponse(true, $zyyw, ApiResponse::SUCCESS_CODE);
+			$ywlb = YWLBManager::setYWLB($ywlb, $data);
+			$ywlb->save();
+			return ApiResponse::makeResponse(true, $ywlb, ApiResponse::SUCCESS_CODE);
 			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);

@@ -10,9 +10,9 @@
 
 namespace App\Components;
 
-use App\Models\ZYYW;
+use App\Models\YWLB;
 
-class ZYYWManager
+class YWLBManager
 {
 	/*
 	 * 创建新的对象
@@ -22,15 +22,15 @@ class ZYYWManager
 	 * 2018/07/05
 	 */
 	public static function createObject(){
-		$zyyw=new ZYYW();
+		$ywlb=new YWLB();
 		//这里可以对新建记录进行一定的默认设置
 		
-		return $zyyw;
+		return $ywlb;
 	}
 	
 	
 	/*
-	 * 获取zyyw的list
+	 * 获取ywlb的list
 	 *
 	 * By Zhangli
 	 *
@@ -38,8 +38,8 @@ class ZYYWManager
 	 */
 	public static function getList()
 	{
-		$zyyws = ZYYW::orderby('id', 'desc')->get();
-		return $zyyws;
+		$ywlbs = YWLB::orderby('id', 'desc')->get();
+		return $ywlbs;
 	}
 	
 	/*
@@ -51,8 +51,8 @@ class ZYYWManager
 	 */
 	public static function getById($id)
 	{
-		$zyyw = ZYYW::where('id', '=', $id)->first();
-		return $zyyw;
+		$ywlb = YWLB::where('id', '=', $id)->first();
+		return $ywlb;
 	}
 	
 	/*
@@ -65,16 +65,16 @@ class ZYYWManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$zyyws = ZYYW::orderby($orderby['0'], $orderby['1']);
+		$ywlbs = YWLB::orderby($orderby['0'], $orderby['1']);
 		if (!$paginate)
-			$zyyws = $zyyws->get();
+			$ywlbs = $ywlbs->get();
 		foreach ($ConArr as $key => $value) {
-			$zyyws = $zyyws->whereIn($key, $value);
+			$ywlbs = $ywlbs->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$zyyws = $zyyws->paginate();
+			$ywlbs = $ywlbs->paginate();
 		}
-		return $zyyws;
+		return $ywlbs;
 	}
 	
 	
@@ -85,17 +85,20 @@ class ZYYWManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setZYYW($zyyw, $data)
+	public static function setYWLB($ywlb, $data)
 	{
 		if (array_key_exists('content', $data)) {
-			$zyyw->content = array_get($data, 'content');
+			$ywlb->content = array_get($data, 'content');
+		}
+		if (array_key_exists('icon_path', $data)) {
+			$ywlb->icon_path = array_get($data, 'icon_path');
 		}
 		if (array_key_exists('status', $data)) {
-			$zyyw->status = array_get($data, 'status');
+			$ywlb->status = array_get($data, 'status');
 		}
 		else{
-			$zyyw->status = 0;
+			$ywlb->status = 0;
 		}
-		return $zyyw;
+		return $ywlb;
 	}
 }

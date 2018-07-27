@@ -20,8 +20,10 @@ class SystemLog
 		$param=json_encode($request->all());
 		$url = $request->url();
 		$method = $request->method();
-		$xcx_log=XCXLogManager::log($url,$method,$ip,$param);
-		return $next($request);
+		
+		$response = $next($request);
+		$xcx_log=XCXLogManager::log($url,$method,$ip,$param,json_encode($response));
+		return $response;
 	}
 	
 	/*

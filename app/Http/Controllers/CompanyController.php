@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Components\CategoryManager;
 use App\Components\CompanyManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
 use App\Components\UpgradeManager;
+use App\Components\YWLBManager;
 use Illuminate\Http\Request;
 
 
@@ -21,7 +23,7 @@ class CompanyController extends Controller
 			if (array_key_exists('conditions', $data)) {
 				$conditions = $data['conditions'];
 			}
-			$conditions['groupid']=[6];
+			$conditions['groupid'] = [6];
 			
 			$bussinessCards = [];
 			$companies = CompanyManager::getByCon($conditions, true);
@@ -105,5 +107,12 @@ class CompanyController extends Controller
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
+	}
+	
+	public static function getEditInfo()
+	{
+		$ret=[];
+		$ret['ywlb']=YWLBManager::getByCon([]);
+		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 }

@@ -35,6 +35,8 @@ Route::get('rebind', 'SystemController@rebind');//重绑小程序
 Route::post('rebind', 'SystemController@rebind_post');//重绑小程序
 Route::get('getUserByUserid', 'SystemController@getUserByUserid');//重绑小程序
 
-Route::get('zyyw', 'SystemController@zyyw');//主营业务
-Route::get('zyyw_edit', 'SystemController@zyyw_edit_get');//主营业务编辑get
-Route::post('zyyw_edit', 'SystemController@zyyw_edit_post');//主营业务编辑post
+Route::get('ywlb', 'SystemController@ywlb');//业务类别
+Route::get('ywlb_edit', 'SystemController@ywlb_edit_get');//业务类别编辑get
+Route::post('ywlb_edit', 'SystemController@ywlb_edit_post');//业务类别编辑post
+
+Route::post('upload', 'UploadController@upload');//业务类别编辑post

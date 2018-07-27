@@ -35,8 +35,8 @@
             <span class="l">
                 {{--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> --}}
                 <a class="btn btn-primary radius"
-                   onclick="admin_add('添加主营业务','{{ URL::asset("zyyw_edit")}}','800','500')">
-                <i class="Hui-iconfont">&#xe600;</i> 添加主营业务</a>
+                   onclick="admin_add('添加业务类别','{{ URL::asset("ywlb_edit")}}','800','500')">
+                <i class="Hui-iconfont">&#xe600;</i> 添加业务类别</a>
                 </span>
             <span class="r">共有数据：<strong>{{$datas->count()}}</strong> 条</span></div>
         {{--<div class="mt-20">--}}
@@ -63,7 +63,7 @@
                         @endif</td>
                     <td>
                         <a style="text-decoration:none"
-                           onclick="admin_add('编辑主营业务','{{ URL::asset("zyyw_edit?id=").$data->id}}','800','500')"
+                           onclick="admin_add('编辑业务类别','{{ URL::asset("ywlb_edit?id=").$data->id}}','800','500')"
                            href="javascript:;" title="编辑">编辑</a>
                         {{--@if($data->status==2)--}}
                         {{--<a style="text-decoration:none"--}}
