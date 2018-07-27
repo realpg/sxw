@@ -16,13 +16,19 @@ class SystemLog
 {
 	function handle($request, Closure $next, $guard = null)
 	{
-		$ip=$this->get_client_ip_from_ns();
-		$param=json_encode($request->all());
+		$ip = $this->get_client_ip_from_ns();
+		$param = json_encode($request->all());
 		$url = $request->url();
 		$method = $request->method();
 		
 		$response = $next($request);
-		$xcx_log=XCXLogManager::log($url,$method,$ip,$param,json_encode($response));
+		if ($response->original)
+			if (!$response->original['result'])
+				$xcx_log = XCXLogManager::log($url, $method, $ip, $param, json_encode($response));
+			else
+				$xcx_log = XCXLogManager::log($url, $method, $ip, $param, '');
+		else
+			$xcx_log = XCXLogManager::log($url, $method, $ip, $param, '');
 		return $response;
 	}
 	
