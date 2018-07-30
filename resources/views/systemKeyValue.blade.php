@@ -6,7 +6,11 @@
                 <div class="row cl">
                     <label class="form-label col-xs-4 col-sm-3">{{$value->name}}</label>
                     <div class="formControls col-xs-8 col-sm-9">
-                        @if($value->type==1)
+                        @if($value->type==0)
+                            <input name="value" id='{{$value->id}}' type="number" step="1" class="input-text"
+                                   value="{{$value->value}}" placeholder="" style="width: 100%">
+                            <input class="btn btn-primary radius submit r" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                        @elseif($value->type==1)
                             <input name="value" id='{{$value->id}}' class="switch-btn switch-btn-animbg" type="checkbox"
                                    @if($value->value==1) checked @endif/>
                         @elseif($value->type==2)
@@ -14,7 +18,7 @@
                             <textarea name="value" id='{{$value->id}}' cols="" rows="" class="textarea"
                                       placeholder="请填写">{{$value->value}}</textarea>
 
-                            <input class="btn btn-primary radius submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                            <input class="btn btn-primary radius submit r" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
                         @endif
                     </div>
                 </div>
@@ -23,26 +27,26 @@
     </article>
 
     {{--<div class="p-10">--}}
-        {{--<table class="tb">--}}
-            {{--@foreach ($values as $value)--}}
+    {{--<table class="tb">--}}
+    {{--@foreach ($values as $value)--}}
 
-                {{--<tr>--}}
-                    {{--<td class="tl">{{$value->name}}</td>--}}
-                    {{--@if($value->type==1)--}}
-                        {{--<td><input name=value" id='{{$value->id}}' class="switch-btn switch-btn-animbg" type="checkbox"--}}
-                                   {{--onchange="submit({id:'{{$value->id}}',value:this.checked?1:0,_token:'{{ csrf_token() }}'})"--}}
-                                   {{--@if($value->value==1) checked @endif></td>--}}
-                    {{--@elseif($value->type==2)--}}
-                        {{--<td><textarea name="value" id='{{$value->id}}'--}}
-                                      {{--style="width:90%;height:200px;">{{$value->value}}</textarea>--}}
-                            {{--<button class="submit">提交</button>--}}
-                        {{--</td>--}}
-                    {{--@endif--}}
-                {{--</tr>--}}
-            {{--@endforeach--}}
-        {{--</table>--}}
+    {{--<tr>--}}
+    {{--<td class="tl">{{$value->name}}</td>--}}
+    {{--@if($value->type==1)--}}
+    {{--<td><input name=value" id='{{$value->id}}' class="switch-btn switch-btn-animbg" type="checkbox"--}}
+    {{--onchange="submit({id:'{{$value->id}}',value:this.checked?1:0,_token:'{{ csrf_token() }}'})"--}}
+    {{--@if($value->value==1) checked @endif></td>--}}
+    {{--@elseif($value->type==2)--}}
+    {{--<td><textarea name="value" id='{{$value->id}}'--}}
+    {{--style="width:90%;height:200px;">{{$value->value}}</textarea>--}}
+    {{--<button class="submit">提交</button>--}}
+    {{--</td>--}}
+    {{--@endif--}}
+    {{--</tr>--}}
+    {{--@endforeach--}}
+    {{--</table>--}}
 
-        {{--<button class="btn radius btn-primary size-L" onClick="modaldemo()">弹出对话框</button>--}}
+    {{--<button class="btn radius btn-primary size-L" onClick="modaldemo()">弹出对话框</button>--}}
     {{--</div>--}}
 
     <style>
@@ -117,7 +121,7 @@
         $('.switch-btn').on('change', function () {
             var param = {};
             param.id = $(this).attr('id');
-            param.value = $(this).val()?1:0;
+            param.value = $(this).val() ? 1 : 0;
             param._token = "{{ csrf_token() }}";
             console.log('请求参数', param, "{{url()->full()}}");
             submit(param);

@@ -14,6 +14,7 @@ use App\Components\BuySearchManager;
 use App\Components\CategoryManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
+use App\Components\SystemManager;
 use App\Components\TagManager;
 use Illuminate\Http\Request;
 
@@ -36,7 +37,7 @@ class BuyController
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'amount', 'price',  'content', 'thumb', 'telephone'])) {
+		if (checkParam($data, ['title', 'introduce', 'amount', 'price', 'content', 'thumb', 'telephone'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$buy = BuyManager::getById($data['itemid']);
@@ -44,9 +45,15 @@ class BuyController
 			} else {
 				$buy = BuyManager::createObject();
 				$buy_data = BuyDataManager::createObject();
+				
+				if (!CreditController::changeCredit(
+					['userid' => $data['userid'], 'amount' => -1*SystemManager::getById('5')->value,
+						'reason' => '发布求购信息消耗积分', 'note' => '消耗积分'])) {
+					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
+				};
 			}
-			if($buy==null){
-				return ApiResponse::makeResponse(false, "错误的itemid" , ApiResponse::UNKNOW_ERROR);
+			if ($buy == null) {
+				return ApiResponse::makeResponse(false, "错误的itemid", ApiResponse::UNKNOW_ERROR);
 			}
 			
 			$buy = BuyManager::setUserInfo($buy, $data['userid']);
@@ -63,9 +70,11 @@ class BuyController
 			}
 			$searchInfo->save();
 			
+			//扣除积分
+			
 			return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 		} else {
-			return ApiResponse::makeResponse(false, "缺少参数" , ApiResponse::MISSING_PARAM);
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
 	

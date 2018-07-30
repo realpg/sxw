@@ -14,6 +14,7 @@ use App\Components\FJMYSearchManager;
 use App\Components\CategoryManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
+use App\Components\SystemManager;
 use App\Components\TagManager;
 use Illuminate\Http\Request;
 
@@ -44,9 +45,15 @@ class FJMYController
 			} else {
 				$fjmy = FJMYManager::createObject();
 				$fjmy_data = FJMYDataManager::createObject();
+				
+				if (!CreditController::changeCredit(
+					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('5')->value,
+						'reason' => '发布求购信息消耗积分', 'note' => '消耗积分'])) {
+					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
+				};
 			}
-			if($fjmy==null){
-				return ApiResponse::makeResponse(false, "错误的itemid" , ApiResponse::UNKNOW_ERROR);
+			if ($fjmy == null) {
+				return ApiResponse::makeResponse(false, "错误的itemid", ApiResponse::UNKNOW_ERROR);
 			}
 			
 			
@@ -66,7 +73,7 @@ class FJMYController
 			
 			return ApiResponse::makeResponse(true, $fjmy, ApiResponse::SUCCESS_CODE);
 		} else {
-			return ApiResponse::makeResponse(false, "缺少参数" , ApiResponse::MISSING_PARAM);
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
 	

@@ -14,6 +14,7 @@ use App\Components\SellSearchManager;
 use App\Components\CategoryManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
+use App\Components\SystemManager;
 use App\Components\TagManager;
 use Illuminate\Http\Request;
 
@@ -44,6 +45,12 @@ class SellController
 			} else {
 				$sell = SellManager::createObject();
 				$sell_data = SellDataManager::createObject();
+				
+				if (!CreditController::changeCredit(
+					['userid' => $data['userid'], 'amount' => -1*SystemManager::getById('4')->value,
+						'reason' => '发布供应信息消耗积分', 'note' => '消耗积分'])) {
+					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
+				};
 			}
 			if($sell==null){
 				return ApiResponse::makeResponse(false, "错误的itemid" , ApiResponse::UNKNOW_ERROR);
