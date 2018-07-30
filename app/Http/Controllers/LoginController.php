@@ -13,8 +13,8 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-	private $AppId = "wx3cd6d8d4b71e14d3";
-	private $AppSecret = '5b774d269553b8c787d1c2fd06ab7ded';
+	private $AppId = "wxd80c70c308c99008";
+	private $AppSecret = 'f5d639500976d9d0604c36b2cb08a6d5';
 	
 	//登录页面
 	public function getOpenid(Request $request)
