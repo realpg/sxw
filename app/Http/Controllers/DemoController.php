@@ -32,7 +32,13 @@ class DemoController extends Controller
 //		}
 //		$testdata=$rank->getArray();
 		$data = $request->all();
-		$testdata = $data;
+		$date=date("Y-m-d");
+		$date1 = date_create($date,timezone_open('Asia/Shanghai'));
+		$date2 = date_create($date,timezone_open('Asia/Shanghai'));
+		date_modify($date2, "+" . 1 . " days");
+		$time1 = date_timestamp_get($date1);
+		$time2 = date_timestamp_get($date2);
+		$testdata = [$time1,$time2];
 		return $testdata;
 //		return view('test');
 	}

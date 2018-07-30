@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Components\AgreeManager;
+use App\Components\CompanyManager;
 use App\Components\MemberManager;
 use App\Components\RankingManager;
 use Illuminate\Http\Request;
@@ -63,6 +64,10 @@ class RankingController extends Controller
 		//检验参数
 		if (checkParam($data, ['type'])) {
 			$ranks = RankingManager::getByCon(['type' => [$data['type']]]);
+			foreach ($ranks as  $rank){
+				$company=CompanyManager::getById($rank->userid);
+				$rank->bussinessCard=CompanyManager::getBussinessCard($company);
+			}
 			
 			$ret = $ranks;
 			
