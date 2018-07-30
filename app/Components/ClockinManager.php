@@ -94,14 +94,15 @@ class ClockinManager
 		return $clockin;
 	}
 	
-	public static function getByDate($date, $days = 1)
+	public static function getByDate($userid,$date, $days = 1)
 	{
 		$date1 = date_create($date,timezone_open('Asia/Shanghai'));
 		$date2 = date_create($date,timezone_open('Asia/Shanghai'));
 		date_modify($date2, "+" . $days . " days");
 		$time1 = date_timestamp_get($date1);
 		$time2 = date_timestamp_get($date2);
-		$clockins = Clockin::where('time', '>=', $time1)
+		$clockins = Clockin::where('userid','=',$userid)
+			->where('time', '>=', $time1)
 			->where('time', '<=', $time2)->get();
 		return $clockins;
 	}
