@@ -25,7 +25,7 @@ class ClockinManager
 	{
 		$clockin = new Clockin();
 		//这里可以对新建记录进行一定的默认设置
-		
+		$clockin->time=time();
 		return $clockin;
 	}
 	
@@ -88,21 +88,21 @@ class ClockinManager
 	 */
 	public static function setClockin($clockin, $data)
 	{
-		if (array_key_exists('name', $data)) {
-			$clockin->name = array_get($data, 'name');
+		if (array_key_exists('userid', $data)) {
+			$clockin->userid = array_get($data, 'userid');
 		}
 		return $clockin;
 	}
 	
 	public static function getByDate($date, $days = 1)
 	{
-		$date1 = date_create($date,'Asia/Shanghai');
-		$date2 = date_create($date,'Asia/Shanghai');
+		$date1 = date_create($date,timezone_open('Asia/Shanghai'));
+		$date2 = date_create($date,timezone_open('Asia/Shanghai'));
 		date_modify($date2, "+" . $days . " days");
 		$time1 = date_timestamp_get($date1);
 		$time2 = date_timestamp_get($date2);
 		$clockins = Clockin::where('time', '>=', $time1)
-			->where('time', '<=', $time2)->first();
+			->where('time', '<=', $time2)->get();
 		return $clockins;
 	}
 }
