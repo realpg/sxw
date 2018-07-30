@@ -87,6 +87,9 @@ class YWLBManager
 	 */
 	public static function setYWLB($ywlb, $data)
 	{
+		if (array_key_exists('name', $data)) {
+			$ywlb->name = array_get($data, 'name');
+		}
 		if (array_key_exists('content', $data)) {
 			$ywlb->content = array_get($data, 'content');
 		}

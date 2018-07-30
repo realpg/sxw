@@ -62,7 +62,7 @@ class CompanyController extends Controller
 		if (UpgradeManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0) {
 			return ApiResponse::makeResponse(false, "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
 		}
-		if (checkParam($data, ['truename', 'company', 'career', 'business', 'address', 'sell', 'introduce'])) {
+		if (checkParam($data, ['truename', 'company', 'career', 'business', 'address', 'ywlb', 'introduce'])) {
 			
 			$company = CompanyManager::getById($user->userid);
 			$user = MemberManager::setMember($user, $data);
@@ -94,7 +94,7 @@ class CompanyController extends Controller
 			return ApiResponse::makeResponse(false, "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
-		if (checkParam($data, ['truename', 'company', 'career', 'business', 'address', 'sell', 'introduce'])) {
+		if (checkParam($data, ['truename', 'company', 'career', 'business', 'address', 'ywlb', 'introduce'])) {
 			
 			$update = Member_updateManager::createObject();
 			$update = Member_updateManager::setMember_update($update, $data, $user);

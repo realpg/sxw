@@ -45,6 +45,7 @@
             <tr class="text-c">
                 {{--<th width="25"><input type="checkbox" name="" value=""></th>--}}
                 <th width="60">id</th>
+                <th width="60">名称</th>
                 <th width="300">内容</th>
                 <th width="60">状态</th>
                 <th width="120">操作</th>
@@ -55,6 +56,7 @@
                 <tr class="text-c">
                     {{--<td><input type="checkbox" value="" name=""></td>--}}
                     <td>{{$data->id}}</td>
+                    <td>{{$data->name}}</td>
                     <td>{{$data->content}}</td>
                     <td> @if($data->status==3)
                             <span class="label label-success radius">生效</span>
@@ -98,7 +100,7 @@
             "pading": false,
             "aoColumnDefs": [
                 //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-                {"orderable": false, "aTargets": [1, 3]}// 不参与排序的列
+                {"orderable": false, "aTargets": [1, 2, 4]}// 不参与排序的列
             ]
         });
 

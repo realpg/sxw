@@ -48,6 +48,14 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>业务类别名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{{$data->name?$data->name:''}}" placeholder=""
+                       id="articletitle2" name="name">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>描述：</label>
+            <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="{{$data->content?$data->content:''}}" placeholder=""
                        id="articletitle2" name="content">
             </div>

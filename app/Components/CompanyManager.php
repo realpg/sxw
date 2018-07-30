@@ -11,6 +11,7 @@
 namespace App\Components;
 
 use App\Models\Company;
+use App\Models\CompanyYWLB;
 use App\Models\Favorite;
 
 class CompanyManager
@@ -105,9 +106,6 @@ class CompanyManager
 		if (array_key_exists('address', $data)) {
 			$company->address = array_get($data, 'address');
 		}
-		if (array_key_exists('sell', $data)) {
-			$company->sell = array_get($data, 'sell');
-		}
 		if (array_key_exists('introduce', $data)) {
 			$company->introduce = array_get($data, 'introduce');
 		}
@@ -121,6 +119,17 @@ class CompanyManager
 		$company->groupid = 5;
 		$company->company = $user->company;
 		return $company;
+	}
+	
+	public static function setYWLB($company,$ywlbs){
+		foreach ($ywlbs as $ywlb){
+			$YWLB=YWLBManager::getById($ywlb);
+			$companyYWLB=CompanyYWLBManager::createObject();
+			$companyYWLB->userid=$company->userid;
+			$companyYWLB->ywlb_id=$YWLB->id;
+			$companyYWLB->name=$YWLB->name;
+			$company->save();
+		}
 	}
 	
 	public static function getBussinessCard($company)
