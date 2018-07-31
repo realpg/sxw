@@ -41,7 +41,7 @@ class LoginController extends Controller
 			$member->wx_openId = $openId;
 			$member->save();
 		}
-		
+		$member=MessageController::checkMessage($member);
 		
 		if (gettype($data['userInfo']) == 'string') {
 			$userInfo = json_decode($data['userInfo']);

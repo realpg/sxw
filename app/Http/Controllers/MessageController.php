@@ -55,4 +55,10 @@ class MessageController extends Controller
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
+	
+	public static function checkMessage($user){
+		$messages=MessageManager::getByCon(['username'=>[$user->username],'isread'=>['0']]);
+		$user->message=$messages->count();
+		return $user;
+	}
 }
