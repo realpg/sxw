@@ -61,6 +61,7 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('member/editInfo', 'CompanyController@getEditInfo');
 	Route::post('member/clockin', 'ClockinController@clockin');//签到
 	Route::get('member/clockin/history', 'ClockinController@getHistory');//签到记录
+	Route::get('member/message', 'MessageController@getMessage');
 	
 	Route::get('bussinessCard', 'CompanyController@bussinessCard');//名片列表
 	Route::get('ranking', 'RankingController@getRanking');//排行榜
