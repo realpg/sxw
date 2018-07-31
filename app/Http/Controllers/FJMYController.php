@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\CompanyManager;
 use App\Components\FJMYDataManager;
 use App\Components\FJMYManager;
 use App\Components\FJMYSearchManager;
@@ -22,7 +23,15 @@ class FJMYController
 {
 	public function getList(Request $request)
 	{
-		return ApiResponse::makeResponse(true, FJMYManager::getList(), ApiResponse::SUCCESS_CODE);
+		$fjmys=FJMYManager::getList();
+//		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
+		foreach ($fjmys as $fjmy) {
+			$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
+			$user = MemberManager::getByUsername($fjmy->username);
+			$company = CompanyManager::getById($user->userid);
+			$fjmy->bussinessCard = CompanyManager::getBussinessCard($company);
+		}
+		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 	}
 	
 	public function edit(Request $request)
@@ -111,6 +120,12 @@ class FJMYController
 				foreach ($searchResults as $result) {
 					$result->item = FJMYManager::getById($result->itemid);
 				}
+				foreach ($searchResults as $fjmy) {
+					$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
+					$user = MemberManager::getByUsername($fjmy->username);
+					$company = CompanyManager::getById($user->userid);
+					$fjmy->bussinessCard = CompanyManager::getBussinessCard($company);
+				}
 				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
 			} else
@@ -136,6 +151,12 @@ class FJMYController
 			
 			$fjmys = FJMYManager::getByCon($Con);
 			
+			foreach ($fjmys as $fjmy) {
+				$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
+				$user = MemberManager::getByUsername($fjmy->username);
+				$company = CompanyManager::getById($user->userid);
+				$fjmy->bussinessCard = CompanyManager::getBussinessCard($company);
+			}
 			return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 			
 		} else {

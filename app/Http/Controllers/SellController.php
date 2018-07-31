@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\CompanyManager;
 use App\Components\SellDataManager;
 use App\Components\SellManager;
 use App\Components\SellSearchManager;
@@ -22,7 +23,15 @@ class SellController
 {
 	public function getList(Request $request)
 	{
-		return ApiResponse::makeResponse(true, SellManager::getList(), ApiResponse::SUCCESS_CODE);
+		$sells=SellManager::getList();
+//		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
+		foreach ($sells as $sell) {
+			$sell->content = SellDataManager::getById($sell->itemid)->content;
+			$user = MemberManager::getByUsername($sell->username);
+			$company = CompanyManager::getById($user->userid);
+			$sell->bussinessCard = CompanyManager::getBussinessCard($company);
+		}
+		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 	}
 	
 	public function edit(Request $request)
@@ -112,6 +121,12 @@ class SellController
 					$result->item = SellManager::getById($result->itemid);
 				}
 				
+				foreach ($searchResults as $sell) {
+					$sell->content = SellDataManager::getById($sell->itemid)->content;
+					$user = MemberManager::getByUsername($sell->username);
+					$company = CompanyManager::getById($user->userid);
+					$sell->bussinessCard = CompanyManager::getBussinessCard($company);
+				}
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
@@ -135,7 +150,12 @@ class SellController
 			}
 			
 			$sells = SellManager::getByCon($Con);
-			
+			foreach ($sells as $sell) {
+				$sell->content = SellDataManager::getById($sell->itemid)->content;
+				$user = MemberManager::getByUsername($sell->username);
+				$company = CompanyManager::getById($user->userid);
+				$sell->bussinessCard = CompanyManager::getBussinessCard($company);
+			}
 			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 			
 		} else {

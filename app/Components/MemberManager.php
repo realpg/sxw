@@ -58,6 +58,12 @@ class MemberManager
 		return $member;
 	}
 	
+	public static function getByUsername($username)
+	{
+		$member = Member::where('username', '=', $username)->first();
+		return $member;
+	}
+	
 	/*
 	 * 根据条件数组获取
 	 *

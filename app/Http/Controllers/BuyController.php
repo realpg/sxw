@@ -12,6 +12,7 @@ use App\Components\BuyDataManager;
 use App\Components\BuyManager;
 use App\Components\BuySearchManager;
 use App\Components\CategoryManager;
+use App\Components\CompanyManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
 use App\Components\SystemManager;
@@ -22,7 +23,15 @@ class BuyController
 {
 	public function getList(Request $request)
 	{
-		return ApiResponse::makeResponse(true, BuyManager::getList(), ApiResponse::SUCCESS_CODE);
+		$buys=BuyManager::getList();
+//		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
+		foreach ($buys as $buy) {
+			$buy->content = BuyDataManager::getById($buy->itemid)->content;
+			$user = MemberManager::getByUsername($buy->username);
+			$company = CompanyManager::getById($user->userid);
+			$buy->bussinessCard = CompanyManager::getBussinessCard($company);
+		}
+		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 	}
 	
 	public function edit(Request $request)
@@ -113,6 +122,13 @@ class BuyController
 					$result->item = BuyManager::getById($result->itemid);
 				}
 				
+				foreach ($searchResults as $buy) {
+					$buy->content = BuyDataManager::getById($buy->itemid)->content;
+					$user = MemberManager::getByUsername($buy->username);
+					$company = CompanyManager::getById($user->userid);
+					$buy->bussinessCard = CompanyManager::getBussinessCard($company);
+				}
+				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
@@ -136,6 +152,13 @@ class BuyController
 			}
 			
 			$buys = BuyManager::getByCon($Con);
+			
+			foreach ($buys as $buy) {
+				$buy->content = BuyDataManager::getById($buy->itemid)->content;
+				$user = MemberManager::getByUsername($buy->username);
+				$company = CompanyManager::getById($user->userid);
+				$buy->bussinessCard = CompanyManager::getBussinessCard($company);
+			}
 			
 			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 			
