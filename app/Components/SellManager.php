@@ -180,6 +180,10 @@ class SellManager
 		$cat = CategoryManager::getById($sell->catid);
 		$searchInfo->content .= $cat->catname . ',';
 		
+		$tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
+		foreach ($tags as $tag){
+			$searchInfo->content .= $tag->tagname . ',';
+		}
 		return $searchInfo;
 	}
 }

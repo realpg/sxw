@@ -39,4 +39,20 @@ class MessageController extends Controller
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
+	
+	public static function getById(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['itemid'])) {
+			$ret=$message = MessageManager::getById($data['itemid']);
+			$message->isread=1;
+			$message->save();
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
 }

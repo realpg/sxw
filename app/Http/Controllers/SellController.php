@@ -26,8 +26,9 @@ class SellController
 		$sells=SellManager::getList();
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
+			
 			$sell->content = SellDataManager::getById($sell->itemid)->content;
-			$sell->user= $user = MemberManager::getByUsername($sell->username);
+			$user = MemberManager::getByUsername($sell->username);
 			$sell->company=$company = CompanyManager::getById($user->userid);
 			$sell->bussinessCard = CompanyManager::getBussinessCard($company);
 			$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
@@ -47,7 +48,7 @@ class SellController
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'amount', 'price', 'content', 'thumb', 'telephone','tag'])) {
+		if (checkParam($data, ['title', 'introduce', 'amount', 'price', 'content', 'thumb', 'telephone'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$sell = SellManager::getById($data['itemid']);

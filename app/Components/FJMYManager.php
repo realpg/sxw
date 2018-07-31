@@ -180,6 +180,10 @@ class FJMYManager
 		$cat = CategoryManager::getById($fjmy->catid);
 		$searchInfo->content .= $cat->catname . ',';
 		
+		$tags=TagManager::getByCon(['tagid'=>explode(',',$fjmy->tag)]);
+		foreach ($tags as $tag){
+			$searchInfo->content .= $tag->tagname . ',';
+		}
 		return $searchInfo;
 	}
 }

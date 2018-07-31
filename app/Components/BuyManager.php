@@ -181,6 +181,10 @@ class BuyManager
 		$cat = CategoryManager::getById($buy->catid);
 		$searchInfo->content .= $cat->catname . ',';
 		
+		$tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
+		foreach ($tags as $tag){
+			$searchInfo->content .= $tag->tagname . ',';
+		}
 		return $searchInfo;
 	}
 }
