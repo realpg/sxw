@@ -25,11 +25,12 @@ class BuyController
 	{
 		$buys=BuyManager::getList();
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
-		foreach ($buys as $buy) {
+		foreach ($buys as $buy){
 			$buy->content = BuyDataManager::getById($buy->itemid)->content;
-			$user = MemberManager::getByUsername($buy->username);
-			$company = CompanyManager::getById($user->userid);
+			$buy->user= $user = MemberManager::getByUsername($buy->username);
+			$buy->company=$company = CompanyManager::getById($user->userid);
 			$buy->bussinessCard = CompanyManager::getBussinessCard($company);
+			$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
 		}
 		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 	}
@@ -124,9 +125,10 @@ class BuyController
 				
 				foreach ($searchResults as $buy) {
 					$buy->content = BuyDataManager::getById($buy->itemid)->content;
-					$user = MemberManager::getByUsername($buy->username);
-					$company = CompanyManager::getById($user->userid);
+					$buy->user= $user = MemberManager::getByUsername($buy->username);
+					$buy->company=$company = CompanyManager::getById($user->userid);
 					$buy->bussinessCard = CompanyManager::getBussinessCard($company);
+					$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
 				}
 				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
@@ -155,9 +157,10 @@ class BuyController
 			
 			foreach ($buys as $buy) {
 				$buy->content = BuyDataManager::getById($buy->itemid)->content;
-				$user = MemberManager::getByUsername($buy->username);
-				$company = CompanyManager::getById($user->userid);
+				$buy->user= $user = MemberManager::getByUsername($buy->username);
+				$buy->company=$company = CompanyManager::getById($user->userid);
 				$buy->bussinessCard = CompanyManager::getBussinessCard($company);
+				$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
 			}
 			
 			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);

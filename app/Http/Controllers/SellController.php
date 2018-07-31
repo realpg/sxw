@@ -27,9 +27,10 @@ class SellController
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell->content = SellDataManager::getById($sell->itemid)->content;
-			$user = MemberManager::getByUsername($sell->username);
-			$company = CompanyManager::getById($user->userid);
+			$sell->user= $user = MemberManager::getByUsername($sell->username);
+			$sell->company=$company = CompanyManager::getById($user->userid);
 			$sell->bussinessCard = CompanyManager::getBussinessCard($company);
+			$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
 		}
 		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 	}
@@ -46,7 +47,7 @@ class SellController
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'amount', 'price', 'content', 'thumb', 'telephone'])) {
+		if (checkParam($data, ['title', 'introduce', 'amount', 'price', 'content', 'thumb', 'telephone','tag'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$sell = SellManager::getById($data['itemid']);
@@ -73,6 +74,7 @@ class SellController
 			$sell_data = SellDataManager::setSellData($sell_data, $data);
 			$sell_data->itemid = $sell->itemid;
 			$sell_data->save();
+			
 			
 			$searchInfo = SellManager::createSearchInfo($sell);
 			if (array_key_exists('keywords', $data)) {
@@ -123,9 +125,10 @@ class SellController
 				
 				foreach ($searchResults as $sell) {
 					$sell->content = SellDataManager::getById($sell->itemid)->content;
-					$user = MemberManager::getByUsername($sell->username);
-					$company = CompanyManager::getById($user->userid);
+					$sell->user= $user = MemberManager::getByUsername($sell->username);
+					$sell->company=$company = CompanyManager::getById($user->userid);
 					$sell->bussinessCard = CompanyManager::getBussinessCard($company);
+					$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
 				}
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
 			} else
@@ -152,9 +155,10 @@ class SellController
 			$sells = SellManager::getByCon($Con);
 			foreach ($sells as $sell) {
 				$sell->content = SellDataManager::getById($sell->itemid)->content;
-				$user = MemberManager::getByUsername($sell->username);
-				$company = CompanyManager::getById($user->userid);
+				$sell->user= $user = MemberManager::getByUsername($sell->username);
+				$sell->company=$company = CompanyManager::getById($user->userid);
 				$sell->bussinessCard = CompanyManager::getBussinessCard($company);
+				$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
 			}
 			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 			
