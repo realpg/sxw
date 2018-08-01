@@ -90,6 +90,12 @@ class ADPlaceManager
 		if (array_key_exists('name', $data)) {
 			$ad_place->name = array_get($data, 'name');
 		}
+		if (array_key_exists('types', $data)) {
+			$ad_place->types = implode(',',array_get($data, 'types'));
+		}
+		if (array_key_exists('icon_path', $data)) {
+			$ad_place->icon_path = array_get($data, 'icon_path');
+		}
 		return $ad_place;
 	}
 }

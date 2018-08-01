@@ -39,4 +39,12 @@ Route::get('ywlb', 'SystemController@ywlb');//业务类别
 Route::get('ywlb_edit', 'SystemController@ywlb_edit_get');//业务类别编辑get
 Route::post('ywlb_edit', 'SystemController@ywlb_edit_post');//业务类别编辑post
 
-Route::post('upload', 'UploadController@upload');//业务类别编辑post
+Route::post('upload', 'UploadController@upload');//上传
+
+Route::get('adplace', 'SystemController@adplace');//业务类别
+Route::get('adplace_edit', 'SystemController@adplace_edit');//业务类别
+Route::post('adplace_edit', 'SystemController@adplace_edit_post');//业务类别
+
+Route::get('ads', 'SystemController@ads');//广告
+Route::get('ads_edit', 'SystemController@ads_edit');//广告
+Route::post('ads_edit', 'SystemController@ads_edit_post');//广告

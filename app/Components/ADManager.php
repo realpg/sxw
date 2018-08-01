@@ -21,8 +21,9 @@ class ADManager
 	 *
 	 * 2018/07/05
 	 */
-	public static function createObject(){
-		$ad=new AD();
+	public static function createObject()
+	{
+		$ad = new AD();
 		//这里可以对新建记录进行一定的默认设置
 		
 		return $ad;
@@ -87,9 +88,50 @@ class ADManager
 	 */
 	public static function setAD($ad, $data)
 	{
-		if (array_key_exists('name', $data)) {
-			$ad->name = array_get($data, 'name');
+		if (array_key_exists('desc', $data)) {
+			$ad->desc = array_get($data, 'desc');
 		}
+		if (array_key_exists('xcx_pid', $data)) {
+			$ad->xcx_pid = array_get($data, 'xcx_pid');
+		}
+		if (array_key_exists('amount', $data)) {
+			$ad->amount = array_get($data, 'amount');
+		}
+		if (array_key_exists('type', $data)) {
+			$ad->type = array_get($data, 'type');
+		}
+		if (array_key_exists('link_type', $data)) {
+			$ad->link_type = array_get($data, 'link_type');
+		}
+		if (array_key_exists('img', $data)) {
+			$ad->img = array_get($data, 'img');
+		}
+		if (array_key_exists('userid	', $data)) {
+			$ad->userid = array_get($data, 'userid');
+		}
+		if (array_key_exists('item_mid', $data)) {
+			$ad->item_mid = array_get($data, 'item_mid');
+		}
+		if (array_key_exists('item_id', $data)) {
+			$ad->item_id = array_get($data, 'item_id');
+		}
+		if (array_key_exists('url', $data)) {
+			$ad->url = array_get($data, 'url');
+		}
+		if (array_key_exists('fromtime', $data)) {
+			$ad->fromtime = strtotime(array_get($data, 'fromtime'));
+		}
+		if (array_key_exists('totime', $data)) {
+			$ad->totime = strtotime(array_get($data, 'totime'));
+		}
+		
+		$ad->stat = array_get($data, 'stat') ? array_get($data, 'stat') : '0';
+		
+		if (array_key_exists('listorder', $data)) {
+			$ad->listorder = array_get($data, 'listorder');
+		}
+		$ad->status = array_get($data, 'status') ? array_get($data, 'status') : '0';
+		$ad->onsell = array_get($data, 'onsell') ? array_get($data, 'onsell') : '0';
 		return $ad;
 	}
 }

@@ -4,10 +4,13 @@
  * User: Acer
  * Date: 2018/7/18
  * Time: 9:21
+ * 后台控制器
  */
 
 namespace App\Http\Controllers;
 
+use App\Components\ADManager;
+use App\Components\ADPlaceManager;
 use App\Components\CompanyManager;
 use App\Components\LLJLManager;
 use App\Components\Member_updateManager;
@@ -16,6 +19,7 @@ use App\Components\SystemManager;
 use App\Components\TagManager;
 use App\Components\ThesauruManager;
 use App\Components\YWLBManager;
+use App\Exceptions\Handler;
 use Illuminate\Http\Request;
 
 class SystemController extends Controller
@@ -98,6 +102,7 @@ class SystemController extends Controller
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
+	
 	public static function tag(Request $request)
 	{
 		$data = $request->all();
@@ -228,20 +233,20 @@ class SystemController extends Controller
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, [ 'userid_1','userid_2'])) {
-			$user1=MemberManager::getById($data['userid_1']);
-			$user2=MemberManager::getById($data['userid_2']);
-			$user1->wx_openId=$user2->wx_openId;
-			$user2->wx_openId='';
-			$user2->groupid=2;//
+		if (checkParam($data, ['userid_1', 'userid_2'])) {
+			$user1 = MemberManager::getById($data['userid_1']);
+			$user2 = MemberManager::getById($data['userid_2']);
+			$user1->wx_openId = $user2->wx_openId;
+			$user2->wx_openId = '';
+			$user2->groupid = 2;//
 			
 			$user1->save();
 			$user2->save();
 			
-			return ApiResponse::makeResponse(true, [$user1,$user2], ApiResponse::SUCCESS_CODE);
+			return ApiResponse::makeResponse(true, [$user1, $user2], ApiResponse::SUCCESS_CODE);
 			
 		} else {
-			return ApiResponse::makeResponse(false, "缺少参数".json_encode($data), ApiResponse::MISSING_PARAM);
+			return ApiResponse::makeResponse(false, "缺少参数" . json_encode($data), ApiResponse::MISSING_PARAM);
 		}
 	}
 	
@@ -258,6 +263,91 @@ class SystemController extends Controller
 				return ApiResponse::makeResponse(false, "userid错误", ApiResponse::MISSING_PARAM);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public function adplace()
+	{
+		$adplaces = ADPlaceManager::getList();
+		return view('ad_place.index', ['datas' => $adplaces]);
+	}
+	
+	public static function adplace_edit(Request $request)
+	{
+		$data = $request->all();
+		$adplace = ADPlaceManager::getById($data['pid']);
+		return view('ad_place.edit', ['data' => $adplace]);
+	}
+	
+	public static function adplace_edit_post(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['pid', 'name', 'types', 'icon_path'])) {
+			$adplace = ADPlaceManager::getById($data['pid']);
+			$adplace = ADPlaceManager::setADPlace($adplace, $data);
+			$adplace->save();
+			
+			return ApiResponse::makeResponse(true, $adplace, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数" . json_encode($data), ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public function ads(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['pid'])) {
+			$ads = ADManager::getByCon(['xcx_pid' => [$data['pid']]]);
+			$adplace = ADPlaceManager::getById($data['pid']);
+			foreach ($ads as $ad) {
+				$ad->adplace = $adplace;
+			}
+			return view('ad.index', ['datas' => $ads, 'adplace' => $adplace]);
+		} else {
+			abort(404);
+		}
+	}
+	
+	public function ads_edit(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+//		return $data;
+		if (checkParam($data, ['pid'])) {
+			if (array_key_exists('itemid', $data)) {
+				$ad = ADManager::getByCon(['xcx_pid' => [$data['pid']], 'itemid' => [$data['itemid']]])->first();
+			} else {
+				$ad = ADManager::createObject();
+			}
+			$adplace = ADPlaceManager::getById($data['pid']);
+			
+//			return ['data' => $ad, 'adplace' => $adplace];
+			return view('ad.edit', ['data' => $ad, 'adplace' => $adplace]);
+		} else {
+			abort(404);
+		}
+	}
+	
+	public function ads_edit_post(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['desc', 'xcx_pid', 'amount', 'type', 'linktype', 'fromtime', 'totime', 'listorder'])) {
+			if (array_get($data, 'itemid')) {
+				$ad = ADManager::getByCon(['xcx_pid' => [$data['pid']], 'itemid' => [$data['itemid']]])->first();
+			} else {
+				$ad = ADManager::createObject();
+			}
+			$ad = ADManager::setAD($ad, $data);
+			$ad->save();
+			
+			return ApiResponse::makeResponse(true, $ad, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数" . json_encode($data), ApiResponse::MISSING_PARAM);
 		}
 	}
 }
