@@ -323,7 +323,7 @@ class SystemController extends Controller
 				$ad = ADManager::createObject();
 			}
 			$adplace = ADPlaceManager::getById($data['pid']);
-			
+
 //			return ['data' => $ad, 'adplace' => $adplace];
 			return view('ad.edit', ['data' => $ad, 'adplace' => $adplace]);
 		} else {
@@ -335,13 +335,30 @@ class SystemController extends Controller
 	{
 		$data = $request->all();
 		//检验参数
+//		return $data;
 		if (checkParam($data, ['desc', 'xcx_pid', 'amount', 'type', 'linktype', 'fromtime', 'totime', 'listorder'])) {
+			
+			if (array_get($data, 'type') == 0 && !checkParam($data, ['img'])) {
+				return ApiResponse::makeResponse(false, "参数错误" . json_encode($data), ApiResponse::INNER_ERROR);
+			}
+			if (array_get($data, 'linktype') == 1 && !checkParam($data, ['userid'])) {
+				return ApiResponse::makeResponse(false, "参数错误" . json_encode($data), ApiResponse::INNER_ERROR);
+			}
+			if (array_get($data, 'linktype') == 2 && !checkParam($data, ['item_mid', 'item_id'])) {
+				return ApiResponse::makeResponse(false, "参数错误" . json_encode($data), ApiResponse::INNER_ERROR);
+			}
+			if (array_get($data, 'linktype') == 3 && !checkParam($data, ['url'])) {
+				return ApiResponse::makeResponse(false, "参数错误" . json_encode($data), ApiResponse::INNER_ERROR);
+			}
+			
+			
 			if (array_get($data, 'itemid')) {
 				$ad = ADManager::getByCon(['xcx_pid' => [$data['pid']], 'itemid' => [$data['itemid']]])->first();
 			} else {
 				$ad = ADManager::createObject();
 			}
 			$ad = ADManager::setAD($ad, $data);
+			
 			$ad->save();
 			
 			return ApiResponse::makeResponse(true, $ad, ApiResponse::SUCCESS_CODE);

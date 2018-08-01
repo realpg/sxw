@@ -100,13 +100,13 @@ class ADManager
 		if (array_key_exists('type', $data)) {
 			$ad->type = array_get($data, 'type');
 		}
-		if (array_key_exists('link_type', $data)) {
-			$ad->link_type = array_get($data, 'link_type');
+		if (array_key_exists('linktype', $data)) {
+			$ad->linktype = array_get($data, 'linktype');
 		}
 		if (array_key_exists('img', $data)) {
 			$ad->img = array_get($data, 'img');
 		}
-		if (array_key_exists('userid	', $data)) {
+		if (array_key_exists('userid', $data)) {
 			$ad->userid = array_get($data, 'userid');
 		}
 		if (array_key_exists('item_mid', $data)) {

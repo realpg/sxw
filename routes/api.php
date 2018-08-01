@@ -70,4 +70,6 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('article/getList', 'ArticleController@getList');//全部资讯
 	Route::get('article/getById', 'ArticleController@getById');//根据id获取资讯内容
 	Route::get('article/getByCondition', 'ArticleController@getByCon');//根据条件获取资讯内容
+	
+	Route::get('ad/getByPid', 'ADController@getByPid');//获得广告信息
 });

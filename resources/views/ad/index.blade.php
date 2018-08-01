@@ -91,7 +91,6 @@
                         <a style="text-decoration:none"
                            onclick="admin_add('编辑广告','{{ URL::asset("ads_edit?pid=").$data->xcx_pid.'&itemid='.$data->itemid}}','800','500')"
                            href="javascript:;" title="编辑">编辑</a>
-
                     </td>
                 </tr>
             @endforeach
@@ -115,7 +114,7 @@
             "pading": false,
             "aoColumnDefs": [
                 //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-                {"orderable": false, "aTargets": [1, 2, 3,4, 5]}// 不参与排序的列
+                {"orderable": false, "aTargets": [1,2,4,5,10]}// 不参与排序的列
             ]
         });
 
