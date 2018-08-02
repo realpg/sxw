@@ -20,10 +20,9 @@ class UploadController extends Controller
 		//上传的头像字段avatar是文件类型
 		$url = URL::asset(Storage::url($file));//就是很简单的一个步骤
 //		$resource = Resource::create(['type' => 1, 'resource' => $avatar]);
-		if (true) {
+		if ($url) {
 			return ApiResponse::makeResponse(true,$url,ApiResponse::SUCCESS_CODE);
 		}
-		return ApiResponse::makeResponse(false,'upload success',ApiResponse::UNKNOW_ERROR);
-		
+		return ApiResponse::makeResponse(false,'upload fail',ApiResponse::UNKNOW_ERROR);
 	}
 }

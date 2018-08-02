@@ -72,4 +72,6 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('article/getByCondition', 'ArticleController@getByCon');//根据条件获取资讯内容
 	
 	Route::get('ad/getByPid', 'ADController@getByPid');//获得广告信息
+	
+	Route::post('uploadImage','UploadController@upload');
 });
