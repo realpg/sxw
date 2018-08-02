@@ -15,7 +15,7 @@ class CreditController extends Controller
 			$ret = "请求成功";
 			$user = MemberManager::getById($data['userid']);
 			if ($user->credit + $data['amount'] >= 0) {
-				$user->credit += $data['amount'];
+				$user->credit += 1*$data['amount'];
 			} else {
 				return false;
 			}

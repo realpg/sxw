@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Components\Member_miscManager;
 use App\Components\MemberManager;
+use App\Components\SystemManager;
 use App\Components\TestManager;
 use App\Models\Member;
 use App\Models\Test;
@@ -41,7 +42,7 @@ class LoginController extends Controller
 			$member->wx_openId = $openId;
 			$member->save();
 		}
-		$member=MessageController::checkMessage($member);
+		$member = MessageController::checkMessage($member);
 		
 		if (gettype($data['userInfo']) == 'string') {
 			$userInfo = json_decode($data['userInfo']);
@@ -57,9 +58,9 @@ class LoginController extends Controller
 		}
 		
 		$member = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
-		$member->username='xcx'.$member->userid;
+		$member->username = 'xcx' . $member->userid;
 		$member->save();
-		$member_misc=Member_miscManager::getById($member->userid);
+		$member_misc = Member_miscManager::getById($member->userid);
 		$member_misc->save();
 		
 		$userid = $member->userid;
@@ -68,6 +69,40 @@ class LoginController extends Controller
 		$ret = ['userid' => $userid, '_token' => $_token];
 //		$ret=$member;
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+	}
+	
+	public static function invited(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['inviter_userid'])) {
+			$ret = "请求成功";
+			$user = MemberManager::getById($data['userid']);
+			$inviter = MemberManager::getById($data['inviter_userid']);
+			if ((time() - $user->regtime) > 86400) {
+				return ApiResponse::makeResponse(false, "只有注册24小时内的账号可以接受邀请".(time() - $user->regtime), ApiResponse::UNKNOW_ERROR);
+			}
+			if (!$inviter) {
+				return ApiResponse::makeResponse(false, "获取邀请者失败", ApiResponse::UNKNOW_ERROR);
+			}
+			if (!CreditController::changeCredit(
+				['userid' => $inviter->userid,
+					'amount' => SystemManager::getById('11')->value,
+					'reason' => '邀请得积分',
+					'note' => 'id:' . $user->userid . "【" . $user->username . "】"])) {
+				return ApiResponse::makeResponse(false, "积分变更失败", ApiResponse::UNKNOW_ERROR);
+			} else {
+				MessageController::sendSystemMessage([
+					'title' => "邀请成功",
+					'content' => "用户【" . $user->username . "(userid=" . $user->userid .
+						")】刚刚接受了您的邀请并成功注册，您已获得奖励，请注意查收",
+					'touser' => $inviter->username
+				]);
+				return ApiResponse::makeResponse(true, "接受成功", ApiResponse::SUCCESS_CODE);
+			}
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
 	}
 	
 }

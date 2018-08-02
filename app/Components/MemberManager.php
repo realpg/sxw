@@ -23,6 +23,7 @@ class MemberManager
 	 */
 	public static function createObject(){
 		$member=new Member();
+		$member->regtime=time();
 		$member->username='xcx'.time().randomSalt();
 		$member->passport='xcx'.time().randomSalt();
 		$member->passsalt=randomSalt();

@@ -37,7 +37,7 @@ class Kernel extends ConsoleKernel
 		$schedule->call(function () {
 			//每天生成月榜
 			RankingController::createDailyRanking(3);
-		})->dailyAt('3:00');
+		})->dailyAt('19:00');  //unix时间19点，即北京时间3点
 		$schedule->call(function () {
 			//每周一清理log
 			XCXLogManager::clearLog();

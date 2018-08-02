@@ -27,7 +27,7 @@ class ClockinController extends Controller
 			$clockin->cridect = SystemManager::getById(10)->value;
 			if (!CreditController::changeCredit(
 				['userid' => $data['userid'], 'amount' => SystemManager::getById('10')->value,
-					'reason' => '发布求购信息消耗积分', 'note' => '消耗积分'])) {
+					'reason' => '签到获得积分', 'note' => '积分'])) {
 				return ApiResponse::makeResponse(false, "积分变更失败", ApiResponse::UNKNOW_ERROR);
 			} else {
 				$clockin->save();
