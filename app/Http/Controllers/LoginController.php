@@ -47,13 +47,13 @@ class LoginController extends Controller
 		if (gettype($data['userInfo']) == 'string') {
 			$userInfo = json_decode($data['userInfo']);
 //		$member->username = 'xcx' . md5($member->user_id);
-			$member->passport = $userInfo->nickName?$userInfo->nickName:$member->passport;
-			$member->gender = $userInfo->gender?$userInfo->gender:$member->gender;
+			$member->passport = $userInfo->nickName ? $userInfo->nickName : $member->passport;
+			$member->gender = $userInfo->gender ? $userInfo->gender : $member->gender;
 			$member->save();
 		} else {
 //		$member->username = 'xcx' . md5($member->user_id);
-			$member->passport = $data['userInfo']['nickName']?$data['userInfo']['nickName']:"新用户";
-			$member->gender = $data['userInfo']['gender']? $data['userInfo']['gender']:$member->gender;
+			$member->passport = array_key_exists('nickName', $data['userInfo']) ? $data['userInfo']['nickName'] : "新用户";
+			$member->gender = array_key_exists('gender', $data['userInfo']) ? $data['userInfo']['gender'] : $member->gender;
 			$member->save();
 		}
 		
@@ -80,7 +80,7 @@ class LoginController extends Controller
 			$user = MemberManager::getById($data['userid']);
 			$inviter = MemberManager::getById($data['inviter_userid']);
 			if ((time() - $user->regtime) > 86400) {
-				return ApiResponse::makeResponse(false, "只有注册24小时内的账号可以接受邀请".(time() - $user->regtime), ApiResponse::UNKNOW_ERROR);
+				return ApiResponse::makeResponse(false, "只有注册24小时内的账号可以接受邀请" . (time() - $user->regtime), ApiResponse::UNKNOW_ERROR);
 			}
 			if (!$inviter) {
 				return ApiResponse::makeResponse(false, "获取邀请者失败", ApiResponse::UNKNOW_ERROR);

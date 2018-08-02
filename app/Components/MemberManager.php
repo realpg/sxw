@@ -26,6 +26,7 @@ class MemberManager
 		$member->regtime=time();
 		$member->username='xcx'.time().randomSalt();
 		$member->passport='xcx'.time().randomSalt();
+		$member->passport="新用户";
 		$member->passsalt=randomSalt();
 		$member->paysalt=randomSalt();
 		$member->groupid="5";//普通会员
