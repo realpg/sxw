@@ -103,6 +103,9 @@ class FinanceCreditManager
 		if (array_key_exists('note', $data)) {
 			$financeCredit->note = array_get($data, 'note');
 		}
+		if (array_key_exists('ranking', $data)) {
+			$financeCredit->ranking = array_get($data, 'ranking');
+		}
 		
 		return $financeCredit;
 	}

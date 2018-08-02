@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\MemberManager;
 use App\Components\MessageManager;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,12 +16,21 @@ class MessageController extends Controller
 {
 	public static function sendSystemMessage($data)
 	{
-		if (checkParam($data, ['title', 'content', 'touser'])) {
+		if (checkParam($data, ['title', 'content'])) {
 			if ((!array_key_exists('touser', $data)) && (!array_key_exists('groupids', $data)))
 				return false;
+			if (array_key_exists('touser', $data)) {
+				$user = MemberManager::getByCon(['username' => [$data['touser']]])->first();
+				if(!$user)
+					return false;
+				$user->message++;
+				$user->save();
+			}
 			$message = MessageManager::createObject();
 			$message = MessageManager::setMessage($message, $data);
 			$message->save();
+			
+			return true;
 		} else {
 			return false;
 		}
@@ -45,8 +55,8 @@ class MessageController extends Controller
 		$data = $request->all();
 		//检验参数
 		if (checkParam($data, ['itemid'])) {
-			$ret=$message = MessageManager::getById($data['itemid']);
-			$message->isread=1;
+			$ret = $message = MessageManager::getById($data['itemid']);
+			$message->isread = 1;
 			$message->save();
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
@@ -56,9 +66,10 @@ class MessageController extends Controller
 		}
 	}
 	
-	public static function checkMessage($user){
-		$messages=MessageManager::getByCon(['username'=>[$user->username],'isread'=>['0']]);
-		$user->message=$messages->count();
+	public static function checkMessage($user)
+	{
+		$messages = MessageManager::getByCon(['username' => [$user->username], 'isread' => ['0']]);
+		$user->message = $messages->count();
 		return $user;
 	}
 }

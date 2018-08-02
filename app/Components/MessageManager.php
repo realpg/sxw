@@ -25,7 +25,9 @@ class MessageManager
 	{
 		$message = new Message();
 		//这里可以对新建记录进行一定的默认设置
-		
+		$message->typeid=4;
+		$message->addtime=time();
+		$message->status=3;
 		return $message;
 	}
 	
