@@ -25,6 +25,7 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
+		return RankingController::createDailyRanking(1);
 //		return RankingController::createDailyRanking();
 //		$rank=new SortContainer([],'cost_credit',10);
 //		for($i=1;$i<=50;$i++){

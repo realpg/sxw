@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Components\AgreeManager;
 use App\Components\CompanyManager;
+use App\Components\FinanceCreditManager;
 use App\Components\MemberManager;
 use App\Components\RankingManager;
 use Illuminate\Http\Request;
@@ -30,13 +31,23 @@ class RankingController extends Controller
 			$start_time -= 30 * 86400;
 		}
 		$ranking_container = new SortContainer([], 'userid', ['cost_credit', 'get_agree'], 10);
-		$ranking_container->push(['userid' => 1, 'cost_credit' => 93]);
+//		$ranking_container->push(['userid' => 1, 'cost_credit' => 93]);
 		/*
 		 *这里获取积分历史
 		 * 统计排名
 		 *
 		 */
+		$credits=FinanceCreditManager::getByCon(['start_time' => $start_time,'ranking'=>1])->groupBy('username');
+		foreach ($credits as $username => $cost_credits) {
+			$user = MemberManager::getByCon(['username' => $username])->first();
+			$points=0;
+			foreach ($cost_credits as $cost_credit){
+				$points+=-$cost_credit->amount;
+			}
+			$ranking_container->push(['userid' => $user->userid, 'cost_credit' => $points]);
+		}
 		$rankings = $ranking_container->getArray();
+		
 		//不足10名则按点赞数计算
 		if (count($rankings) < 10) {
 			$users_agrees = AgreeManager::getByCon(['start_time' => $start_time])->get()->groupBy('item_username');

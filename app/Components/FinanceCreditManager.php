@@ -69,6 +69,9 @@ class FinanceCreditManager
 		if (!$paginate)
 			$financeCredits = $financeCredits->get();
 		foreach ($ConArr as $key => $value) {
+			if ($key == 'start_time') {
+				$financeCredits = $financeCredits->where('addtime', '>', $value);
+			} else
 			$financeCredits = $financeCredits->whereIn($key, $value);
 		}
 		if ($paginate) {
