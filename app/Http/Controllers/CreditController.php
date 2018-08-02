@@ -14,7 +14,7 @@ class CreditController extends Controller
 		if (checkParam($data, ['userid', 'amount', 'reason', 'note'])) {
 			$ret = "请求成功";
 			$user = MemberManager::getById($data['userid']);
-			if ($user->credit + $data['amount'] > 0) {
+			if ($user->credit + $data['amount'] >= 0) {
 				$user->credit += $data['amount'];
 			} else {
 				return false;

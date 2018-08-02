@@ -71,7 +71,7 @@ class ADController extends Controller
 			}
 			if (CreditController::changeCredit([
 				'userid' => $user->userid,
-				'amount' => $AD->amount,
+				'amount' => -$AD->amount,
 				'reason' => "购买广告位" . $AD->name . ",itemid:" . $AD->itemid,
 				'note' => "购买广告位",
 				'ranking' => 1])
@@ -85,11 +85,11 @@ class ADController extends Controller
 							"】，请尽快联系。电话号码:" . $user->mobile,
 						'touser' => $admin->username
 					]))
-						return ApiResponse::makeResponse(true, $admin, ApiResponse::SUCCESS_CODE);;
+						return ApiResponse::makeResponse(true, "购买成功，请主动联系客服", ApiResponse::SUCCESS_CODE);;
 				}
 				
 				
-				return ApiResponse::makeResponse(true, $admins, ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(true, "购买成功，请等待客服联系", ApiResponse::SUCCESS_CODE);
 			} else {
 				return ApiResponse::makeResponse(false, '扣除积分失败', ApiResponse::UNKNOW_ERROR);
 			}
