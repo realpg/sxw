@@ -24,6 +24,20 @@ use Illuminate\Http\Request;
 
 class SystemController extends Controller
 {
+	public static function api_getKeyValue(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, [ 'id'])) {
+			$ret=SystemManager::getById($data['id']);
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
 	public static function systemKeyValues_get()
 	{
 		$keyValues = SystemManager::getList(['id', 'asc']);
