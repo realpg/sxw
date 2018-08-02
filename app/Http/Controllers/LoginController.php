@@ -47,13 +47,13 @@ class LoginController extends Controller
 		if (gettype($data['userInfo']) == 'string') {
 			$userInfo = json_decode($data['userInfo']);
 //		$member->username = 'xcx' . md5($member->user_id);
-			$member->passport = $userInfo->nickName;
-			$member->gender = $userInfo->gender;
+			$member->passport = $userInfo->nickName?$userInfo->nickName:$member->passport;
+			$member->gender = $userInfo->gender?$userInfo->gender:$member->gender;
 			$member->save();
 		} else {
 //		$member->username = 'xcx' . md5($member->user_id);
-			$member->passport = $data['userInfo']['nickName'];
-			$member->gender = $data['userInfo']['gender'];
+			$member->passport = $data['userInfo']['nickName']?$data['userInfo']['nickName']:"新用户";
+			$member->gender = $data['userInfo']['gender']? $data['userInfo']['gender']:$member->gender;
 			$member->save();
 		}
 		
