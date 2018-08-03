@@ -23,11 +23,12 @@ class FJMYController
 {
 	public function getList(Request $request)
 	{
-		$fjmys=FJMYManager::getList();
+		$fjmys = FJMYManager::getList();
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
 			$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
-			$user = MemberManager::getByUsername($fjmy->username);
+			$fjmy->user=$user = MemberManager::getByUsername($fjmy->username);
+				$fjmy->company=$company = CompanyManager::getById($user->userid);
 			$company = CompanyManager::getById($user->userid);
 			$fjmy->bussinessCard = CompanyManager::getBussinessCard($company);
 		}
@@ -122,8 +123,8 @@ class FJMYController
 				}
 				foreach ($searchResults as $fjmy) {
 					$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
-					$user = MemberManager::getByUsername($fjmy->username);
-					$company = CompanyManager::getById($user->userid);
+					$fjmy->user=$user = MemberManager::getByUsername($fjmy->username);
+				$fjmy->company=$company = CompanyManager::getById($user->userid);
 					$fjmy->bussinessCard = CompanyManager::getBussinessCard($company);
 				}
 				
@@ -153,8 +154,8 @@ class FJMYController
 			
 			foreach ($fjmys as $fjmy) {
 				$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
-				$user = MemberManager::getByUsername($fjmy->username);
-				$company = CompanyManager::getById($user->userid);
+				$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
+				$fjmy->company = $company = CompanyManager::getById($user->userid);
 				$fjmy->bussinessCard = CompanyManager::getBussinessCard($company);
 			}
 			return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);

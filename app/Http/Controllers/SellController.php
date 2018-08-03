@@ -28,7 +28,7 @@ class SellController
 		foreach ($sells as $sell) {
 			
 			$sell->content = SellDataManager::getById($sell->itemid)->content;
-			$user = MemberManager::getByUsername($sell->username);
+			$sell->user= $user = MemberManager::getByUsername($sell->username);
 			$sell->company=$company = CompanyManager::getById($user->userid);
 			$sell->bussinessCard = CompanyManager::getBussinessCard($company);
 			$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
