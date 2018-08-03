@@ -68,7 +68,8 @@ class LoginController extends Controller
 		$userid = $member->userid;
 		$jsonstr = json_encode(['userid' => $userid, 'lifetime' => getTokenLifetimeTimestemp()]);
 		$_token = base64_encode($jsonstr);
-		$ret = ['userid' => $userid, '_token' => $_token];
+		$ret = $member;
+		$ret ['_token'] = $_token;
 //		$ret=$member;
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
