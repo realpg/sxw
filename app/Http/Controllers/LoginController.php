@@ -49,11 +49,13 @@ class LoginController extends Controller
 //		$member->username = 'xcx' . md5($member->user_id);
 			$member->passport = $userInfo->nickName ? $userInfo->nickName : $member->passport;
 			$member->gender = $userInfo->gender ? $userInfo->gender : $member->gender;
+			$member->avatarUrl = $userInfo->avatarUrl ? $userInfo->avatarUrl : $member->avatarUrl;
 			$member->save();
 		} else {
 //		$member->username = 'xcx' . md5($member->user_id);
 			$member->passport = array_key_exists('nickName', $data['userInfo']) ? $data['userInfo']['nickName'] : "新用户";
 			$member->gender = array_key_exists('gender', $data['userInfo']) ? $data['userInfo']['gender'] : $member->gender;
+			$member->avatarUrl = array_key_exists('avatarUrl', $data['userInfo']) ? $data['userInfo']['avatarUrl'] : $member->avatarUrl;
 			$member->save();
 		}
 		
