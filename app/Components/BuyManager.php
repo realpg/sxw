@@ -159,7 +159,8 @@ class BuyManager
 			$buy->tag = array_get($data, 'tag');
 		}
 		if (array_key_exists('thumb', $data)) {
-			$buy->thumb = array_get($data, 'thumb');
+			$buy->thumb = $data['thumb'][0];
+			$buy->thumbs = join(',',$data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
 			$buy->telephone = array_get($data, 'telephone');

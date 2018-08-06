@@ -7,10 +7,13 @@ use App\Components\BuyDataManager;
 use App\Components\BuyManager;
 use App\Components\CommentManager;
 use App\Components\MemberManager;
+use App\Components\SystemManager;
 use App\Components\TestManager;
 use App\Models\Comment;
 use App\Models\Member;
+use App\Models\System;
 use App\Models\Test;
+use App\Models\XCXLog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RankingController;
 
@@ -25,21 +28,7 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		return RankingController::createDailyRanking(1);
-//		return RankingController::createDailyRanking();
-//		$rank=new SortContainer([],'cost_credit',10);
-//		for($i=1;$i<=50;$i++){
-//			$rank->push(['cost_credit'=>rand(1,1000)]);
-//		}
-//		$testdata=$rank->getArray();
-		$data = $request->all();
-		$date=date("Y-m-d");
-		$date1 = date_create($date,timezone_open('Asia/Shanghai'));
-		$date2 = date_create($date,timezone_open('Asia/Shanghai'));
-		date_modify($date2, "+" . 1 . " days");
-		$time1 = date_timestamp_get($date1);
-		$time2 = date_timestamp_get($date2);
-		$testdata = [$time1,$time2];
+		$testdata=XCXLog::orderBy('id','desc')->paginate();
 		return $testdata;
 //		return view('test');
 	}

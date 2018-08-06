@@ -158,7 +158,8 @@ class SellManager
 			$sell->tag = array_get($data, 'tag');
 		}
 		if (array_key_exists('thumb', $data)) {
-			$sell->thumb = array_get($data, 'thumb');
+			$sell->thumb = $data['thumb'][0];
+			$sell->thumbs = join(',',$data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
 			$sell->telephone = array_get($data, 'telephone');

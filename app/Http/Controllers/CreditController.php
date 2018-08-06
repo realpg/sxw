@@ -16,6 +16,7 @@ class CreditController extends Controller
 			$user = MemberManager::getById($data['userid']);
 			if ($user->credit + $data['amount'] >= 0) {
 				$user->credit += 1*$data['amount'];
+				$user->save();
 			} else {
 				return false;
 			}

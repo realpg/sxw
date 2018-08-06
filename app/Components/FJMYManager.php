@@ -158,7 +158,8 @@ class FJMYManager
 			$fjmy->tag = array_get($data, 'tag');
 		}
 		if (array_key_exists('thumb', $data)) {
-			$fjmy->thumb = array_get($data, 'thumb');
+			$fjmy->thumb = $data['thumb'][0];
+			$fjmy->thumbs = join(',',$data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
 			$fjmy->telephone = array_get($data, 'telephone');
