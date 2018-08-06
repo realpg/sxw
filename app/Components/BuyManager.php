@@ -32,6 +32,8 @@ class BuyManager
 		$buy->typeid = 0;//默认值
 		$buy->n1 = $buy->n2 = $buy->n3 = '';
 		$buy->v1 = $buy->v2 = $buy->v3 = '';
+		$buy->amount=0;
+		$buy->price=0;
 		$buy->thumbs = '';
 		$buy->vip = 0;
 		$buy->validated = 0;

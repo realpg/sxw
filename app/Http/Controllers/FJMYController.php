@@ -47,7 +47,7 @@ class FJMYController
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'amount', 'price', 'content', 'thumb', 'telephone'])) {
+		if (checkParam($data, ['title', 'introduce',  'content', 'thumb', 'telephone'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$fjmy = FJMYManager::getById($data['itemid']);

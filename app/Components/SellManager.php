@@ -32,6 +32,8 @@ class SellManager
 		$sell->typeid = 0;//默认值
 		$sell->n1 = $sell->n2 = $sell->n3 = '';
 		$sell->v1 = $sell->v2 = $sell->v3 = '';
+		$sell->amount=0;
+		$sell->price=0;
 		$sell->thumbs = '';
 		$sell->vip = 0;
 		$sell->validated = 0;

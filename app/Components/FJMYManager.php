@@ -32,6 +32,8 @@ class FJMYManager
 		$fjmy->typeid = 0;//默认值
 		$fjmy->n1 = $fjmy->n2 = $fjmy->n3 = '';
 		$fjmy->v1 = $fjmy->v2 = $fjmy->v3 = '';
+		$fjmy->amount=0;
+		$fjmy->price=0;
 		$fjmy->thumbs = '';
 		$fjmy->vip = 0;
 		$fjmy->validated = 0;
