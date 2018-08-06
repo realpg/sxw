@@ -29,7 +29,7 @@ class MemberManager
 		$member->passport="新用户";
 		$member->passsalt=randomSalt();
 		$member->paysalt=randomSalt();
-		$member->groupid="5";//普通会员
+		$member->groupid="4";//普通会员
 		$member->note="小程序用户";
 		return $member;
 	}

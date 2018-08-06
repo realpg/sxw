@@ -160,6 +160,8 @@ class BuyManager
 		}
 		if (array_key_exists('thumb', $data)) {
 			$buy->thumb = $data['thumb'][0];
+			$buy->thumb1 = count($data['thumb'])>=1?$data['thumb'][1]:$buy->thumb1;
+			$buy->thumb2 = count($data['thumb'])>=2?$data['thumb'][2]:$buy->thumb2;
 			$buy->thumbs = join(',',$data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
