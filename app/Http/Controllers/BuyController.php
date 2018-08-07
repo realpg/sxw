@@ -29,7 +29,7 @@ class BuyController
 			$buy->content = BuyDataManager::getById($buy->itemid)->content;
 			$buy->user= $user = MemberManager::getByUsername($buy->username);
 			$buy->company=$company = CompanyManager::getById($user->userid);
-			$buy->bussinesscard = BussinessCardController::getByUserid($company->userid);
+			$buy->businesscard = BussinessCardController::getByUserid($company->userid);
 			$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
 		}
 		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
@@ -131,7 +131,7 @@ class BuyController
 					$buy->content = BuyDataManager::getById($buy->itemid)->content;
 					$buy->user= $user = MemberManager::getByUsername($buy->username);
 					$buy->company=$company = CompanyManager::getById($user->userid);
-					$buy->bussinesscard = BussinessCardController::getByUserid($company->userid);
+					$buy->businesscard = BussinessCardController::getByUserid($company->userid);
 					$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
 				}
 				
@@ -163,7 +163,7 @@ class BuyController
 				$buy->content = BuyDataManager::getById($buy->itemid)->content;
 				$buy->user= $user = MemberManager::getByUsername($buy->username);
 				$buy->company=$company = CompanyManager::getById($user->userid);
-				$buy->bussinesscard = BussinessCardController::getByUserid($company->userid);
+				$buy->businesscard = BussinessCardController::getByUserid($company->userid);
 				$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
 			}
 			

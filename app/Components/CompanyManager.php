@@ -145,7 +145,7 @@ class CompanyManager
 		$member = MemberManager::getById($company->userid);
 		
 		if ($member)
-			$bussinessCard = [
+			$businessCard = [
 				'userid' => $member->userid,
 				'truename' => $member->truename,
 				'career' => $member->career,
@@ -160,7 +160,7 @@ class CompanyManager
 //				'favorite'=>Favorite::
 			];
 		else
-			$bussinessCard = null;
-		return $bussinessCard;
+			$businessCard = null;
+		return $businessCard;
 	}
 }

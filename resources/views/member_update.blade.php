@@ -182,8 +182,8 @@
             </tr>
             <tr>
                 <td>业务类别</td>
-                <td>@{{=it.data.business }}</td>
-                <td>@{{=it.history.business }}</td>
+                <td>@{{=it.data.ywlb_ids }}</td>
+                <td>@{{=it.history.ywlb_ids }}</td>
             </tr>
             <tr>
                 <td>详细地址</td>

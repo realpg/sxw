@@ -77,7 +77,7 @@ class RankingController extends Controller
 			$ranks = RankingManager::getByCon(['type' => [$data['type']]]);
 			foreach ($ranks as  $rank){
 				$company=CompanyManager::getById($rank->userid);
-				$rank->bussinesscard=BussinessCardController::getByUserid($company->userid);
+				$rank->businesscard=BussinessCardController::getByUserid($company->userid);
 			}
 			
 			$ret = $ranks;

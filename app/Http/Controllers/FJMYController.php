@@ -30,7 +30,7 @@ class FJMYController
 			$fjmy->user=$user = MemberManager::getByUsername($fjmy->username);
 				$fjmy->company=$company = CompanyManager::getById($user->userid);
 			$company = CompanyManager::getById($user->userid);
-			$fjmy->bussinesscard = BussinessCardController::getByUserid($company->userid);
+			$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
 		}
 		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 	}
@@ -129,7 +129,7 @@ class FJMYController
 					$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
 					$fjmy->user=$user = MemberManager::getByUsername($fjmy->username);
 				$fjmy->company=$company = CompanyManager::getById($user->userid);
-					$fjmy->bussinesscard = BussinessCardController::getByUserid($company->userid);
+					$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
 				}
 				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
@@ -160,7 +160,7 @@ class FJMYController
 				$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
 				$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
 				$fjmy->company = $company = CompanyManager::getById($user->userid);
-				$fjmy->bussinesscard = BussinessCardController::getByUserid($company->userid);
+				$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
 			}
 			return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 			

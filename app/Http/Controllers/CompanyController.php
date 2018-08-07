@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-	public static function bussinessCard(Request $request)
+	public static function businessCard(Request $request)
 	{
 		$data = $request->all();
 		//检验参数
@@ -26,14 +26,14 @@ class CompanyController extends Controller
 			}
 			$conditions['groupid'] = [6];
 			
-			$bussinessCards = [];
+			$businessCards = [];
 			$companies = CompanyManager::getByCon($conditions, true);
 			foreach ($companies as $company) {
-				$bussinessCard = BussinessCardController::getByUserid($company->userid);
-				if ($bussinessCard)
-					array_push($bussinessCards, $bussinessCard);
+				$businessCard = BussinessCardController::getByUserid($company->userid);
+				if ($businessCard)
+					array_push($businessCards, $businessCard);
 			}
-			$companies['cards'] = $bussinessCards;
+			$companies['cards'] = $businessCards;
 			$ret = $companies;
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
@@ -74,16 +74,16 @@ class CompanyController extends Controller
 //			$user->groupid=6;
 			$upgrade->groupid = 6;
 			$upgrade->groupid = 6;
-			$ywlbs=explode(',',$data['ywlb_ids']);
-			CompanyManager::setYWLB($company,$ywlbs,3);
+			$ywlbs = explode(',', $data['ywlb_ids']);
+			CompanyManager::setYWLB($company, $ywlbs, 3);
 			
 			$user->save();
 			$company->save();
 			$upgrade->save();
 			
 			$ret = "修改信息申请已提交，请等待审核";
-			$user->ywlb=CompanyYWLBManager::getByCon(['userid'=>$user->userid]);
-			$ret=['user'=>$user,'company'=>$company,'upgrade'=>$upgrade];
+//			$user->ywlb = CompanyYWLBManager::getByCon(['userid' => $user->userid]);
+//			$ret = ['user' => $user, 'company' => $company, 'upgrade' => $upgrade];
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
 		} else {
@@ -114,10 +114,12 @@ class CompanyController extends Controller
 		}
 	}
 	
-	public static function getEditInfo()
+	public static function getEditInfo(Request $request)
 	{
+		$data = $request->all();
 		$ret = [];
-		$ret['ywlb'] = YWLBManager::getByCon(['status'=>'3']);
+		$ret['ywlb'] = YWLBManager::getByCon(['status' => '3']);
+		$ret['businesscard'] = BussinessCardController::getByUserid($data['userid']);
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 }
