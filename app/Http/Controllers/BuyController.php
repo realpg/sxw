@@ -29,7 +29,7 @@ class BuyController
 			$buy->content = BuyDataManager::getById($buy->itemid)->content;
 			$buy->user= $user = MemberManager::getByUsername($buy->username);
 			$buy->company=$company = CompanyManager::getById($user->userid);
-			$buy->bussinessCard = CompanyManager::getBussinessCard($company);
+			$buy->bussinesscard = BussinessCardController::getByUserid($company->userid);
 			$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
 		}
 		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
@@ -46,6 +46,10 @@ class BuyController
 	public function editPost(Request $request)
 	{
 		$data = $request->all();
+		$user=MemberManager::getById($data['userid']);
+		if($user->groupid!=6){
+			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
+		}
 		//检验参数
 		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone'])) {
 			
@@ -127,7 +131,7 @@ class BuyController
 					$buy->content = BuyDataManager::getById($buy->itemid)->content;
 					$buy->user= $user = MemberManager::getByUsername($buy->username);
 					$buy->company=$company = CompanyManager::getById($user->userid);
-					$buy->bussinessCard = CompanyManager::getBussinessCard($company);
+					$buy->bussinesscard = BussinessCardController::getByUserid($company->userid);
 					$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
 				}
 				
@@ -159,7 +163,7 @@ class BuyController
 				$buy->content = BuyDataManager::getById($buy->itemid)->content;
 				$buy->user= $user = MemberManager::getByUsername($buy->username);
 				$buy->company=$company = CompanyManager::getById($user->userid);
-				$buy->bussinessCard = CompanyManager::getBussinessCard($company);
+				$buy->bussinesscard = BussinessCardController::getByUserid($company->userid);
 				$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
 			}
 			

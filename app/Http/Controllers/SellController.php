@@ -30,7 +30,7 @@ class SellController
 			$sell->content = SellDataManager::getById($sell->itemid)->content;
 			$sell->user= $user = MemberManager::getByUsername($sell->username);
 			$sell->company=$company = CompanyManager::getById($user->userid);
-			$sell->bussinessCard = CompanyManager::getBussinessCard($company);
+			$sell->bussinesscard = BussinessCardController::getByUserid($company->userid);
 			$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
 		}
 		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
@@ -47,6 +47,10 @@ class SellController
 	public function editPost(Request $request)
 	{
 		$data = $request->all();
+		$user=MemberManager::getById($data['userid']);
+		if($user->groupid!=6){
+			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
+		}
 		//检验参数
 		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone'])) {
 			
@@ -128,7 +132,7 @@ class SellController
 					$sell->content = SellDataManager::getById($sell->itemid)->content;
 					$sell->user= $user = MemberManager::getByUsername($sell->username);
 					$sell->company=$company = CompanyManager::getById($user->userid);
-					$sell->bussinessCard = CompanyManager::getBussinessCard($company);
+					$sell->bussinesscard = BussinessCardController::getByUserid($company->userid);
 					$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
 				}
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
@@ -158,7 +162,7 @@ class SellController
 				$sell->content = SellDataManager::getById($sell->itemid)->content;
 				$sell->user= $user = MemberManager::getByUsername($sell->username);
 				$sell->company=$company = CompanyManager::getById($user->userid);
-				$sell->bussinessCard = CompanyManager::getBussinessCard($company);
+				$sell->bussinesscard = BussinessCardController::getByUserid($company->userid);
 				$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
 			}
 			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);

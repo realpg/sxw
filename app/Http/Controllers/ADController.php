@@ -29,7 +29,7 @@ class ADController extends Controller
 					case 1:
 						$ad->user = $user = MemberManager::getById($ad->userid);
 						$ad->company = $company = CompanyManager::getById($user->userid);
-						$ad->bussinessCard = CompanyManager::getBussinessCard($company);
+						$ad->bussinesscard = BussinessCardController::getByUserid($company->userid);
 						break;
 					case 2:
 						$ad->info = InfoManager::getByCon($ad->item_mid, ['itemid' => [$ad->item_id]])->first();

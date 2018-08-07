@@ -92,4 +92,12 @@ class CompanyYWLBManager
 		}
 		return $companyYWLB;
 	}
+	
+	public static function setCompanyYWLBByCompanyAndYWLB($companyYWLB, $company,$YWLB)
+	{
+		$companyYWLB->userid=$company->userid;
+		$companyYWLB->ywlb_id=$YWLB->id;
+		$companyYWLB->name=$YWLB->name;
+		return $companyYWLB;
+	}
 }

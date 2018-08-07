@@ -30,7 +30,7 @@ class FJMYController
 			$fjmy->user=$user = MemberManager::getByUsername($fjmy->username);
 				$fjmy->company=$company = CompanyManager::getById($user->userid);
 			$company = CompanyManager::getById($user->userid);
-			$fjmy->bussinessCard = CompanyManager::getBussinessCard($company);
+			$fjmy->bussinesscard = BussinessCardController::getByUserid($company->userid);
 		}
 		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 	}
@@ -46,6 +46,10 @@ class FJMYController
 	public function editPost(Request $request)
 	{
 		$data = $request->all();
+		$user=MemberManager::getById($data['userid']);
+		if($user->groupid!=6){
+			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
+		}
 		//检验参数
 		if (checkParam($data, ['title', 'introduce',  'content', 'thumb', 'telephone'])) {
 			
@@ -125,7 +129,7 @@ class FJMYController
 					$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
 					$fjmy->user=$user = MemberManager::getByUsername($fjmy->username);
 				$fjmy->company=$company = CompanyManager::getById($user->userid);
-					$fjmy->bussinessCard = CompanyManager::getBussinessCard($company);
+					$fjmy->bussinesscard = BussinessCardController::getByUserid($company->userid);
 				}
 				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
@@ -156,7 +160,7 @@ class FJMYController
 				$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
 				$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
 				$fjmy->company = $company = CompanyManager::getById($user->userid);
-				$fjmy->bussinessCard = CompanyManager::getBussinessCard($company);
+				$fjmy->bussinesscard = BussinessCardController::getByUserid($company->userid);
 			}
 			return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 			

@@ -106,6 +106,9 @@ class SystemController extends Controller
 				Member_updateManager::setCompany($company, $update)->save();
 				$update->status = 3;
 				$update->save();
+				
+				$ywlbs=explode(',',$update->ywlb_ids);
+				CompanyManager::setYWLB($company,$ywlbs);
 			} else {
 				$update->status = 1;
 				$update->save();

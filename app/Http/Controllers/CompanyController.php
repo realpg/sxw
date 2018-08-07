@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Components\CategoryManager;
 use App\Components\CompanyManager;
+use App\Components\CompanyYWLBManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
 use App\Components\UpgradeManager;
@@ -28,7 +29,7 @@ class CompanyController extends Controller
 			$bussinessCards = [];
 			$companies = CompanyManager::getByCon($conditions, true);
 			foreach ($companies as $company) {
-				$bussinessCard = CompanyManager::getBussinessCard($company);
+				$bussinessCard = BussinessCardController::getByUserid($company->userid);
 				if ($bussinessCard)
 					array_push($bussinessCards, $bussinessCard);
 			}
@@ -62,7 +63,7 @@ class CompanyController extends Controller
 		if (UpgradeManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0) {
 			return ApiResponse::makeResponse(false, "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
 		}
-		if (checkParam($data, ['truename', 'company', 'career', 'business', 'address', 'ywlb', 'introduce'])) {
+		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business', 'introduce'])) {
 			
 			$company = CompanyManager::getById($user->userid);
 			$user = MemberManager::setMember($user, $data);
@@ -73,12 +74,16 @@ class CompanyController extends Controller
 //			$user->groupid=6;
 			$upgrade->groupid = 6;
 			$upgrade->groupid = 6;
+			$ywlbs=explode(',',$data['ywlb_ids']);
+			CompanyManager::setYWLB($company,$ywlbs,3);
 			
 			$user->save();
 			$company->save();
 			$upgrade->save();
 			
 			$ret = "修改信息申请已提交，请等待审核";
+			$user->ywlb=CompanyYWLBManager::getByCon(['userid'=>$user->userid]);
+			$ret=['user'=>$user,'company'=>$company,'upgrade'=>$upgrade];
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
 		} else {
@@ -94,7 +99,7 @@ class CompanyController extends Controller
 			return ApiResponse::makeResponse(false, "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
-		if (checkParam($data, ['truename', 'company', 'career', 'business', 'address', 'ywlb', 'introduce'])) {
+		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business', 'introduce'])) {
 			
 			$update = Member_updateManager::createObject();
 			$update = Member_updateManager::setMember_update($update, $data, $user);
@@ -111,8 +116,8 @@ class CompanyController extends Controller
 	
 	public static function getEditInfo()
 	{
-		$ret=[];
-		$ret['ywlb']=YWLBManager::getByCon([]);
+		$ret = [];
+		$ret['ywlb'] = YWLBManager::getByCon(['status'=>'3']);
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 }

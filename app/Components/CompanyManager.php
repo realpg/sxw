@@ -97,9 +97,9 @@ class CompanyManager
 	 */
 	public static function setCompany($company, $data, $user)
 	{
-//		if (array_key_exists('company', $data)) {
-//			$company->company = array_get($data, 'company');
-//		}
+		if (array_key_exists('company', $data)) {
+			$company->company = array_get($data, 'company');
+		}
 		if (array_key_exists('business', $data)) {
 			$company->business = array_get($data, 'business');
 		}
@@ -121,14 +121,22 @@ class CompanyManager
 		return $company;
 	}
 	
-	public static function setYWLB($company,$ywlbs){
-		foreach ($ywlbs as $ywlb){
-			$YWLB=YWLBManager::getById($ywlb);
-			$companyYWLB=CompanyYWLBManager::createObject();
-			$companyYWLB->userid=$company->userid;
-			$companyYWLB->ywlb_id=$YWLB->id;
-			$companyYWLB->name=$YWLB->name;
-			$company->save();
+	public static function setYWLB($company, $ywlbs, $status = 2)
+	{
+		if ($status = 3) {
+			$companyYWLBs = CompanyYWLBManager::getByCon(['userid' => [$company->userid]]);
+			foreach ($companyYWLBs as $companyYWLB) {
+				$companyYWLB->delete();
+			}
+		}
+		foreach ($ywlbs as $ywlb) {
+			$YWLB = YWLBManager::getById($ywlb);
+			$companyYWLB = CompanyYWLBManager::createObject();
+			$companyYWLB->userid = $company->userid;
+			$companyYWLB->ywlb_id = $YWLB->id;
+			$companyYWLB->name = $YWLB->name;
+			$companyYWLB->status = $status;
+			$companyYWLB->save();
 		}
 	}
 	

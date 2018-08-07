@@ -121,6 +121,9 @@ class Member_updateManager
 		if (array_key_exists('wxqr', $data)) {
 			$member_update->wxqr = array_get($data, 'wxqr');
 		}
+		if (array_key_exists('ywlb_ids', $data)) {
+			$member_update->ywlb_ids = array_get($data, 'ywlb_ids');
+		}
 		$member_update->addtime = time();
 		return $member_update;
 	}
