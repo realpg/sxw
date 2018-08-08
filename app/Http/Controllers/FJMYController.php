@@ -27,8 +27,8 @@ class FJMYController
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
 			$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
-			$fjmy->user=$user = MemberManager::getByUsername($fjmy->username);
-				$fjmy->company=$company = CompanyManager::getById($user->userid);
+			$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
+			$fjmy->company = $company = CompanyManager::getById($user->userid);
 			$company = CompanyManager::getById($user->userid);
 			$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
 		}
@@ -38,20 +38,20 @@ class FJMYController
 	public function edit(Request $request)
 	{
 		$ret = [];
-		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [88]]);
-		$ret['tags'] = TagManager::getByCon(['moduleid' => [6]]);
+		$ret['catids'] = array_arrange(CategoryManager::getByCon(['moduleid' => [88]]));
+		$ret['tags'] = array_arrange(TagManager::getByCon(['moduleid' => [6]]));
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
 	public function editPost(Request $request)
 	{
 		$data = $request->all();
-		$user=MemberManager::getById($data['userid']);
-		if($user->groupid!=6){
+		$user = MemberManager::getById($data['userid']);
+		if ($user->groupid != 6) {
 			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
-		if (checkParam($data, ['title', 'introduce',  'content', 'thumb', 'telephone'])) {
+		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$fjmy = FJMYManager::getById($data['itemid']);
@@ -70,9 +70,9 @@ class FJMYController
 				return ApiResponse::makeResponse(false, "错误的itemid", ApiResponse::UNKNOW_ERROR);
 			}
 			
-			
 			$fjmy = FJMYManager::setUserInfo($fjmy, $data['userid']);
 			$fjmy = FJMYManager::setFJMY($fjmy, $data);
+			$fjmy->username = $user->username;
 			$fjmy->save();
 			
 			$fjmy_data = FJMYDataManager::setFJMYData($fjmy_data, $data);
@@ -127,9 +127,12 @@ class FJMYController
 				}
 				foreach ($searchResults as $fjmy) {
 					$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
-					$fjmy->user=$user = MemberManager::getByUsername($fjmy->username);
-				$fjmy->company=$company = CompanyManager::getById($user->userid);
-					$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
+					$fjmy->user = $user = MemberManager::getByUsername($fjmy->item->username);
+					if ($user) {
+						$fjmy->company = $company = CompanyManager::getById($user->userid);
+						$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
+					}
+					$fjmy->tags = TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]);
 				}
 				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);

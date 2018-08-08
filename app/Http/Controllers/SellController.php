@@ -23,15 +23,14 @@ class SellController
 {
 	public function getList(Request $request)
 	{
-		$sells=SellManager::getList();
+		$sells = SellManager::getList();
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
-			
 			$sell->content = SellDataManager::getById($sell->itemid)->content;
-			$sell->user= $user = MemberManager::getByUsername($sell->username);
-			$sell->company=$company = CompanyManager::getById($user->userid);
+			$sell->user = $user = MemberManager::getByUsername($sell->username);
+			$sell->company = $company = CompanyManager::getById($user->userid);
 			$sell->businesscard = BussinessCardController::getByUserid($company->userid);
-			$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
+			$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
 		}
 		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 	}
@@ -39,16 +38,16 @@ class SellController
 	public function edit(Request $request)
 	{
 		$ret = [];
-		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [5]]);
-		$ret['tags'] = TagManager::getByCon(['moduleid' => [5]]);
+		$ret['catids'] = array_arrange(CategoryManager::getByCon(['moduleid' => [5]]));
+		$ret['tags'] = array_arrange(TagManager::getByCon(['moduleid' => [5]]));
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
 	public function editPost(Request $request)
 	{
 		$data = $request->all();
-		$user=MemberManager::getById($data['userid']);
-		if($user->groupid!=6){
+		$user = MemberManager::getById($data['userid']);
+		if ($user->groupid != 6) {
 			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
@@ -62,24 +61,23 @@ class SellController
 				$sell_data = SellDataManager::createObject();
 				
 				if (!CreditController::changeCredit(
-					['userid' => $data['userid'], 'amount' => -1*SystemManager::getById('4')->value,
+					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('4')->value,
 						'reason' => '发布供应信息消耗积分', 'note' => '消耗积分'])) {
 					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
 				};
 			}
-			if($sell==null){
-				return ApiResponse::makeResponse(false, "错误的itemid" , ApiResponse::UNKNOW_ERROR);
+			if ($sell == null) {
+				return ApiResponse::makeResponse(false, "错误的itemid", ApiResponse::UNKNOW_ERROR);
 			}
-			
 			
 			$sell = SellManager::setUserInfo($sell, $data['userid']);
 			$sell = SellManager::setSell($sell, $data);
+			$sell->username = $user->username;
 			$sell->save();
 			
 			$sell_data = SellDataManager::setSellData($sell_data, $data);
 			$sell_data->itemid = $sell->itemid;
 			$sell_data->save();
-			
 			
 			$searchInfo = SellManager::createSearchInfo($sell);
 			if (array_key_exists('keywords', $data)) {
@@ -89,7 +87,7 @@ class SellController
 			
 			return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
 		} else {
-			return ApiResponse::makeResponse(false, "缺少参数" , ApiResponse::MISSING_PARAM);
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
 	
@@ -130,10 +128,12 @@ class SellController
 				
 				foreach ($searchResults as $sell) {
 					$sell->content = SellDataManager::getById($sell->itemid)->content;
-					$sell->user= $user = MemberManager::getByUsername($sell->username);
-					$sell->company=$company = CompanyManager::getById($user->userid);
-					$sell->businesscard = BussinessCardController::getByUserid($company->userid);
-					$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
+					$sell->user = $user = MemberManager::getByUsername($sell->item->username);
+					if ($user) {
+						$sell->company = $company = CompanyManager::getById($user->userid);
+						$sell->businesscard = BussinessCardController::getByUserid($company->userid);
+					}
+					$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
 				}
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
 			} else
@@ -160,10 +160,10 @@ class SellController
 			$sells = SellManager::getByCon($Con);
 			foreach ($sells as $sell) {
 				$sell->content = SellDataManager::getById($sell->itemid)->content;
-				$sell->user= $user = MemberManager::getByUsername($sell->username);
-				$sell->company=$company = CompanyManager::getById($user->userid);
+				$sell->user = $user = MemberManager::getByUsername($sell->username);
+				$sell->company = $company = CompanyManager::getById($user->userid);
 				$sell->businesscard = BussinessCardController::getByUserid($company->userid);
-				$sell->tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
+				$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
 			}
 			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 			

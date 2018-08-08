@@ -23,14 +23,14 @@ class BuyController
 {
 	public function getList(Request $request)
 	{
-		$buys=BuyManager::getList();
+		$buys = BuyManager::getList();
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
-		foreach ($buys as $buy){
+		foreach ($buys as $buy) {
 			$buy->content = BuyDataManager::getById($buy->itemid)->content;
-			$buy->user= $user = MemberManager::getByUsername($buy->username);
-			$buy->company=$company = CompanyManager::getById($user->userid);
+			$buy->user = $user = MemberManager::getByUsername($buy->username);
+			$buy->company = $company = CompanyManager::getById($user->userid);
 			$buy->businesscard = BussinessCardController::getByUserid($company->userid);
-			$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
+			$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
 		}
 		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 	}
@@ -38,16 +38,16 @@ class BuyController
 	public function edit(Request $request)
 	{
 		$ret = [];
-		$ret['catids'] = CategoryManager::getByCon(['moduleid' => [6]]);
-		$ret['tags'] = TagManager::getByCon(['moduleid' => [6]]);
+		$ret['catids'] = array_arrange(CategoryManager::getByCon(['moduleid' => [6]]));
+		$ret['tags'] = array_arrange(TagManager::getByCon(['moduleid' => [6]]));
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
 	public function editPost(Request $request)
 	{
 		$data = $request->all();
-		$user=MemberManager::getById($data['userid']);
-		if($user->groupid!=6){
+		$user = MemberManager::getById($data['userid']);
+		if ($user->groupid != 6) {
 			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
@@ -61,7 +61,7 @@ class BuyController
 				$buy_data = BuyDataManager::createObject();
 				
 				if (!CreditController::changeCredit(
-					['userid' => $data['userid'], 'amount' => -1*SystemManager::getById('5')->value,
+					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('5')->value,
 						'reason' => '发布求购信息消耗积分', 'note' => '消耗积分'])) {
 					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
 				};
@@ -72,6 +72,7 @@ class BuyController
 			
 			$buy = BuyManager::setUserInfo($buy, $data['userid']);
 			$buy = BuyManager::setBuy($buy, $data);
+			$buy->username = $user->username;
 			$buy->save();
 			
 			$buy_data = BuyDataManager::setBuyData($buy_data, $data);
@@ -129,10 +130,12 @@ class BuyController
 				
 				foreach ($searchResults as $buy) {
 					$buy->content = BuyDataManager::getById($buy->itemid)->content;
-					$buy->user= $user = MemberManager::getByUsername($buy->username);
-					$buy->company=$company = CompanyManager::getById($user->userid);
-					$buy->businesscard = BussinessCardController::getByUserid($company->userid);
-					$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
+					$buy->user = $user = MemberManager::getByUsername($buy->item->username);
+					if ($user) {
+						$buy->company = $company = CompanyManager::getById($user->userid);
+						$buy->businesscard = BussinessCardController::getByUserid($company->userid);
+					}
+					$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
 				}
 				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
@@ -161,10 +164,10 @@ class BuyController
 			
 			foreach ($buys as $buy) {
 				$buy->content = BuyDataManager::getById($buy->itemid)->content;
-				$buy->user= $user = MemberManager::getByUsername($buy->username);
-				$buy->company=$company = CompanyManager::getById($user->userid);
+				$buy->user = $user = MemberManager::getByUsername($buy->username);
+				$buy->company = $company = CompanyManager::getById($user->userid);
 				$buy->businesscard = BussinessCardController::getByUserid($company->userid);
-				$buy->tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
+				$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
 			}
 			
 			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);

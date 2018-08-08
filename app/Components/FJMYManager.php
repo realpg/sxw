@@ -159,8 +159,8 @@ class FJMYManager
 		}
 		if (array_key_exists('thumb', $data)) {
 			$fjmy->thumb = $data['thumb'][0];
-			$fjmy->thumb1 = count($data['thumb'])>=1?$data['thumb'][1]:$fjmy->thumb1;
-			$fjmy->thumb2 = count($data['thumb'])>=2?$data['thumb'][2]:$fjmy->thumb2;
+			$fjmy->thumb1 = count($data['thumb'])>1?$data['thumb'][1]:$fjmy->thumb1;
+			$fjmy->thumb2 = count($data['thumb'])>2?$data['thumb'][2]:$fjmy->thumb2;
 			$fjmy->thumbs = join(',',$data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
