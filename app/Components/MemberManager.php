@@ -73,11 +73,16 @@ class MemberManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['userid', 'asc'])
+	public static function getByCon($ConArr, $paginate = false, $orderby = ['userid', 'asc'])
 	{
-		$members = Member::orderby($orderby['0'], $orderby['1'])->get();
+		$members = Member::orderby($orderby['0'], $orderby['1']);
+		if (!$paginate)
+			$members = $members->get();
 		foreach ($ConArr as $key => $value) {
 			$members = $members->whereIn($key, $value);
+		}
+		if ($paginate) {
+			$members = $members->paginate();
 		}
 		return $members;
 	}
@@ -94,7 +99,7 @@ class MemberManager
 	{
 		if (array_key_exists('truename', $data)) {
 			$member->truename = array_get($data, 'truename');
-			$member->company = array_get($data, 'truename');
+			$member->company = array_get($data, 'company');
 		}
 		if (array_key_exists('company', $data)) {
 		

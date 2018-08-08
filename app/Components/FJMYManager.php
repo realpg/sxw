@@ -33,8 +33,8 @@ class FJMYManager
 		$fjmy->typeid = 0;//默认值
 		$fjmy->n1 = $fjmy->n2 = $fjmy->n3 = '';
 		$fjmy->v1 = $fjmy->v2 = $fjmy->v3 = '';
-		$fjmy->amount=0;
-		$fjmy->price=0;
+		$fjmy->amount = 0;
+		$fjmy->price = 0;
 		$fjmy->thumbs = '';
 		$fjmy->vip = 0;
 		$fjmy->validated = 0;
@@ -160,9 +160,9 @@ class FJMYManager
 		}
 		if (array_key_exists('thumb', $data)) {
 			$fjmy->thumb = $data['thumb'][0];
-			$fjmy->thumb1 = count($data['thumb'])>1?$data['thumb'][1]:$fjmy->thumb1;
-			$fjmy->thumb2 = count($data['thumb'])>2?$data['thumb'][2]:$fjmy->thumb2;
-			$fjmy->thumbs = join(',',$data['thumb']);
+			$fjmy->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : $fjmy->thumb1;
+			$fjmy->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : $fjmy->thumb2;
+			$fjmy->thumbs = join(',', $data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
 			$fjmy->telephone = array_get($data, 'telephone');
@@ -186,28 +186,28 @@ class FJMYManager
 		$cat = CategoryManager::getById($fjmy->catid);
 		$searchInfo->content .= $cat->catname . ',';
 		
-		$tags=TagManager::getByCon(['tagid'=>explode(',',$fjmy->tag)]);
-		foreach ($tags as $tag){
+		$tags = TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]);
+		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
 		return $searchInfo;
 	}
 	
-	public static function getInfo($fjmy,$keys=[]){
-		foreach ($keys as $key){
-			if($key=='content'){
+	public static function getInfo($fjmy, $keys = [])
+	{
+		foreach ($keys as $key) {
+			if ($key == 'content') {
 				$fjmy->content = BuyDataManager::getById($fjmy->itemid)->content;
-			}else if ($key=='userinfo'){
+			} else if ($key == 'userinfo') {
 				$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
 				if ($user) {
 					$fjmy->company = $company = CompanyManager::getById($user->userid);
 					$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
 				}
-			}else if ($key=='tags'){
+			} else if ($key == 'tags') {
 				$fjmy->tags = TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]);
-			}
-			else if ($key=='comments'){
-				$fjmy->comments=CommentManager::getByCon(['item_mid'=>[6],'item_id'=>[$fjmy->itemid]]);
+			} else if ($key == 'comments') {
+				$fjmy->comments = array_arrange(CommentManager::getByCon(['item_mid' => [6], 'item_id' => [$fjmy->itemid]]));
 			}
 		}
 		return $fjmy;

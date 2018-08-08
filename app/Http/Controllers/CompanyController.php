@@ -26,15 +26,11 @@ class CompanyController extends Controller
 			}
 			$conditions['groupid'] = [6];
 			
-			$businessCards = [];
-			$companies = CompanyManager::getByCon($conditions, true);
-			foreach ($companies as $company) {
-				$businessCard = BussinessCardController::getByUserid($company->userid);
-				if ($businessCard)
-					array_push($businessCards, $businessCard);
+			$users = MemberManager::getByCon($conditions,true);
+			foreach ($users as $user){
+				$user->bussinesscard=BussinessCardController::getByUserid($user->userid);
 			}
-			$companies['cards'] = $businessCards;
-			$ret = $companies;
+			$ret = $users;
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 		} else {

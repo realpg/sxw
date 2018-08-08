@@ -129,7 +129,7 @@ class CommentController extends Controller
 		
 		//检验参数
 		if (checkParam($data, ['mid', 'tid'])) {
-			$ret = "关注成功";
+			$ret = "收藏成功";
 			$item = null;
 			//获得被评论的信息
 			if ($data['mid'] == 5) {

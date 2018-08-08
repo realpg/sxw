@@ -33,8 +33,8 @@ class BuyManager
 		$buy->typeid = 0;//默认值
 		$buy->n1 = $buy->n2 = $buy->n3 = '';
 		$buy->v1 = $buy->v2 = $buy->v3 = '';
-		$buy->amount=0;
-		$buy->price=0;
+		$buy->amount = 0;
+		$buy->price = 0;
 		$buy->thumbs = '';
 		$buy->vip = 0;
 		$buy->validated = 0;
@@ -161,9 +161,9 @@ class BuyManager
 		}
 		if (array_key_exists('thumb', $data)) {
 			$buy->thumb = $data['thumb'][0];
-			$buy->thumb1 = count($data['thumb'])>1?$data['thumb'][1]:$buy->thumb1;
-			$buy->thumb2 = count($data['thumb'])>2?$data['thumb'][2]:$buy->thumb2;
-			$buy->thumbs = join(',',$data['thumb']);
+			$buy->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : $buy->thumb1;
+			$buy->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : $buy->thumb2;
+			$buy->thumbs = join(',', $data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
 			$buy->telephone = array_get($data, 'telephone');
@@ -187,28 +187,28 @@ class BuyManager
 		$cat = CategoryManager::getById($buy->catid);
 		$searchInfo->content .= $cat->catname . ',';
 		
-		$tags=TagManager::getByCon(['tagid'=>explode(',',$buy->tag)]);
-		foreach ($tags as $tag){
+		$tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
+		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
 		return $searchInfo;
 	}
 	
-	public static function getInfo($buy,$keys=[]){
-		foreach ($keys as $key){
-			if($key=='content'){
+	public static function getInfo($buy, $keys = [])
+	{
+		foreach ($keys as $key) {
+			if ($key == 'content') {
 				$buy->content = BuyDataManager::getById($buy->itemid)->content;
-			}else if ($key=='userinfo'){
+			} else if ($key == 'userinfo') {
 				$buy->user = $user = MemberManager::getByUsername($buy->username);
 				if ($user) {
 					$buy->company = $company = CompanyManager::getById($user->userid);
 					$buy->businesscard = BussinessCardController::getByUserid($company->userid);
 				}
-			}else if ($key=='tags'){
+			} else if ($key == 'tags') {
 				$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
-			}
-			else if ($key=='comments'){
-				$buy->comments=CommentManager::getByCon(['item_mid'=>[6],'item_id'=>[$buy->itemid]]);
+			} else if ($key == 'comments') {
+				$buy->comments = array_arrange(CommentManager::getByCon(['item_mid' => [6], 'item_id' => [$buy->itemid]]));
 			}
 		}
 		return $buy;

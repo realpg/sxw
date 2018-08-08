@@ -74,13 +74,13 @@ class RankingController extends Controller
 		$data = $request->all();
 		//检验参数
 		if (checkParam($data, ['type'])) {
-			$ranks = RankingManager::getByCon(['type' => [$data['type']]]);
+			$ranks = RankingManager::getByCon(['type' => [$data['type']]],['rank','asc']);
 			foreach ($ranks as  $rank){
 				$company=CompanyManager::getById($rank->userid);
 				$rank->businesscard=BussinessCardController::getByUserid($company->userid);
 			}
 			
-			$ret = $ranks;
+			$ret = array_arrange($ranks);
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			

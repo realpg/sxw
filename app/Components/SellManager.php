@@ -33,8 +33,8 @@ class SellManager
 		$sell->typeid = 0;//默认值
 		$sell->n1 = $sell->n2 = $sell->n3 = '';
 		$sell->v1 = $sell->v2 = $sell->v3 = '';
-		$sell->amount=0;
-		$sell->price=0;
+		$sell->amount = 0;
+		$sell->price = 0;
 		$sell->thumbs = '';
 		$sell->vip = 0;
 		$sell->validated = 0;
@@ -160,9 +160,9 @@ class SellManager
 		}
 		if (array_key_exists('thumb', $data)) {
 			$sell->thumb = $data['thumb'][0];
-			$sell->thumb1 = count($data['thumb'])>1?$data['thumb'][1]:$sell->thumb1;
-			$sell->thumb2 = count($data['thumb'])>2?$data['thumb'][2]:$sell->thumb2;
-			$sell->thumbs = join(',',$data['thumb']);
+			$sell->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : $sell->thumb1;
+			$sell->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : $sell->thumb2;
+			$sell->thumbs = join(',', $data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
 			$sell->telephone = array_get($data, 'telephone');
@@ -186,28 +186,28 @@ class SellManager
 		$cat = CategoryManager::getById($sell->catid);
 		$searchInfo->content .= $cat->catname . ',';
 		
-		$tags=TagManager::getByCon(['tagid'=>explode(',',$sell->tag)]);
-		foreach ($tags as $tag){
+		$tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
+		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
 		return $searchInfo;
 	}
 	
-	public static function getInfo($sell,$keys=[]){
-		foreach ($keys as $key){
-			if($key=='content'){
+	public static function getInfo($sell, $keys = [])
+	{
+		foreach ($keys as $key) {
+			if ($key == 'content') {
 				$sell->content = BuyDataManager::getById($sell->itemid)->content;
-			}else if ($key=='userinfo'){
+			} else if ($key == 'userinfo') {
 				$sell->user = $user = MemberManager::getByUsername($sell->username);
 				if ($user) {
 					$sell->company = $company = CompanyManager::getById($user->userid);
 					$sell->businesscard = BussinessCardController::getByUserid($company->userid);
 				}
-			}else if ($key=='tags'){
+			} else if ($key == 'tags') {
 				$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
-			}
-			else if ($key=='comments'){
-				$sell->comments=CommentManager::getByCon(['item_mid'=>[6],'item_id'=>[$sell->itemid]]);
+			} else if ($key == 'comments') {
+				$sell->comments = array_arrange(CommentManager::getByCon(['item_mid' => [6], 'item_id' => [$sell->itemid]]));
 			}
 		}
 		return $sell;
