@@ -28,8 +28,10 @@ class SellController
 		foreach ($sells as $sell) {
 			$sell->content = SellDataManager::getById($sell->itemid)->content;
 			$sell->user = $user = MemberManager::getByUsername($sell->username);
-			$sell->company = $company = CompanyManager::getById($user->userid);
-			$sell->businesscard = BussinessCardController::getByUserid($company->userid);
+			if ($user) {
+				$sell->company = $company = CompanyManager::getById($user->userid);
+				$sell->businesscard = BussinessCardController::getByUserid($company->userid);
+			}
 			$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
 		}
 		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);

@@ -28,9 +28,12 @@ class FJMYController
 		foreach ($fjmys as $fjmy) {
 			$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
 			$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
-			$fjmy->company = $company = CompanyManager::getById($user->userid);
-			$company = CompanyManager::getById($user->userid);
-			$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
+			if ($user) {
+				$fjmy->company = $company = CompanyManager::getById($user->userid);
+				$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
+			}
+			$fjmy->tags = TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]);
+			
 		}
 		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 	}
