@@ -11,9 +11,11 @@ namespace App\Http\Controllers;
 use App\Components\AgreeManager;
 use App\Components\CompanyManager;
 use App\Components\CompanyYWLBManager;
+use App\Components\FavoriteManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
 use App\Components\YWLBManager;
+use App\Models\Favorite;
 use Faker\Provider\da_DK\Company;
 
 class BussinessCardController extends Controller
@@ -36,6 +38,7 @@ class BussinessCardController extends Controller
 			'wxqr' => $member->wxqr,
 			'view' => LLJLManager::getByCon(['item_userid' => [$member->userid]])->count(),
 			'agree' => AgreeManager::getByCon(['item_username' => [$member->username]])->count(),
+			'favorite' => FavoriteManager::getByCon(['mid' => [2], 'tid' => [$member->userid]])->count(),
 		];
 		return $bussnesscard;
 	}
