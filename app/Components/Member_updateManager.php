@@ -109,9 +109,6 @@ class Member_updateManager
 		if (array_key_exists('address', $data)) {
 			$member_update->address = array_get($data, 'address');
 		}
-		if (array_key_exists('sell', $data)) {
-			$member_update->sell = array_get($data, 'sell');
-		}
 		if (array_key_exists('introduce', $data)) {
 			$member_update->introduce = array_get($data, 'introduce');
 		}
@@ -141,7 +138,6 @@ class Member_updateManager
 			'wxqr' => $member->wxqr,
 			'business' => $company->business,
 			'address' => $company->address,
-			'sell' => $company->sell,
 			'introduce' => $company->introduce,
 			'thumb' => $company->thumb
 		];
@@ -162,7 +158,6 @@ class Member_updateManager
 		$company->company = $update->company;
 		$company->business = $update->business;
 		$company->address = $update->address;
-		$company->sell = $update->sell;
 		$company->introduce = $update->introduce;
 		$company->thumb = $update->thumb;
 		return $company;
