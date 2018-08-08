@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Components\CompanyManager;
 use App\Components\Member_miscManager;
 use App\Components\MemberManager;
 use App\Components\SystemManager;
@@ -36,41 +37,46 @@ class LoginController extends Controller
 		$data = $request->all();
 //		return $data;
 		$openId = $data['openId'];
-		$member = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
-		if ($member == null) {
-			$member = MemberManager::createObject();
-			$member->wx_openId = $openId;
-			$member->save();
+		$user = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
+		if ($user == null) {
+			$user = MemberManager::createObject();
+			$user->wx_openId = $openId;
+			$user->save();
 		}
-		$member = MessageController::checkMessage($member);
+		$user = MessageController::checkMessage($user);
 		
 		if (gettype($data['userInfo']) == 'string') {
 			$userInfo = json_decode($data['userInfo']);
-//		$member->username = 'xcx' . md5($member->user_id);
-			$member->passport = $userInfo->nickName ? $userInfo->nickName : $member->passport;
-			$member->gender = $userInfo->gender ? $userInfo->gender : $member->gender;
-			$member->avatarUrl = $userInfo->avatarUrl ? $userInfo->avatarUrl : $member->avatarUrl;
-			$member->save();
+//		$user->username = 'xcx' . md5($user->user_id);
+			$user->passport = $userInfo->nickName ? $userInfo->nickName : $user->passport;
+			$user->gender = $userInfo->gender ? $userInfo->gender : $user->gender;
+			$user->avatarUrl = $userInfo->avatarUrl ? $userInfo->avatarUrl : $user->avatarUrl;
+			$user->save();
 		} else {
-//		$member->username = 'xcx' . md5($member->user_id);
-			$member->passport = array_key_exists('nickName', $data['userInfo']) ? $data['userInfo']['nickName'] : "新用户";
-			$member->gender = array_key_exists('gender', $data['userInfo']) ? $data['userInfo']['gender'] : $member->gender;
-			$member->avatarUrl = array_key_exists('avatarUrl', $data['userInfo']) ? $data['userInfo']['avatarUrl'] : $member->avatarUrl;
-			$member->save();
+//		$user->username = 'xcx' . md5($user->user_id);
+			$user->passport = array_key_exists('nickName', $data['userInfo']) ? $data['userInfo']['nickName'] : "新用户";
+			$user->gender = array_key_exists('gender', $data['userInfo']) ? $data['userInfo']['gender'] : $user->gender;
+			$user->avatarUrl = array_key_exists('avatarUrl', $data['userInfo']) ? $data['userInfo']['avatarUrl'] : $user->avatarUrl;
+			$user->save();
 		}
 		
-		$member = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
-		$member->username = 'xcx' . $member->userid;
-		$member->save();
-		$member_misc = Member_miscManager::getById($member->userid);
-		$member_misc->save();
+		$user = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
+		$user->username = 'xcx' . $user->userid;
+		$user->save();
+		$user_misc = Member_miscManager::getById($user->userid);
+		$user_misc->save();
 		
-		$userid = $member->userid;
+		$userid = $user->userid;
 		$jsonstr = json_encode(['userid' => $userid, 'lifetime' => getTokenLifetimeTimestemp()]);
 		$_token = base64_encode($jsonstr);
-		$ret = $member;
-		$ret ['_token'] = $_token;
-//		$ret=$member;
+		
+		if ($user) {
+			$user->companyInfo = $company = CompanyManager::getById($user->userid);
+			$user->businesscard = BussinessCardController::getByUserid($company->userid);
+		}
+		$ret = $user;
+		$ret ->_token = $_token;
+//		$ret=$user;
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	

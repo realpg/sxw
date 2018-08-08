@@ -10,6 +10,7 @@
 
 namespace App\Components;
 
+use App\Http\Controllers\BussinessCardController;
 use App\Models\FJMY;
 use App\Models\FJMY_data;
 use App\Models\FJMY_search;
@@ -190,5 +191,25 @@ class FJMYManager
 			$searchInfo->content .= $tag->tagname . ',';
 		}
 		return $searchInfo;
+	}
+	
+	public static function getInfo($fjmy,$keys=[]){
+		foreach ($keys as $key){
+			if($key=='content'){
+				$fjmy->content = BuyDataManager::getById($fjmy->itemid)->content;
+			}else if ($key=='userinfo'){
+				$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
+				if ($user) {
+					$fjmy->company = $company = CompanyManager::getById($user->userid);
+					$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
+				}
+			}else if ($key=='tags'){
+				$fjmy->tags = TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]);
+			}
+			else if ($key=='comments'){
+				$fjmy->comments=CommentManager::getByCon(['item_mid'=>[6],'item_id'=>[$fjmy->itemid]]);
+			}
+		}
+		return $fjmy;
 	}
 }

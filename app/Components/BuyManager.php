@@ -10,6 +10,7 @@
 
 namespace App\Components;
 
+use App\Http\Controllers\BussinessCardController;
 use App\Models\Buy;
 use App\Models\Buy_data;
 use App\Models\Buy_search;
@@ -191,5 +192,25 @@ class BuyManager
 			$searchInfo->content .= $tag->tagname . ',';
 		}
 		return $searchInfo;
+	}
+	
+	public static function getInfo($buy,$keys=[]){
+		foreach ($keys as $key){
+			if($key=='content'){
+				$buy->content = BuyDataManager::getById($buy->itemid)->content;
+			}else if ($key=='userinfo'){
+				$buy->user = $user = MemberManager::getByUsername($buy->username);
+				if ($user) {
+					$buy->company = $company = CompanyManager::getById($user->userid);
+					$buy->businesscard = BussinessCardController::getByUserid($company->userid);
+				}
+			}else if ($key=='tags'){
+				$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
+			}
+			else if ($key=='comments'){
+				$buy->comments=CommentManager::getByCon(['item_mid'=>[6],'item_id'=>[$buy->itemid]]);
+			}
+		}
+		return $buy;
 	}
 }

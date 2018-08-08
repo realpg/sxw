@@ -26,14 +26,7 @@ class FJMYController
 		$fjmys = FJMYManager::getList();
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
-			$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
-			$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
-			if ($user) {
-				$fjmy->company = $company = CompanyManager::getById($user->userid);
-				$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
-			}
-			$fjmy->tags = TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]);
-			
+			$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);	
 		}
 		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 	}
@@ -108,6 +101,7 @@ class FJMYController
 				$lljl = LLJLManager::createObject($user, $fjmy, 88);
 				$lljl->save();
 				$fjmy = FJMYManager::getData($fjmy);
+				$fjmy=FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags','comments']);
 				return ApiResponse::makeResponse(true, $fjmy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -159,17 +153,11 @@ class FJMYController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			
 			$fjmys = FJMYManager::getByCon($Con);
-			
 			foreach ($fjmys as $fjmy) {
-				$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
-				$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
-				$fjmy->company = $company = CompanyManager::getById($user->userid);
-				$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
+				$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);
 			}
 			return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
-			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}

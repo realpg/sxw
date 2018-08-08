@@ -26,13 +26,7 @@ class BuyController
 		$buys = BuyManager::getList();
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
-			$buy->content = BuyDataManager::getById($buy->itemid)->content;
-			$buy->user = $user = MemberManager::getByUsername($buy->username);
-			if ($user) {
-				$buy->company = $company = CompanyManager::getById($user->userid);
-				$buy->businesscard = BussinessCardController::getByUserid($company->userid);
-			}
-			$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
+			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
 		}
 		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 	}
@@ -87,8 +81,6 @@ class BuyController
 			}
 			$searchInfo->save();
 			
-			//扣除积分
-			
 			return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
@@ -109,6 +101,7 @@ class BuyController
 				$lljl = LLJLManager::createObject($user, $buy, 6);
 				$lljl->save();
 				$buy = BuyManager::getData($buy);
+				$buy=BuyManager::getInfo($buy, ['content', 'userinfo', 'tags','comments']);
 				return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -139,7 +132,6 @@ class BuyController
 					}
 					$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
 				}
-				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
@@ -161,19 +153,11 @@ class BuyController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			
 			$buys = BuyManager::getByCon($Con);
-			
 			foreach ($buys as $buy) {
-				$buy->content = BuyDataManager::getById($buy->itemid)->content;
-				$buy->user = $user = MemberManager::getByUsername($buy->username);
-				$buy->company = $company = CompanyManager::getById($user->userid);
-				$buy->businesscard = BussinessCardController::getByUserid($company->userid);
-				$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
+				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
 			}
-			
 			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
-			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}

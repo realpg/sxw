@@ -10,6 +10,7 @@
 
 namespace App\Components;
 
+use App\Http\Controllers\BussinessCardController;
 use App\Models\Sell;
 use App\Models\Sell_data;
 use App\Models\Sell_search;
@@ -190,5 +191,25 @@ class SellManager
 			$searchInfo->content .= $tag->tagname . ',';
 		}
 		return $searchInfo;
+	}
+	
+	public static function getInfo($sell,$keys=[]){
+		foreach ($keys as $key){
+			if($key=='content'){
+				$sell->content = BuyDataManager::getById($sell->itemid)->content;
+			}else if ($key=='userinfo'){
+				$sell->user = $user = MemberManager::getByUsername($sell->username);
+				if ($user) {
+					$sell->company = $company = CompanyManager::getById($user->userid);
+					$sell->businesscard = BussinessCardController::getByUserid($company->userid);
+				}
+			}else if ($key=='tags'){
+				$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
+			}
+			else if ($key=='comments'){
+				$sell->comments=CommentManager::getByCon(['item_mid'=>[6],'item_id'=>[$sell->itemid]]);
+			}
+		}
+		return $sell;
 	}
 }
