@@ -207,7 +207,7 @@ class FJMYManager
 			} else if ($key == 'tags') {
 				$fjmy->tags = TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]);
 			} else if ($key == 'comments') {
-				$fjmy->comments = array_arrange(CommentManager::getByCon(['item_mid' => [6], 'item_id' => [$fjmy->itemid]]));
+				$fjmy->comments = array_arrange(CommentManager::getByCon(['item_mid' => [88], 'item_id' => [$fjmy->itemid]]));
 			}
 		}
 		return $fjmy;

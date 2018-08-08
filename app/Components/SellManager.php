@@ -207,7 +207,7 @@ class SellManager
 			} else if ($key == 'tags') {
 				$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
 			} else if ($key == 'comments') {
-				$sell->comments = array_arrange(CommentManager::getByCon(['item_mid' => [6], 'item_id' => [$sell->itemid]]));
+				$sell->comments = array_arrange(CommentManager::getByCon(['item_mid' => [5], 'item_id' => [$sell->itemid]]));
 			}
 		}
 		return $sell;
