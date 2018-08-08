@@ -28,7 +28,7 @@ class BussinessCardController extends Controller
 			'mobile' => $member->mobile,
 			'company' => $member->company,
 			'career' => $member->career,
-			'ywlb' => CompanyYWLBManager::getByCon(['userid' => $member->userid]),
+			'ywlb' => array_arrange(CompanyYWLBManager::getByCon(['userid' => $member->userid])),
 			'address' => $company->address,
 			'business' => $company->business,
 			'introduce' => $company->introduce,

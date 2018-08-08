@@ -71,5 +71,13 @@ function checkParam($Array,$params=['']){
 
 function getPRCdate($timestemp,$format="Y-m-d H:i:s"){
 	return date($format,$timestemp+28800);
-	
+}
+
+//将array整理，index变为0，1，2.....
+function array_arrange($arr){
+	$arr_arrange=[];
+	foreach ($arr as $key=>$value){
+		array_push($arr_arrange,$value);
+	}
+	return $arr_arrange;
 }
