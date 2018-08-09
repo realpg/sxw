@@ -49,7 +49,7 @@ class ADController extends Controller
 	{
 		$adPlaces = ADPlaceManager::getList();
 		foreach ($adPlaces as $place) {
-			$place->sellingADs = ADManager::getByCon(['xcx_pid' => [$place->pid], 'onsell' => [1]]);
+			$place->sellingADs = array_arrange(ADManager::getByCon(['xcx_pid' => [$place->pid], 'onsell' => [1]]));
 		}
 		$ret = $adPlaces;
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
