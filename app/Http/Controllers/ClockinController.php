@@ -18,7 +18,7 @@ class ClockinController extends Controller
 		//检验参数
 		if (checkParam($data, [])) {
 			$ret = "签到成功";
-			$clockins = ClockinManager::getByDate($data['userid'],date("Y-m-d"));
+			$clockins = ClockinManager::getByDate($data['userid'], date("Y-m-d"));
 			if ($clockins->count() > 0) {
 				return ApiResponse::makeResponse(false, "已有今日签到记录", ApiResponse::UNKNOW_ERROR);
 			}
@@ -45,11 +45,11 @@ class ClockinController extends Controller
 		$data = $request->all();
 		//检验参数
 		if (checkParam($data, ['date'])) {
-			$days=array_key_exists('days', $data) ? $data['days'] : 1;
-			$ret =[];
-			for ($i=0;$i<$days;$i++){
-				$date=date("Y-m-d",strtotime("+".$i." day",strtotime($data['date'])));
-				array_push($ret,ClockinManager::getByDate($data['userid'],$date)->first());
+			$days = array_key_exists('days', $data) ? $data['days'] : 1;
+			$ret = [];
+			for ($i = 0; $i < $days; $i++) {
+				$date = date("Y-m-d", strtotime("+" . $i . " day", strtotime($data['date'])));
+				array_push($ret, ClockinManager::getByDate($data['userid'], $date)->first());
 			}
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			

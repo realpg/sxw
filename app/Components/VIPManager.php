@@ -87,8 +87,17 @@ class VIPManager
 	 */
 	public static function setVIP($vip, $data)
 	{
-		if (array_key_exists('name', $data)) {
-			$vip->name = array_get($data, 'name');
+		if (array_key_exists('vip', $data)) {
+			$vip->vip = array_get($data, 'vip');
+		}
+		if (array_key_exists('druation', $data)) {
+			$vip->druation = array_get($data, 'druation')*86400;
+		}
+		if (array_key_exists('desc', $data)) {
+			$vip->desc = array_get($data, 'desc');
+		}
+		if (array_key_exists('amount', $data)) {
+			$vip->amount = array_get($data, 'amount');
 		}
 		return $vip;
 	}

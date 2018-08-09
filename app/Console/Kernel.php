@@ -4,6 +4,7 @@ namespace App\Console;
 
 use App\Components\XCXLogManager;
 use App\Http\Controllers\RankingController;
+use App\Http\Controllers\VIPController;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -30,14 +31,22 @@ class Kernel extends ConsoleKernel
 			//每30分钟生成日榜
 			RankingController::createDailyRanking(1);
 		})->everyThirtyMinutes()->hourlyAt(30);
+		
 		$schedule->call(function () {
 			//每小时生成周排行榜
 			RankingController::createDailyRanking(2);
 		})->hourlyAt(15);
+		
 		$schedule->call(function () {
 			//每天生成月榜
 			RankingController::createDailyRanking(3);
 		})->dailyAt('19:00');  //unix时间19点，即北京时间3点
+		
+		$schedule->call(function () {
+			//每天校验VIP信息
+			VIPController::check();
+		})->dailyAt('17:00');  //unix时间17点，即北京时间1点
+		
 		$schedule->call(function () {
 			//每周一清理log
 			XCXLogManager::clearLog();

@@ -18,6 +18,7 @@ use App\Components\MemberManager;
 use App\Components\SystemManager;
 use App\Components\TagManager;
 use App\Components\ThesauruManager;
+use App\Components\VIPManager;
 use App\Components\YWLBManager;
 use App\Exceptions\Handler;
 use Illuminate\Http\Request;
@@ -379,6 +380,41 @@ class SystemController extends Controller
 			$ad->save();
 			
 			return ApiResponse::makeResponse(true, $ad, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数" . json_encode($data), ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function vip(){
+		$vips=VIPManager::getList();
+		return view('vip.index', ['datas' => $vips]);
+	}
+	
+	public function vip_edit(Request $request)
+	{
+		$data = $request->all();
+		if (array_key_exists('id', $data))
+			$vip = VIPManager::getById($data['id']);
+		else
+			$vip = VIPManager::createObject();
+		return view('vip.edit', ['data' => $vip]);
+	
+	}
+	
+	public function vip_edit_post(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+//		return $data;
+		if (checkParam($data, ['vip', 'druation', 'desc', 'amount'])) {
+			if (array_get( $data,'id'))
+				$vip = VIPManager::getById($data['id']);
+			else
+				$vip = VIPManager::createObject();
+			$vip=VIPManager::setVIP($vip,$data);
+			$vip->save();
+			return ApiResponse::makeResponse(true, $vip, ApiResponse::SUCCESS_CODE);
 			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数" . json_encode($data), ApiResponse::MISSING_PARAM);

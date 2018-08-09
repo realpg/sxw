@@ -48,3 +48,7 @@ Route::post('adplace_edit', 'SystemController@adplace_edit_post');//业务类别
 Route::get('ads', 'SystemController@ads');//广告
 Route::get('ads_edit', 'SystemController@ads_edit');//广告
 Route::post('ads_edit', 'SystemController@ads_edit_post');//广告
+
+Route::get('vip', 'SystemController@vip');//广告
+Route::get('vip_edit', 'SystemController@vip_edit');//广告
+Route::post('vip_edit', 'SystemController@vip_edit_post');//广告
