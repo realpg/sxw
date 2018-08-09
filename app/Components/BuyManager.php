@@ -35,6 +35,7 @@ class BuyManager
 		$buy->v1 = $buy->v2 = $buy->v3 = '';
 		$buy->amount = 0;
 		$buy->price = 0;
+		$buy->thumb = '';
 		$buy->thumbs = '';
 		$buy->vip = 0;
 		$buy->validated = 0;
@@ -76,9 +77,13 @@ class BuyManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function getList()
+	public static function getList($paginate = false)
 	{
-		$buys = Buy::orderby('itemid', 'desc')->paginate();
+		$buys = Buy::orderby('itemid', 'desc');
+		if ($paginate)
+			$buys = $buys->paginate();
+		else
+			$buys = $buys->get();
 		return $buys;
 	}
 	
@@ -111,7 +116,7 @@ class BuyManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
+	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'], $paginate = false)
 	{
 		$buys = Buy::orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
@@ -127,7 +132,10 @@ class BuyManager
 				$buys = $buys->whereIn($key, $value);
 			}
 		}
-		$buys = $buys->paginate();
+		if ($paginate)
+			$buys = $buys->paginate();
+		else
+			$buys = $buys->get();
 		return $buys;
 	}
 	

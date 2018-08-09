@@ -35,6 +35,7 @@ class SellManager
 		$sell->v1 = $sell->v2 = $sell->v3 = '';
 		$sell->amount = 0;
 		$sell->price = 0;
+		$sell->thumb = '';
 		$sell->thumbs = '';
 		$sell->vip = 0;
 		$sell->validated = 0;
@@ -75,9 +76,14 @@ class SellManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function getList()
+	public static function getList($paginate = false)
 	{
-		$sells = Sell::orderby('itemid', 'desc')->paginate();
+		$sells = Sell::orderby('itemid', 'desc');
+		if ($paginate) {
+			$sells = $sells->paginate();
+		} else {
+			$sells = $sells->get();
+		}
 		return $sells;
 	}
 	
@@ -110,7 +116,7 @@ class SellManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
+	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'], $paginate=true)
 	{
 		$sells = Sell::orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
@@ -126,7 +132,10 @@ class SellManager
 				$sells = $sells->whereIn($key, $value);
 			}
 		}
-		$sells = $sells->paginate();
+		if ($paginate)
+			$sells = $sells->paginate();
+		else
+			$sells = $sells->get();
 		return $sells;
 	}
 	

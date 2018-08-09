@@ -23,7 +23,7 @@ class SellController
 {
 	public function getList(Request $request)
 	{
-		$sells = SellManager::getList();
+		$sells = SellManager::getByCon([],['vip',"desc"],true);
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
@@ -153,7 +153,7 @@ class SellController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			$sells = SellManager::getByCon($Con);
+			$sells = SellManager::getByCon($Con,['vip',"desc"],true);
 			foreach ($sells as $sell) {
 				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
 			}

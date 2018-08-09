@@ -23,7 +23,7 @@ class FJMYController
 {
 	public function getList(Request $request)
 	{
-		$fjmys = FJMYManager::getList();
+		$fjmys = FJMYManager::getByCon([],['vip',"desc"],true);
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
 			$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);	
@@ -153,7 +153,7 @@ class FJMYController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			$fjmys = FJMYManager::getByCon($Con);
+			$fjmys = FJMYManager::getByCon($Con,['vip','desc'],true);
 			foreach ($fjmys as $fjmy) {
 				$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);
 			}

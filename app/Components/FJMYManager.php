@@ -35,6 +35,7 @@ class FJMYManager
 		$fjmy->v1 = $fjmy->v2 = $fjmy->v3 = '';
 		$fjmy->amount = 0;
 		$fjmy->price = 0;
+		$fjmy->thumb="";
 		$fjmy->thumbs = '';
 		$fjmy->vip = 0;
 		$fjmy->validated = 0;
@@ -75,9 +76,15 @@ class FJMYManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function getList()
+	public static function getList($paginate = false)
 	{
-		$fjmys = FJMY::orderby('itemid', 'desc')->paginate();
+		
+		$fjmys = FJMY::orderby('itemid', 'desc');
+		if ($paginate) {
+			$fjmys = $fjmys->paginate();
+		} else {
+			$fjmys = $fjmys->get();
+		}
 		return $fjmys;
 	}
 	
@@ -110,7 +117,7 @@ class FJMYManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
+	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'], $paginate = false)
 	{
 		$fjmys = FJMY::orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
@@ -126,7 +133,10 @@ class FJMYManager
 				$fjmys = $fjmys->whereIn($key, $value);
 			}
 		}
-		$fjmys = $fjmys->paginate();
+		if ($paginate)
+			$fjmys = $fjmys->paginate();
+		else
+			$fjmys = $fjmys->get();
 		return $fjmys;
 	}
 	

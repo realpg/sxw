@@ -23,7 +23,7 @@ class BuyController
 {
 	public function getList(Request $request)
 	{
-		$buys = BuyManager::getList();
+		$buys = BuyManager::getByCon([],['vip','desc'],true);
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
 			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
@@ -153,7 +153,7 @@ class BuyController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			$buys = BuyManager::getByCon($Con);
+			$buys = BuyManager::getByCon($Con,['vip','desc'],true);
 			foreach ($buys as $buy) {
 				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
 			}
