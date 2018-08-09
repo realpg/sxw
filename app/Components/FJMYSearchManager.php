@@ -25,7 +25,7 @@ class FJMYSearchManager
 	{
 		$fjmy_search = new FJMY_search();
 		//这里可以对新建记录进行一定的默认设置
-		
+		$fjmy_search->areaid=0;
 		return $fjmy_search;
 	}
 	

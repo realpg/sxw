@@ -25,7 +25,7 @@ class BuySearchManager
 	{
 		$buy_search = new Buy_search();
 		//这里可以对新建记录进行一定的默认设置
-		
+		$buy_search->areaid=0;
 		return $buy_search;
 	}
 	

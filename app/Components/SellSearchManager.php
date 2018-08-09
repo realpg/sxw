@@ -25,7 +25,7 @@ class SellSearchManager
 	{
 		$sell_search = new Sell_search();
 		//这里可以对新建记录进行一定的默认设置
-		
+		$sell_search->areaid=0;
 		return $sell_search;
 	}
 	
