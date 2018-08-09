@@ -169,6 +169,7 @@ class FJMYManager
 			$fjmy->tag = array_get($data, 'tag');
 		}
 		if (array_key_exists('thumb', $data)) {
+			$data['thumb']=explode(',',$data['thumb']);
 			$fjmy->thumb = $data['thumb'][0];
 			$fjmy->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : $fjmy->thumb1;
 			$fjmy->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : $fjmy->thumb2;
