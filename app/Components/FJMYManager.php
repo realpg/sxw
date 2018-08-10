@@ -212,7 +212,7 @@ class FJMYManager
 	{
 		foreach ($keys as $key) {
 			if ($key == 'content') {
-				$fjmy->content = BuyDataManager::getById($fjmy->itemid)->content;
+				$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
 			} else if ($key == 'userinfo') {
 				$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
 				if ($user) {

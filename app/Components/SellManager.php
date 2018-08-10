@@ -211,7 +211,7 @@ class SellManager
 	{
 		foreach ($keys as $key) {
 			if ($key == 'content') {
-				$sell->content = BuyDataManager::getById($sell->itemid)->content;
+				$sell->content = SellDataManager::getById($sell->itemid)->content;
 			} else if ($key == 'userinfo') {
 				$sell->user = $user = MemberManager::getByUsername($sell->username);
 				if ($user) {
