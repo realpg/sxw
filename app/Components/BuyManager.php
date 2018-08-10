@@ -61,7 +61,7 @@ class BuyManager
 		$buy->truename = $member->truename;
 		$buy->telephone = $member->telephone;
 		$buy->mobile = $member->mobile;
-		$buy->address = $member->address ? $member->address : "未知";
+//		$buy->address = $member->address ? $member->address : "未知";
 		$buy->email = $member->email;
 		$buy->qq = $member->qq;
 		$buy->wx = $member->wx;
@@ -163,6 +163,9 @@ class BuyManager
 		}
 		if (array_key_exists('price', $data)) {
 			$buy->price = array_get($data, 'price');
+		}
+		if (array_key_exists('address', $data)) {
+			$buy->address = array_get($data, 'address');
 		}
 		if (array_key_exists('tag', $data)) {
 			$buy->tag = array_get($data, 'tag');

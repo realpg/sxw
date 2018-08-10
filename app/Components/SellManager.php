@@ -60,7 +60,7 @@ class SellManager
 		$sell->truename = $member->truename;
 		$sell->telephone = $member->telephone;
 		$sell->mobile = $member->mobile;
-		$sell->address = $member->address ? $member->address : "未知";
+//		$sell->address = $member->address ? $member->address : "未知";
 		$sell->email = $member->email;
 		$sell->qq = $member->qq;
 		$sell->wx = $member->wx;
@@ -163,6 +163,9 @@ class SellManager
 		}
 		if (array_key_exists('price', $data)) {
 			$sell->price = array_get($data, 'price');
+		}
+		if (array_key_exists('address', $data)) {
+			$sell->address = array_get($data, 'address');
 		}
 		if (array_key_exists('tag', $data)) {
 			$sell->tag = array_get($data, 'tag');

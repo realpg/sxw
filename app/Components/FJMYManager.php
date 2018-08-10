@@ -60,7 +60,7 @@ class FJMYManager
 		$fjmy->truename = $member->truename;
 		$fjmy->telephone = $member->telephone;
 		$fjmy->mobile = $member->mobile;
-		$fjmy->address = $member->address ? $member->address : "未知";
+//		$fjmy->address = $member->address ? $member->address : "未知";
 		$fjmy->email = $member->email;
 		$fjmy->qq = $member->qq;
 		$fjmy->wx = $member->wx;
@@ -164,6 +164,9 @@ class FJMYManager
 		}
 		if (array_key_exists('price', $data)) {
 			$fjmy->price = array_get($data, 'price');
+		}
+		if (array_key_exists('address', $data)) {
+			$fjmy->address = array_get($data, 'address');
 		}
 		if (array_key_exists('tag', $data)) {
 			$fjmy->tag = array_get($data, 'tag');
