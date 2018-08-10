@@ -47,7 +47,7 @@ class BuyController
 			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone'])) {
+		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone','address'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$buy = BuyManager::getById($data['itemid']);
