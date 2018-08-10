@@ -28,9 +28,13 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$testdata=XCXLog::orderBy('id','desc')->paginate();
-		return $testdata;
+		return ['1','2','3','4'];
 //		return view('test');
+	}
+	
+	public function log(){
+		$testdata=XCXLog::orderBy('id','desc')->paginate('5');
+		return $testdata;
 	}
 	
 	public function create(Request $request)

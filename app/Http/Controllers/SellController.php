@@ -23,7 +23,7 @@ class SellController
 {
 	public function getList(Request $request)
 	{
-		$sells = SellManager::getByCon([],['vip',"desc"],true);
+		$sells = SellManager::getByCon(['status' => 3], ['vip', "desc"], true);
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
@@ -101,7 +101,7 @@ class SellController
 				$lljl = LLJLManager::createObject($user, $sell, 5);
 				$lljl->save();
 				$sell = SellManager::getData($sell);
-				$sell=SellManager::getInfo($sell, ['content', 'userinfo', 'tags','comments']);
+				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags', 'comments']);
 				return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -153,7 +153,7 @@ class SellController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			$sells = SellManager::getByCon($Con,['vip',"desc"],true);
+			$sells = SellManager::getByCon($Con, ['vip', "desc"], true);
 			foreach ($sells as $sell) {
 				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
 			}

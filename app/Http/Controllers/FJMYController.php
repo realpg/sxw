@@ -23,7 +23,7 @@ class FJMYController
 {
 	public function getList(Request $request)
 	{
-		$fjmys = FJMYManager::getByCon([],['vip',"desc"],true);
+		$fjmys = FJMYManager::getByCon(['status'=>[3]],['vip',"desc"],true);
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
 			$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);	

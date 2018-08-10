@@ -23,7 +23,7 @@ class BuyController
 {
 	public function getList(Request $request)
 	{
-		$buys = BuyManager::getByCon([],['vip','desc'],true);
+		$buys = BuyManager::getByCon(['status'=>[3]],['vip','desc'],true);
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
 			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);

@@ -200,6 +200,7 @@ class BuyManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
+		$searchInfo->areaid=0;
 		return $searchInfo;
 	}
 	
