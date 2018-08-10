@@ -108,7 +108,7 @@ class VIPUserManager
 		if (!$time) {
 			$time = time();
 		}
-		$vipuser = VIPUser::where('status', '=', '3')->where('fromtime', '<=', $time)->where('totime', '>=', $time)->first();
+		$vipuser = VIPUser::where('userid', '=', $userid)->where('status', '=', '3')->where('fromtime', '<=', $time)->where('totime', '>=', $time)->first();
 		return $vipuser ? $vipuser->vip : 0;
 	}
 }
