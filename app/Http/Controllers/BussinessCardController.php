@@ -18,6 +18,7 @@ use App\Components\VIPUserManager;
 use App\Components\YWLBManager;
 use App\Models\Favorite;
 use Faker\Provider\da_DK\Company;
+use Illuminate\Http\Request;
 
 class BussinessCardController extends Controller
 {
@@ -43,5 +44,22 @@ class BussinessCardController extends Controller
 			'vip'=>VIPUserManager::getUserVIPLevel($member->userid)
 		];
 		return $bussnesscard;
+	}
+	public static function getYWLB(){
+		$ywlbs=YWLBManager::getByCon(['status'=>[3]]);
+		return ApiResponse::makeResponse(true, array_arrange($ywlbs), ApiResponse::SUCCESS_CODE);
+	}
+	public static function getByUserid_get(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, [ 'user_id'])) {
+			$ret=self::getByUserid($data['user_id']);
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
 	}
 }

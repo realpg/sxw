@@ -99,7 +99,7 @@ class VIPUserManager
 		$vipUser->userid = $user->userid;
 		$vipUser->vip = $vip->vip;
 		$vipUser->totime = $vipUser->fromtime + $vip->druation;
-		$vipUser->status = $vipUser->fromtime < time() ? 3 : 0;
+		$vipUser->status = $vipUser->fromtime <= time() ? 3 : 0;
 		return $vipUser;
 	}
 	
@@ -108,7 +108,7 @@ class VIPUserManager
 		if (!$time) {
 			$time = time();
 		}
-		$vipuser = VIPUser::where('userid', '=', $userid)->where('status', '=', '3')->where('fromtime', '<=', $time)->where('totime', '>=', $time)->first();
+		$vipuser = VIPUser::where('userid', '=', $userid)->where('status', '=', '3')->first();
 		return $vipuser ? $vipuser->vip : 0;
 	}
 }
