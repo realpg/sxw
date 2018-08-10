@@ -118,21 +118,22 @@ class SellController
 			$ret = null;
 			$keyword = $data['keyword'];
 			$searchResults = SellSearchManager::search($keyword);
+			$result_itemids = [];
 			if ($searchResults->count() > 0) {
 				foreach ($searchResults as $result) {
-					$result->item = SellManager::getById($result->itemid);
+					array_push($result_itemids, $result->itemid);
 				}
-				
-				foreach ($searchResults as $sell) {
+				$sells = SellManager::getByCon(['status' => [3], 'itemid' => $result_itemids], ['vip', 'desc'], true);
+				foreach ($sells as $sell) {
 					$sell->content = SellDataManager::getById($sell->itemid)->content;
-					$sell->user = $user = MemberManager::getByUsername($sell->item->username);
+					$sell->user = $user = MemberManager::getByUsername($sell->username);
 					if ($user) {
 						$sell->company = $company = CompanyManager::getById($user->userid);
 						$sell->businesscard = BussinessCardController::getByUserid($company->userid);
 					}
 					$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
 				}
-				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
 		} else {

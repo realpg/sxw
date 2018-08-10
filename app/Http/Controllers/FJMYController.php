@@ -118,13 +118,15 @@ class FJMYController
 			$ret = null;
 			$keyword = $data['keyword'];
 			$searchResults = FJMYSearchManager::search($keyword);
+			$result_itemids = [];
 			if ($searchResults->count() > 0) {
 				foreach ($searchResults as $result) {
-					$result->item = FJMYManager::getById($result->itemid);
+					array_push($result_itemids, $result->itemid);
 				}
-				foreach ($searchResults as $fjmy) {
+				$fjmys = FJMYManager::getByCon(['status' => [3], 'itemid' => $result_itemids], ['vip', 'desc'], true);
+				foreach ($fjmys as $fjmy) {
 					$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
-					$fjmy->user = $user = MemberManager::getByUsername($fjmy->item->username);
+					$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
 					if ($user) {
 						$fjmy->company = $company = CompanyManager::getById($user->userid);
 						$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);

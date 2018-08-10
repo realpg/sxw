@@ -14,6 +14,7 @@ use App\Components\CompanyYWLBManager;
 use App\Components\FavoriteManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
+use App\Components\VIPUserManager;
 use App\Components\YWLBManager;
 use App\Models\Favorite;
 use Faker\Provider\da_DK\Company;
@@ -39,6 +40,7 @@ class BussinessCardController extends Controller
 			'view' => LLJLManager::getByCon(['item_userid' => [$member->userid]])->count(),
 			'agree' => AgreeManager::getByCon(['item_username' => [$member->username]])->count(),
 			'favorite' => FavoriteManager::getByCon(['mid' => [2], 'tid' => [$member->userid]])->count(),
+			'vip'=>VIPUserManager::getUserVIPLevel($member->userid)
 		];
 		return $bussnesscard;
 	}

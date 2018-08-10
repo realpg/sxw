@@ -118,14 +118,15 @@ class BuyController
 			$ret = null;
 			$keyword = $data['keyword'];
 			$searchResults = BuySearchManager::search($keyword);
+			$result_itemids = [];
 			if ($searchResults->count() > 0) {
 				foreach ($searchResults as $result) {
-					$result->item = BuyManager::getById($result->itemid);
+					array_push($result_itemids, $result->itemid);
 				}
-				
-				foreach ($searchResults as $buy) {
+				$buys = BuyManager::getByCon(['status' => [3], 'itemid' => $result_itemids], ['vip', 'desc'], true);
+				foreach ($buys as $buy) {
 					$buy->content = BuyDataManager::getById($buy->itemid)->content;
-					$buy->user = $user = MemberManager::getByUsername($buy->item->username);
+					$buy->user = $user = MemberManager::getByUsername($buy->username);
 					if ($user) {
 						$buy->company = $company = CompanyManager::getById($user->userid);
 						$buy->businesscard = BussinessCardController::getByUserid($company->userid);
