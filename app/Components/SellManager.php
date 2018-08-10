@@ -37,7 +37,7 @@ class SellManager
 		$sell->price = 0;
 		$sell->thumb = '';
 		$sell->thumbs = '';
-		$sell->vip = 0;
+		
 		$sell->validated = 0;
 		$sell->editdate = $sell->adddate = date("Y-m-d");
 		$sell->addtime = time();
@@ -60,6 +60,7 @@ class SellManager
 		$sell->truename = $member->truename;
 		$sell->telephone = $member->telephone;
 		$sell->mobile = $member->mobile;
+		$sell->vip = VIPUserManager::getUserVIPLevel($user_id);
 //		$sell->address = $member->address ? $member->address : "未知";
 		$sell->email = $member->email;
 		$sell->qq = $member->qq;

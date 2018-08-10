@@ -37,7 +37,6 @@ class BuyManager
 		$buy->price = 0;
 		$buy->thumb = '';
 		$buy->thumbs = '';
-		$buy->vip = 0;
 		$buy->validated = 0;
 		$buy->editdate = $buy->adddate = date("Y-m-d");
 		$buy->addtime = time();
@@ -61,6 +60,7 @@ class BuyManager
 		$buy->truename = $member->truename;
 		$buy->telephone = $member->telephone;
 		$buy->mobile = $member->mobile;
+		$buy->vip = VIPUserManager::getUserVIPLevel($user_id);
 //		$buy->address = $member->address ? $member->address : "未知";
 		$buy->email = $member->email;
 		$buy->qq = $member->qq;

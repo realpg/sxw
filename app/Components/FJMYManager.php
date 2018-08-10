@@ -37,7 +37,7 @@ class FJMYManager
 		$fjmy->price = 0;
 		$fjmy->thumb="";
 		$fjmy->thumbs = '';
-		$fjmy->vip = 0;
+		
 		$fjmy->validated = 0;
 		$fjmy->editdate = $fjmy->adddate = date("Y-m-d");
 		$fjmy->addtime = time();
@@ -60,6 +60,7 @@ class FJMYManager
 		$fjmy->truename = $member->truename;
 		$fjmy->telephone = $member->telephone;
 		$fjmy->mobile = $member->mobile;
+		$fjmy->vip = VIPUserManager::getUserVIPLevel($user_id);
 //		$fjmy->address = $member->address ? $member->address : "未知";
 		$fjmy->email = $member->email;
 		$fjmy->qq = $member->qq;
