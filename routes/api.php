@@ -19,7 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //测试接口，随时删除
 Route::get('test', 'DemoController@test');
-Route::get('log', 'DemoController@log');
 Route::get('create', 'DemoController@create');  //
 Route::get('getAllMembers', 'DemoController@getAllMembers');
 Route::get('newMember', 'DemoController@newMember');
@@ -85,4 +84,6 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	
 	Route::get('vip/selling', 'VIPController@getSelling');//获得广告信息
 	Route::post('vip/buy', 'VIPController@buy');//获得广告信息
+	
+	Route::get('category/getByMid', 'CategoryController@getByMid');//获得广告信息
 });

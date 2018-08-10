@@ -61,7 +61,6 @@ class BuyManager
 		$buy->telephone = $member->telephone;
 		$buy->mobile = $member->mobile;
 		$buy->vip = VIPUserManager::getUserVIPLevel($user_id);
-//		$buy->address = $member->address ? $member->address : "未知";
 		$buy->email = $member->email;
 		$buy->qq = $member->qq;
 		$buy->wx = $member->wx;

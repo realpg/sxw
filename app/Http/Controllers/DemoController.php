@@ -33,8 +33,8 @@ class DemoController extends Controller
 	}
 	
 	public function log(){
-		$testdata=XCXLog::orderBy('id','desc')->paginate('5');
-		return $testdata;
+		$logs=XCXLog::orderBy('id','desc')->paginate('50');
+		return view('log.index',['datas'=>$logs]);
 	}
 	
 	public function create(Request $request)

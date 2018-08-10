@@ -61,7 +61,6 @@ class SellManager
 		$sell->telephone = $member->telephone;
 		$sell->mobile = $member->mobile;
 		$sell->vip = VIPUserManager::getUserVIPLevel($user_id);
-//		$sell->address = $member->address ? $member->address : "未知";
 		$sell->email = $member->email;
 		$sell->qq = $member->qq;
 		$sell->wx = $member->wx;

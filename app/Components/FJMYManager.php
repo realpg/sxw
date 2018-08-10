@@ -61,7 +61,6 @@ class FJMYManager
 		$fjmy->telephone = $member->telephone;
 		$fjmy->mobile = $member->mobile;
 		$fjmy->vip = VIPUserManager::getUserVIPLevel($user_id);
-//		$fjmy->address = $member->address ? $member->address : "未知";
 		$fjmy->email = $member->email;
 		$fjmy->qq = $member->qq;
 		$fjmy->wx = $member->wx;

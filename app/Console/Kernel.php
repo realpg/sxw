@@ -50,7 +50,7 @@ class Kernel extends ConsoleKernel
 		$schedule->call(function () {
 			//每周一清理log
 			XCXLogManager::clearLog();
-		})->weekly()->mondays()->at('02:00');
+		})->weekly()->mondays()->at('18:00');
 	}
 	
 	/**
