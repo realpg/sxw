@@ -116,7 +116,7 @@ class SellManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'], $paginate=true)
+	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'], $paginate = true)
 	{
 		$sells = Sell::orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
@@ -168,10 +168,10 @@ class SellManager
 			$sell->tag = array_get($data, 'tag');
 		}
 		if (array_key_exists('thumb', $data)) {
-			$data['thumb']=explode(',',$data['thumb']);
+			$data['thumb'] = explode(',', $data['thumb']);
 			$sell->thumb = $data['thumb'][0];
-			$sell->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : $sell->thumb1;
-			$sell->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : $sell->thumb2;
+			$sell->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : ($sell->thumb1 ? $sell->thumb1 : "");
+			$sell->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : ($sell->thumb2 ? $sell->thumb2 : "");
 			$sell->thumbs = join(',', $data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
@@ -200,7 +200,7 @@ class SellManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
-		$searchInfo->areaid=0;
+		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}
 	

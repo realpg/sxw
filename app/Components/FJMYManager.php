@@ -169,11 +169,11 @@ class FJMYManager
 			$fjmy->tag = array_get($data, 'tag');
 		}
 		if (array_key_exists('thumb', $data)) {
-			$data['thumb']=explode(',',$data['thumb']);
-			$fjmy->thumb = $data['thumb'][0];
-			$fjmy->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : $fjmy->thumb1;
-			$fjmy->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : $fjmy->thumb2;
-			$fjmy->thumbs = join(',', $data['thumb']);
+			$thumb=explode(',',$data['thumb']);
+			$fjmy->thumb = $thumb[0];
+			$fjmy->thumb1 = count($thumb) > 1 ? $thumb[1] : ($fjmy->thumb1?$fjmy->thumb1:"");
+			$fjmy->thumb2 = count($thumb) > 2 ? $thumb[2] : ($fjmy->thumb1?$fjmy->thumb1:"");
+			$fjmy->thumbs = join(',', $thumb);
 		}
 		if (array_key_exists('telephone', $data)) {
 			$fjmy->telephone = array_get($data, 'telephone');

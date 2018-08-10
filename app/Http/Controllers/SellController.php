@@ -23,7 +23,7 @@ class SellController
 {
 	public function getList(Request $request)
 	{
-		$sells = SellManager::getByCon(['status' => 3], ['vip', "desc"], true);
+		$sells = SellManager::getByCon(['status' => [3]], ['vip', "desc"], true);
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
