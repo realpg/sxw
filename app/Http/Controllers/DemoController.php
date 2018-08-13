@@ -7,6 +7,7 @@ use App\Components\BuyDataManager;
 use App\Components\BuyManager;
 use App\Components\CommentManager;
 use App\Components\MemberManager;
+use App\Components\MobileMessageManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
 use App\Models\Comment;
@@ -28,7 +29,7 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		return ['1','2','3','4'];
+		return MobileMessageManager::sendMessage('13082464865','您的验证码为 123456 请尽快验证');
 //		return view('test');
 	}
 	

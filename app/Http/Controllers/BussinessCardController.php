@@ -22,6 +22,29 @@ use Illuminate\Http\Request;
 
 class BussinessCardController extends Controller
 {
+	public static function getList(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, [])) {
+			$conditions = [];
+			if (array_key_exists('conditions', $data)) {
+				$conditions = $data['conditions'];
+			}
+			$conditions['groupid'] = [6];
+			
+			$users = MemberManager::getByCon($conditions, true);
+			foreach ($users as $user) {
+				$user->bussinesscard = BussinessCardController::getByUserid($user->userid);
+			}
+			$ret = $users;
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
 	public static function getByUserid($userid)
 	{
 		$member = MemberManager::getById($userid);
@@ -41,21 +64,43 @@ class BussinessCardController extends Controller
 			'view' => LLJLManager::getByCon(['item_userid' => [$member->userid]])->count(),
 			'agree' => AgreeManager::getByCon(['item_username' => [$member->username]])->count(),
 			'favorite' => FavoriteManager::getByCon(['mid' => [2], 'tid' => [$member->userid]])->count(),
-			'vip'=>VIPUserManager::getUserVIPLevel($member->userid)
+			'vip' => VIPUserManager::getUserVIPLevel($member->userid)
 		];
 		return $bussnesscard;
 	}
-	public static function getYWLB(){
-		$ywlbs=YWLBManager::getByCon(['status'=>[3]]);
+	
+	public static function getYWLB()
+	{
+		$ywlbs = YWLBManager::getByCon(['status' => [3]]);
 		return ApiResponse::makeResponse(true, array_arrange($ywlbs), ApiResponse::SUCCESS_CODE);
 	}
+	
 	public static function getByUserid_get(Request $request)
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, [ 'user_id'])) {
-			$ret=self::getByUserid($data['user_id']);
+		if (checkParam($data, ['user_id'])) {
+			$ret = self::getByUserid($data['user_id']);
 			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function getByYWLB(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['ywlb_id'])) {
+			$userids = CompanyYWLBManager::getByCon(['ywlb_id' => [$data['ywlb_id']]])->pluck('userid');
+			
+			$users = MemberManager::getByCon(['userid' => $userids], true);
+			foreach ($users as $user) {
+				$user->bussinesscard = BussinessCardController::getByUserid($user->userid);
+			}
+			$ret = $users;
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
 		} else {

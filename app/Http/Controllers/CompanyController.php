@@ -15,28 +15,7 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-	public static function businessCard(Request $request)
-	{
-		$data = $request->all();
-		//检验参数
-		if (checkParam($data, [])) {
-			$conditions = [];
-			if (array_key_exists('conditions', $data)) {
-				$conditions = $data['conditions'];
-			}
-			$conditions['groupid'] = [6];
-			
-			$users = MemberManager::getByCon($conditions,true);
-			foreach ($users as $user){
-				$user->bussinesscard=BussinessCardController::getByUserid($user->userid);
-			}
-			$ret = $users;
-			
-			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
-		} else {
-			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
-		}
-	}
+	
 	
 	public static function edit(Request $request)
 	{
