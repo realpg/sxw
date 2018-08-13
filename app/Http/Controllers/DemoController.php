@@ -29,8 +29,7 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		return ['result'=>(strpos("success:081314385758971112","success")==0)];
-		
+		return md5("shaxian");
 	}
 	
 	public function log(){
