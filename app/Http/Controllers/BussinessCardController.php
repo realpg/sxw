@@ -55,6 +55,7 @@ class BussinessCardController extends Controller
 			'mobile' => $member->mobile,
 			'company' => $member->company,
 			'career' => $member->career,
+			'ywlb_ids' => implode(',', array_arrange(CompanyYWLBManager::getByCon(['userid' => $member->userid])->pluck('ywlb_id'))),
 			'ywlb' => array_arrange(CompanyYWLBManager::getByCon(['userid' => $member->userid])),
 			'address' => $company->address,
 			'business' => $company->business,
@@ -65,7 +66,7 @@ class BussinessCardController extends Controller
 			'agree' => AgreeManager::getByCon(['item_username' => [$member->username]])->count(),
 			'favorite' => FavoriteManager::getByCon(['mid' => [2], 'tid' => [$member->userid]])->count(),
 			'vip' => VIPUserManager::getUserVIPLevel($member->userid),
-			'avatarUrl'=>$member->avatarUrl
+			'avatarUrl' => $member->avatarUrl
 		];
 		return $bussnesscard;
 	}

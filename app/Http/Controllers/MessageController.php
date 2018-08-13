@@ -80,8 +80,8 @@ class MessageController extends Controller
 		//检验参数
 		if (checkParam($data, ['phonenum'])) {
 			$send_ret = VertifyManager::doVertify($data['phonenum']);
-			if($send_ret)
-			return ApiResponse::makeResponse(true, "发送成功", ApiResponse::SUCCESS_CODE);
+			if ($send_ret)
+				return ApiResponse::makeResponse(true, "发送成功", ApiResponse::SUCCESS_CODE);
 			else
 				return ApiResponse::makeResponse(false, "发送失败", ApiResponse::UNKNOW_ERROR);
 		} else {

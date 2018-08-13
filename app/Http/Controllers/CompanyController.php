@@ -9,6 +9,7 @@ use App\Components\CompanyYWLBManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
 use App\Components\UpgradeManager;
+use App\Components\VertifyManager;
 use App\Components\YWLBManager;
 use Illuminate\Http\Request;
 
@@ -21,22 +22,50 @@ class CompanyController extends Controller
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
+		
+		$ret = "";
+		if (array_key_exists('mobile', $data) && array_key_exists('vertify_code', $data)) {
+			$vertify_result = VertifyManager::judgeVertifyCode($data['mobile'], $data['vertify_code']);
+			if ($vertify_result) {
+				$user->mobile = $data['mobile'];
+				$user->save();
+				$ret = "手机号码修改成功。";
+			} else
+				$ret = "手机号码修改失败。";
+			
+		}
+		
+		
 		if ($user->groupid == 5) {
-			return self::upgrade($request);
+			return self::upgrade($request, $ret);
 		} else if ($user->groupid == 6) {
-			return self::update($request);
+			$bussinesscard = BussinessCardController::getByUserid($user->userid);
+			if (array_get($data, 'company') == $bussinesscard['company']
+				&& array_get($data, 'career') == $bussinesscard['career']
+				&& array_get($data, 'address') == $bussinesscard['address']
+				&& array_get($data, 'introduce') == $bussinesscard['introduce']
+				&& array_get($data, 'business') == $bussinesscard['business']
+				&& array_get($data, 'truename') == $bussinesscard['truename']
+				&& array_get($data, 'ywlb_ids') == $bussinesscard['ywlb_ids']
+				&& array_get($data, 'thumb') == $bussinesscard['thumb']
+				&& array_get($data, 'avatarUrl') == $bussinesscard['avatarUrl']
+				&& array_get($data, 'wxqr') == $bussinesscard['wxqr']
+			)
+				return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			else
+				return self::update($request, $ret);
 		} else {
 			return ApiResponse::makeResponse(false, "暂不支持", ApiResponse::UNKNOW_ERROR);
 		}
 	}
 	
-	private static function upgrade(Request $request)
+	private static function upgrade(Request $request, $ret)
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
 		//检验参数
 		if (UpgradeManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0) {
-			return ApiResponse::makeResponse(false, "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
+			return ApiResponse::makeResponse(false, $ret . "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
 		}
 		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business', 'introduce'])) {
 			
@@ -56,22 +85,22 @@ class CompanyController extends Controller
 			$company->save();
 			$upgrade->save();
 			
-			$ret = "修改信息申请已提交，请等待审核";
+			$ret .= "修改信息申请已提交，请等待审核";
 //			$user->ywlb = CompanyYWLBManager::getByCon(['userid' => $user->userid]);
 //			$ret = ['user' => $user, 'company' => $company, 'upgrade' => $upgrade];
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
 		} else {
-			return ApiResponse::makeResponse(false, "缺少参数" . array_keys($data), ApiResponse::MISSING_PARAM);
+			return ApiResponse::makeResponse(false, $ret . "修改资料时缺少参数" . array_keys($data), ApiResponse::MISSING_PARAM);
 		}
 	}
 	
-	private static function update(Request $request)
+	private static function update(Request $request, $ret)
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
 		if (Member_updateManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0) {
-			return ApiResponse::makeResponse(false, "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
+			return ApiResponse::makeResponse(false, $ret . "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
 		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business', 'introduce'])) {
@@ -81,11 +110,11 @@ class CompanyController extends Controller
 			$update->history = json_encode(Member_updateManager::getHistory($update->userid));
 			$update->save();
 			
-			$ret = "修改信息申请已提交，请等待审核";
+			$ret .= "修改信息申请已提交，请等待审核";
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
 		} else {
-			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+			return ApiResponse::makeResponse(false, $ret . "修改信息时缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
 	

@@ -65,10 +65,10 @@ class VertifyManager
 	public static function judgeVertifyCode($phonenum, $vertify_code)
 	{
 		$vertify = Vertify::where('phonenum', $phonenum)
-			->where('code', $vertify_code)->where('status', '0')->first();
+			->where('code', $vertify_code)->where('status', '3')->first();
 		if ($vertify) {
 			//验证码置为失效
-			$vertify->status = '1';
+			$vertify->status = '2';
 			$vertify->save();
 			return true;
 		} else {
