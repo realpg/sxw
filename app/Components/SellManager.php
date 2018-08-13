@@ -219,7 +219,7 @@ class SellManager
 					$sell->businesscard = BussinessCardController::getByUserid($company->userid);
 				}
 			} else if ($key == 'tags') {
-				$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
+				$sell->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $sell->tag)]));
 			} else if ($key == 'comments') {
 				$sell->comments = array_arrange(CommentManager::getByCon(['item_mid' => [5], 'item_id' => [$sell->itemid]]));
 			}

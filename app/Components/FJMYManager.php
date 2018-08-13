@@ -35,7 +35,7 @@ class FJMYManager
 		$fjmy->v1 = $fjmy->v2 = $fjmy->v3 = '';
 		$fjmy->amount = 0;
 		$fjmy->price = 0;
-		$fjmy->thumb="";
+		$fjmy->thumb = "";
 		$fjmy->thumbs = '';
 		
 		$fjmy->validated = 0;
@@ -172,10 +172,10 @@ class FJMYManager
 			$fjmy->tag = array_get($data, 'tag');
 		}
 		if (array_key_exists('thumb', $data)) {
-			$thumb=explode(',',$data['thumb']);
+			$thumb = explode(',', $data['thumb']);
 			$fjmy->thumb = $thumb[0];
-			$fjmy->thumb1 = count($thumb) > 1 ? $thumb[1] : ($fjmy->thumb1?$fjmy->thumb1:"");
-			$fjmy->thumb2 = count($thumb) > 2 ? $thumb[2] : ($fjmy->thumb1?$fjmy->thumb1:"");
+			$fjmy->thumb1 = count($thumb) > 1 ? $thumb[1] : ($fjmy->thumb1 ? $fjmy->thumb1 : "");
+			$fjmy->thumb2 = count($thumb) > 2 ? $thumb[2] : ($fjmy->thumb1 ? $fjmy->thumb1 : "");
 			$fjmy->thumbs = join(',', $thumb);
 		}
 		if (array_key_exists('telephone', $data)) {
@@ -204,7 +204,7 @@ class FJMYManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
-		$searchInfo->areaid=0;
+		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}
 	
@@ -220,7 +220,7 @@ class FJMYManager
 					$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
 				}
 			} else if ($key == 'tags') {
-				$fjmy->tags = TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]);
+				$fjmy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]));
 			} else if ($key == 'comments') {
 				$fjmy->comments = array_arrange(CommentManager::getByCon(['item_mid' => [88], 'item_id' => [$fjmy->itemid]]));
 			}

@@ -172,8 +172,8 @@ class BuyManager
 		if (array_key_exists('thumb', $data)) {
 			$data['thumb'] = explode(',', $data['thumb']);
 			$buy->thumb = $data['thumb'][0];
-			$buy->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : ($buy->thumb1?$buy->thumb1:"");
-			$buy->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : ($buy->thumb2?$buy->thumb2:"");
+			$buy->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : ($buy->thumb1 ? $buy->thumb1 : "");
+			$buy->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : ($buy->thumb2 ? $buy->thumb2 : "");
 			$buy->thumbs = join(',', $data['thumb']);
 		}
 		if (array_key_exists('telephone', $data)) {
@@ -202,7 +202,7 @@ class BuyManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
-		$searchInfo->areaid=0;
+		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}
 	
@@ -218,7 +218,7 @@ class BuyManager
 					$buy->businesscard = BussinessCardController::getByUserid($company->userid);
 				}
 			} else if ($key == 'tags') {
-				$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
+				$buy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $buy->tag)]));
 			} else if ($key == 'comments') {
 				$buy->comments = array_arrange(CommentManager::getByCon(['item_mid' => [6], 'item_id' => [$buy->itemid]]));
 			}
