@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Components\MemberManager;
 use App\Components\MessageManager;
+use App\Components\VertifyManager;
 use Symfony\Component\HttpFoundation\Request;
 
 class MessageController extends Controller
@@ -21,7 +22,7 @@ class MessageController extends Controller
 				return false;
 			if (array_key_exists('touser', $data)) {
 				$user = MemberManager::getByCon(['username' => [$data['touser']]])->first();
-				if(!$user)
+				if (!$user)
 					return false;
 				$user->message++;
 				$user->save();
@@ -71,5 +72,20 @@ class MessageController extends Controller
 		$messages = MessageManager::getByCon(['username' => [$user->username], 'isread' => ['0']]);
 		$user->message = $messages->count();
 		return $user;
+	}
+	
+	public static function sendVertifyCode(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['phonenum'])) {
+			$send_ret = VertifyManager::doVertify($data['phonenum']);
+			if($send_ret)
+			return ApiResponse::makeResponse(true, "发送成功", ApiResponse::SUCCESS_CODE);
+			else
+				return ApiResponse::makeResponse(false, "发送失败", ApiResponse::UNKNOW_ERROR);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
 	}
 }

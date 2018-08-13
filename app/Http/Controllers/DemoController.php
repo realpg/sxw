@@ -29,8 +29,8 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		return MobileMessageManager::sendMessage('13082464865','您的验证码为 123456 请尽快验证');
-//		return view('test');
+		return ['result'=>(strpos("success:081314385758971112","success")==0)];
+		
 	}
 	
 	public function log(){

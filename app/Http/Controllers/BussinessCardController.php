@@ -64,7 +64,8 @@ class BussinessCardController extends Controller
 			'view' => LLJLManager::getByCon(['item_userid' => [$member->userid]])->count(),
 			'agree' => AgreeManager::getByCon(['item_username' => [$member->username]])->count(),
 			'favorite' => FavoriteManager::getByCon(['mid' => [2], 'tid' => [$member->userid]])->count(),
-			'vip' => VIPUserManager::getUserVIPLevel($member->userid)
+			'vip' => VIPUserManager::getUserVIPLevel($member->userid),
+			'avatarUrl'=>$member->avatarUrl
 		];
 		return $bussnesscard;
 	}

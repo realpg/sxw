@@ -63,6 +63,7 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('member/clockin/history', 'ClockinController@getHistory');//签到记录
 	Route::get('member/message', 'MessageController@getMessage');//我的消息
 	Route::get('member/message/getById', 'MessageController@getById');
+	Route::post('member/sendVertifyCode', 'MessageController@sendVertifyCode');//升级为会员
 	
 	
 	Route::get('businesscard', 'BussinessCardController@getList');//名片列表
