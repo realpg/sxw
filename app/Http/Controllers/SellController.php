@@ -47,7 +47,7 @@ class SellController
 			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone','address'])) {
+		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone', 'address'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$sell = SellManager::getById($data['itemid']);
@@ -131,7 +131,7 @@ class SellController
 						$sell->company = $company = CompanyManager::getById($user->userid);
 						$sell->businesscard = BussinessCardController::getByUserid($company->userid);
 					}
-					$sell->tags = TagManager::getByCon(['tagid' => explode(',', $sell->tag)]);
+					$sell->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $sell->tag)]));
 				}
 				return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 			} else

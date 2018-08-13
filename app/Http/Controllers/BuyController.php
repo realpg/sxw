@@ -23,7 +23,7 @@ class BuyController
 {
 	public function getList(Request $request)
 	{
-		$buys = BuyManager::getByCon(['status'=>[3]],['vip','desc'],true);
+		$buys = BuyManager::getByCon(['status' => [3]], ['vip', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
 			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
@@ -47,7 +47,7 @@ class BuyController
 			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone','address'])) {
+		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone', 'address'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$buy = BuyManager::getById($data['itemid']);
@@ -101,7 +101,7 @@ class BuyController
 				$lljl = LLJLManager::createObject($user, $buy, 6);
 				$lljl->save();
 				$buy = BuyManager::getData($buy);
-				$buy=BuyManager::getInfo($buy, ['content', 'userinfo', 'tags','comments']);
+				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags', 'comments']);
 				return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -131,7 +131,7 @@ class BuyController
 						$buy->company = $company = CompanyManager::getById($user->userid);
 						$buy->businesscard = BussinessCardController::getByUserid($company->userid);
 					}
-					$buy->tags = TagManager::getByCon(['tagid' => explode(',', $buy->tag)]);
+					$buy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $buy->tag)]));
 				}
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
 			} else
@@ -154,7 +154,7 @@ class BuyController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			$buys = BuyManager::getByCon($Con,['vip','desc'],true);
+			$buys = BuyManager::getByCon($Con, ['vip', 'desc'], true);
 			foreach ($buys as $buy) {
 				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
 			}

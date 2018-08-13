@@ -34,11 +34,11 @@ class ADController extends Controller
 						break;
 					case 2:
 						$ad->info = InfoManager::getByCon($ad->item_mid, ['itemid' => [$ad->item_id]])->first();
-						$ad->info->tags = TagManager::getByCon(['tagid' => explode(',', $ad->info->tag)]);
+						$ad->info->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $ad->info->tag)]));
 						break;
 				}
 			}
-			$ret = $ads;
+			$ret = array_arrange($ads);
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			

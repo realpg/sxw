@@ -23,10 +23,10 @@ class FJMYController
 {
 	public function getList(Request $request)
 	{
-		$fjmys = FJMYManager::getByCon(['status'=>[3]],['vip',"desc"],true);
+		$fjmys = FJMYManager::getByCon(['status' => [3]], ['vip', "desc"], true);
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
-			$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);	
+			$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);
 		}
 		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 	}
@@ -47,7 +47,7 @@ class FJMYController
 			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone','address'])) {
+		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone', 'address'])) {
 			
 			if (array_key_exists('itemid', $data)) {
 				$fjmy = FJMYManager::getById($data['itemid']);
@@ -101,7 +101,7 @@ class FJMYController
 				$lljl = LLJLManager::createObject($user, $fjmy, 88);
 				$lljl->save();
 				$fjmy = FJMYManager::getData($fjmy);
-				$fjmy=FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags','comments']);
+				$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags', 'comments']);
 				return ApiResponse::makeResponse(true, $fjmy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -131,7 +131,7 @@ class FJMYController
 						$fjmy->company = $company = CompanyManager::getById($user->userid);
 						$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
 					}
-					$fjmy->tags = TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]);
+					$fjmy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]));
 				}
 				
 				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
@@ -155,7 +155,7 @@ class FJMYController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			$fjmys = FJMYManager::getByCon($Con,['vip','desc'],true);
+			$fjmys = FJMYManager::getByCon($Con, ['vip', 'desc'], true);
 			foreach ($fjmys as $fjmy) {
 				$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);
 			}
