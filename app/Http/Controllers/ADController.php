@@ -14,6 +14,7 @@ use App\Components\ADPlaceManager;
 use App\Components\CompanyManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
+use App\Components\TagManager;
 use Illuminate\Http\Request;
 
 class ADController extends Controller
@@ -33,6 +34,7 @@ class ADController extends Controller
 						break;
 					case 2:
 						$ad->info = InfoManager::getByCon($ad->item_mid, ['itemid' => [$ad->item_id]])->first();
+						$ad->info->tags = TagManager::getByCon(['tagid' => explode(',', $ad->info->tag)]);
 						break;
 				}
 			}
