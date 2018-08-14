@@ -222,6 +222,11 @@ class SellManager
 				$sell->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $sell->tag)]));
 			} else if ($key == 'comments') {
 				$sell->comments = array_arrange(CommentManager::getByCon(['item_mid' => [5], 'item_id' => [$sell->itemid]]));
+				foreach ($sell->comments as $comment) {
+					$user = MemberManager::getByUsername($comment->username);
+					if ($user)
+						$comment->businesscard = BussinessCardController::getByUserid($user->userid);
+				}
 			}
 		}
 		return $sell;

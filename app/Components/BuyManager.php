@@ -221,6 +221,11 @@ class BuyManager
 				$buy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $buy->tag)]));
 			} else if ($key == 'comments') {
 				$buy->comments = array_arrange(CommentManager::getByCon(['item_mid' => [6], 'item_id' => [$buy->itemid]]));
+				foreach ($buy->comments as $comment) {
+					$user = MemberManager::getByUsername($comment->username);
+					if ($user)
+						$comment->businesscard = BussinessCardController::getByUserid($user->userid);
+				}
 			}
 		}
 		return $buy;

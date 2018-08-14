@@ -223,6 +223,11 @@ class FJMYManager
 				$fjmy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]));
 			} else if ($key == 'comments') {
 				$fjmy->comments = array_arrange(CommentManager::getByCon(['item_mid' => [88], 'item_id' => [$fjmy->itemid]]));
+				foreach ($fjmy->comments as $comment) {
+					$user = MemberManager::getByUsername($comment->username);
+					if ($user)
+						$comment->businesscard = BussinessCardController::getByUserid($user->userid);
+				}
 			}
 		}
 		return $fjmy;
