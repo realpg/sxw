@@ -29,30 +29,57 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		return md5("shaxian");
+		$DT_URL = 'http://localhost/destoon/admin.php';
+		$url = '?file=login&forward=' . urlencode($DT_URL);
+		
+		$response = $this->call('GET', $url);
+		
+		return $response;
+		$this->assertEquals(200, $response->status());
+		$body = [
+			'username' => 'admin',
+			'password' => 'Aa123456'
+		];
+		
+		
+		// 拼接字符串
+		$fields_string = "";
+		foreach ($body as $key => $value) {
+			$fields_string .= $key . '=' . $value . '&';
+		}
+		rtrim($fields_string, '&');
+		
+		return header("location:".$url);
+		$con = curl_init($url);
+		curl_setopt($con, CURLOPT_POST, 1);
+		curl_setopt($con, CURLOPT_POSTFIELDS, $fields_string);
+		$result = curl_exec($con);
+		curl_close($con);
+		return $result;
 	}
 	
-	public function log(){
-		$logs=XCXLog::orderBy('id','desc')->paginate('50');
-		return view('log.index',['datas'=>$logs]);
+	public function log()
+	{
+		$logs = XCXLog::orderBy('id', 'desc')->paginate('50');
+		return view('log.index', ['datas' => $logs]);
 	}
 	
 	public function create(Request $request)
 	{
-		$data=$request->all();
+		$data = $request->all();
 		
-		$buy=BuyManager::createObject();
-		$buy_data=BuyDataManager::createObject();
+		$buy = BuyManager::createObject();
+		$buy_data = BuyDataManager::createObject();
 		
-		$buy=BuyManager::setUserInfo($buy,1);
-		$buy=BuyManager::setBuy($buy,$data);
+		$buy = BuyManager::setUserInfo($buy, 1);
+		$buy = BuyManager::setBuy($buy, $data);
 		$buy->save();
 		
 		
-		$buy_data=BuyDataManager::setBuyData($buy_data,$data);
-		$buy_data->itemid=$buy->itemid;
+		$buy_data = BuyDataManager::setBuyData($buy_data, $data);
+		$buy_data->itemid = $buy->itemid;
 		$buy_data->save();
-		return [$buy.$buy_data];
+		return [$buy . $buy_data];
 	}
 	
 	public function getAllMembers()
@@ -72,8 +99,8 @@ class DemoController extends Controller
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, [ 'itemid'])) {
-			$ret="请求成功";
+		if (checkParam($data, ['itemid'])) {
+			$ret = "请求成功";
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
