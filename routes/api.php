@@ -53,7 +53,9 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	
 	Route::post('comment', 'CommentController@comment');//评论
 	Route::post('agree', 'CommentController@agree');//点赞
+	Route::get('agreeStatus', 'CommentController@agreeStatus');//收藏
 	Route::post('favorite', 'CommentController@favorite');//收藏
+	Route::get('favoriteStatus', 'CommentController@favoriteStatus');//收藏
 	Route::get('myFavorite', 'CommentController@myFavorite');//我的收藏
 	
 	Route::post('member/editInfo', 'CompanyController@edit');//升级为会员

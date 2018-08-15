@@ -47,12 +47,10 @@ class CommentController extends Controller
 			} elseif ($data['item_mid'] == 6) {
 				//求购
 				$item = BuyManager::getById($data['item_id']);
-			}
-			elseif ($data['item_mid'] == 21) {
+			} elseif ($data['item_mid'] == 21) {
 				//资讯
 				$item = ArticleManager::getById($data['item_id']);
-			}
-			elseif ($data['item_mid'] == 88) {
+			} elseif ($data['item_mid'] == 88) {
 				//求购
 				$item = FJMYManager::getById($data['item_id']);
 			}
@@ -94,12 +92,10 @@ class CommentController extends Controller
 			} elseif ($data['item_mid'] == 6) {
 				//求购
 				$item = BuyManager::getById($data['item_id']);
-			}
-			elseif ($data['item_mid'] == 21) {
+			} elseif ($data['item_mid'] == 21) {
 				//资讯
 				$item = ArticleManager::getById($data['item_id']);
-			}
-			elseif ($data['item_mid'] == 88) {
+			} elseif ($data['item_mid'] == 88) {
 				//求购
 				$item = FJMYManager::getById($data['item_id']);
 			}
@@ -116,6 +112,31 @@ class CommentController extends Controller
 				return ApiResponse::makeResponse(false, "参数错误", ApiResponse::MISSING_PARAM);
 			}
 			return ApiResponse::makeResponse(true, $item, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function agreeStatus(Request $request)
+	{
+		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
+		//检验参数
+		if (checkParam($data, ['items'])) {
+			$ret = [];
+			$items = explode(',', $data['items']);
+			foreach ($items as $item) {
+				array_push($ret,
+					AgreeManager::getByCon(
+						['item_mid' => [explode(':', $item)[0]],
+							'item_id' => [explode(':', $item)[1]],
+							'username'=>[$user->username]
+						]
+					)->first() ? true : false);
+			}
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
@@ -139,12 +160,10 @@ class CommentController extends Controller
 			} elseif ($data['mid'] == 6) {
 				//求购
 				$item = BuyManager::getById($data['tid']);
-			}
-			elseif ($data['mid'] == 21) {
+			} elseif ($data['mid'] == 21) {
 				//资讯
 				$item = ArticleManager::getById($data['tid']);
-			}
-			elseif ($data['mid'] == 88) {
+			} elseif ($data['mid'] == 88) {
 				//求购
 				$item = FJMYManager::getById($data['tid']);
 			}
@@ -166,6 +185,31 @@ class CommentController extends Controller
 				$item->save();
 			} else {
 				return ApiResponse::makeResponse(false, "参数错误", ApiResponse::MISSING_PARAM);
+			}
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function favoriteStatus(Request $request)
+	{
+		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
+		//检验参数
+		if (checkParam($data, ['items'])) {
+			$ret = [];
+			$items = explode(',', $data['items']);
+			foreach ($items as $item) {
+				array_push($ret,
+					FavoriteManager::getByCon(
+						['mid' => [explode(':', $item)[0]],
+							'tid' => [explode(':', $item)[1]],
+							'userid'=>[$user->userid]
+						]
+					)->first() ? true : false);
 			}
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
