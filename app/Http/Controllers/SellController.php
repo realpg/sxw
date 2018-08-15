@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Components\AgreeManager;
 use App\Components\CompanyManager;
+use App\Components\FavoriteManager;
 use App\Components\SellDataManager;
 use App\Components\SellManager;
 use App\Components\SellSearchManager;
@@ -35,6 +36,12 @@ class SellController
 					'item_id' => [$sell->itemid],
 					'username' => [$user->username]
 				])->first() ? true : false;
+			$sell->I_favortie = FavoriteManager::getByCon(
+				['mid' => ['5'],
+					'tid' => [$sell->itemid],
+					'userid' => [$user->userid]
+				]
+			)->first() ? true : false;
 		}
 		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 	}
@@ -115,6 +122,12 @@ class SellController
 						'item_id' => [$sell->itemid],
 						'username' => [$user->username]
 					])->first() ? true : false;
+				$sell->I_favortie = FavoriteManager::getByCon(
+					['mid' => ['5'],
+						'tid' => [$sell->itemid],
+						'userid' => [$user->userid]
+					]
+				)->first() ? true : false;
 				return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -176,6 +189,12 @@ class SellController
 						'item_id' => [$sell->itemid],
 						'username' => [$user->username]
 					])->first() ? true : false;
+				$sell->I_favortie = FavoriteManager::getByCon(
+					['mid' => ['5'],
+						'tid' => [$sell->itemid],
+						'userid' => [$user->userid]
+					]
+				)->first() ? true : false;
 			}
 			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		} else {

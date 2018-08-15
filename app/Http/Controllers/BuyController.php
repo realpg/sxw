@@ -14,6 +14,7 @@ use App\Components\BuyManager;
 use App\Components\BuySearchManager;
 use App\Components\CategoryManager;
 use App\Components\CompanyManager;
+use App\Components\FavoriteManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
 use App\Components\SystemManager;
@@ -30,11 +31,17 @@ class BuyController
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
 			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
-			$buy->I_agree=AgreeManager::getByCon(
-				['item_mid' =>['6'],
+			$buy->I_agree = AgreeManager::getByCon(
+				['item_mid' => ['6'],
 					'item_id' => [$buy->itemid],
 					'username' => [$user->username]
-				])->first()?true:false;
+				])->first() ? true : false;
+			$buy->I_favortie = FavoriteManager::getByCon(
+				['mid' => ['6'],
+					'tid' => [$buy->itemid],
+					'userid' => [$user->userid]
+				]
+			)->first() ? true : false;
 		}
 		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 	}
@@ -110,11 +117,17 @@ class BuyController
 				$lljl->save();
 				$buy = BuyManager::getData($buy);
 				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags', 'comments']);
-				$buy->I_agree=AgreeManager::getByCon(
-					['item_mid' =>['6'],
+				$buy->I_agree = AgreeManager::getByCon(
+					['item_mid' => ['6'],
 						'item_id' => [$buy->itemid],
 						'username' => [$user->username]
-					])->first()?true:false;
+					])->first() ? true : false;
+				$buy->I_favortie = FavoriteManager::getByCon(
+					['mid' => ['6'],
+						'tid' => [$buy->itemid],
+						'userid' => [$user->userid]
+					]
+				)->first() ? true : false;
 				return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -171,11 +184,17 @@ class BuyController
 			$buys = BuyManager::getByCon($Con, ['vip', 'desc'], true);
 			foreach ($buys as $buy) {
 				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
-				$buy->I_agree=AgreeManager::getByCon(
-					['item_mid' =>['6'],
+				$buy->I_agree = AgreeManager::getByCon(
+					['item_mid' => ['6'],
 						'item_id' => [$buy->itemid],
 						'username' => [$user->username]
-					])->first()?true:false;
+					])->first() ? true : false;
+				$buy->I_favortie = FavoriteManager::getByCon(
+					['mid' => ['6'],
+						'tid' => [$buy->itemid],
+						'userid' => [$user->userid]
+					]
+				)->first() ? true : false;
 			}
 			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		} else {

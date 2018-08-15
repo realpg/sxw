@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Components\AgreeManager;
 use App\Components\CompanyManager;
+use App\Components\FavoriteManager;
 use App\Components\FJMYDataManager;
 use App\Components\FJMYManager;
 use App\Components\FJMYSearchManager;
@@ -35,6 +36,12 @@ class FJMYController
 					'item_id' => [$fjmy->itemid],
 					'username' => [$user->username]
 				])->first() ? true : false;
+			$fjmy->I_favortie = FavoriteManager::getByCon(
+				['mid' => ['88'],
+					'tid' => [$fjmy->itemid],
+					'userid' => [$user->userid]
+				]
+			)->first() ? true : false;
 		}
 		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 	}
@@ -115,6 +122,12 @@ class FJMYController
 						'item_id' => [$fjmy->itemid],
 						'username' => [$user->username]
 					])->first() ? true : false;
+				$fjmy->I_favortie = FavoriteManager::getByCon(
+					['mid' => ['88'],
+						'tid' => [$fjmy->itemid],
+						'userid' => [$user->userid]
+					]
+				)->first() ? true : false;
 				return ApiResponse::makeResponse(true, $fjmy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -177,6 +190,12 @@ class FJMYController
 						'item_id' => [$fjmy->itemid],
 						'username' => [$user->username]
 					])->first() ? true : false;
+				$fjmy->I_favortie = FavoriteManager::getByCon(
+					['mid' => ['88'],
+						'tid' => [$fjmy->itemid],
+						'userid' => [$user->userid]
+					]
+				)->first() ? true : false;
 			}
 			return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		} else {
