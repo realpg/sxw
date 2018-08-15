@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\AgreeManager;
 use App\Components\CompanyManager;
 use App\Components\FJMYDataManager;
 use App\Components\FJMYManager;
@@ -23,10 +24,17 @@ class FJMYController
 {
 	public function getList(Request $request)
 	{
+		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
 		$fjmys = FJMYManager::getByCon(['status' => [3]], ['vip', "desc"], true);
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
 			$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);
+			$fjmy->I_agree = AgreeManager::getByCon(
+				['item_mid' => ['88'],
+					'item_id' => [$fjmy->itemid],
+					'username' => [$user->username]
+				])->first() ? true : false;
 		}
 		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 	}
@@ -102,6 +110,11 @@ class FJMYController
 				$lljl->save();
 				$fjmy = FJMYManager::getData($fjmy);
 				$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags', 'comments']);
+				$fjmy->I_agree = AgreeManager::getByCon(
+					['item_mid' => ['88'],
+						'item_id' => [$fjmy->itemid],
+						'username' => [$user->username]
+					])->first() ? true : false;
 				return ApiResponse::makeResponse(true, $fjmy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -145,6 +158,7 @@ class FJMYController
 	public static function getByCon(Request $request)
 	{
 		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['conditions'])) {
 			$ret = "请求成功";
@@ -158,6 +172,11 @@ class FJMYController
 			$fjmys = FJMYManager::getByCon($Con, ['vip', 'desc'], true);
 			foreach ($fjmys as $fjmy) {
 				$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);
+				$fjmy->I_agree = AgreeManager::getByCon(
+					['item_mid' => ['88'],
+						'item_id' => [$fjmy->itemid],
+						'username' => [$user->username]
+					])->first() ? true : false;
 			}
 			return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		} else {

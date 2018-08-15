@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\AgreeManager;
 use App\Components\BuyDataManager;
 use App\Components\BuyManager;
 use App\Components\BuySearchManager;
@@ -23,10 +24,17 @@ class BuyController
 {
 	public function getList(Request $request)
 	{
+		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
 		$buys = BuyManager::getByCon(['status' => [3]], ['vip', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
 			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
+			$buy->I_agree=AgreeManager::getByCon(
+				['item_mid' =>['6'],
+					'item_id' => [$buy->itemid],
+					'username' => [$user->username]
+				])->first()?true:false;
 		}
 		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 	}
@@ -102,6 +110,11 @@ class BuyController
 				$lljl->save();
 				$buy = BuyManager::getData($buy);
 				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags', 'comments']);
+				$buy->I_agree=AgreeManager::getByCon(
+					['item_mid' =>['6'],
+						'item_id' => [$buy->itemid],
+						'username' => [$user->username]
+					])->first()?true:false;
 				return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -144,6 +157,7 @@ class BuyController
 	public static function getByCon(Request $request)
 	{
 		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['conditions'])) {
 			$ret = "请求成功";
@@ -157,6 +171,11 @@ class BuyController
 			$buys = BuyManager::getByCon($Con, ['vip', 'desc'], true);
 			foreach ($buys as $buy) {
 				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
+				$buy->I_agree=AgreeManager::getByCon(
+					['item_mid' =>['6'],
+						'item_id' => [$buy->itemid],
+						'username' => [$user->username]
+					])->first()?true:false;
 			}
 			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		} else {

@@ -83,6 +83,13 @@ class CommentController extends Controller
 		//检验参数
 		if (checkParam($data, ['item_mid', 'item_id'])) {
 			$ret = "请求成功";
+			if (AgreeManager::getByCon(
+				['item_mid' => $data['item_mid'],
+					'item_id' => $data['item_id'],
+					'username' => [$user->username]
+				])->first()) {
+				return ApiResponse::makeResponse(false, "您已经点过赞了", ApiResponse::MISSING_PARAM);
+			}
 			$item = null;
 			//获得被评论的信息
 			if ($data['item_mid'] == 5) {
@@ -131,7 +138,7 @@ class CommentController extends Controller
 					AgreeManager::getByCon(
 						['item_mid' => [explode(':', $item)[0]],
 							'item_id' => [explode(':', $item)[1]],
-							'username'=>[$user->username]
+							'username' => [$user->username]
 						]
 					)->first() ? true : false);
 			}
@@ -207,7 +214,7 @@ class CommentController extends Controller
 					FavoriteManager::getByCon(
 						['mid' => [explode(':', $item)[0]],
 							'tid' => [explode(':', $item)[1]],
-							'userid'=>[$user->userid]
+							'userid' => [$user->userid]
 						]
 					)->first() ? true : false);
 			}

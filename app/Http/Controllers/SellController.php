@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\AgreeManager;
 use App\Components\CompanyManager;
 use App\Components\SellDataManager;
 use App\Components\SellManager;
@@ -23,10 +24,17 @@ class SellController
 {
 	public function getList(Request $request)
 	{
+		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
 		$sells = SellManager::getByCon(['status' => [3]], ['vip', "desc"], true);
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
+			$sell->I_agree = AgreeManager::getByCon(
+				['item_mid' => ['5'],
+					'item_id' => [$sell->itemid],
+					'username' => [$user->username]
+				])->first() ? true : false;
 		}
 		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 	}
@@ -102,6 +110,11 @@ class SellController
 				$lljl->save();
 				$sell = SellManager::getData($sell);
 				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags', 'comments']);
+				$sell->I_agree = AgreeManager::getByCon(
+					['item_mid' => ['5'],
+						'item_id' => [$sell->itemid],
+						'username' => [$user->username]
+					])->first() ? true : false;
 				return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -144,6 +157,7 @@ class SellController
 	public static function getByCon(Request $request)
 	{
 		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['conditions'])) {
 			$ret = "请求成功";
@@ -157,6 +171,11 @@ class SellController
 			$sells = SellManager::getByCon($Con, ['vip', "desc"], true);
 			foreach ($sells as $sell) {
 				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
+				$sell->I_agree = AgreeManager::getByCon(
+					['item_mid' => ['5'],
+						'item_id' => [$sell->itemid],
+						'username' => [$user->username]
+					])->first() ? true : false;
 			}
 			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		} else {

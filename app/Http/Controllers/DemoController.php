@@ -29,6 +29,7 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
+		return redirect()->away('http://laravelacademy.org');
 		return ['result'=>(strpos("success:081314385758971112","success")==0)];
 		
 	}
