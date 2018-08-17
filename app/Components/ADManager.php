@@ -94,8 +94,23 @@ class ADManager
 		if (array_key_exists('xcx_pid', $data)) {
 			$ad->xcx_pid = array_get($data, 'xcx_pid');
 		}
-		if (array_key_exists('amount', $data)) {
-			$ad->amount = array_get($data, 'amount');
+		if (array_key_exists('amount0', $data)) {
+			$ad->amount0 = array_get($data, 'amount0');
+		}
+		if (array_key_exists('amount1', $data)) {
+			$ad->amount1 = array_get($data, 'amount1');
+		}
+		if (array_key_exists('amount2', $data)) {
+			$ad->amount2 = array_get($data, 'amount2');
+		}
+		if (array_key_exists('druation0', $data)) {
+			$ad->druation0 = array_get($data, 'druation0')*86400;
+		}
+		if (array_key_exists('druation1', $data)) {
+			$ad->druation1 = array_get($data, 'druation1')*86400;
+		}
+		if (array_key_exists('druation2', $data)) {
+			$ad->druation2 = array_get($data, 'druation2')*86400 ;
 		}
 		if (array_key_exists('type', $data)) {
 			$ad->type = array_get($data, 'type');

@@ -357,7 +357,9 @@ class SystemController extends Controller
 		$data = $request->all();
 		//检验参数
 //		return $data;
-		if (checkParam($data, ['desc', 'xcx_pid', 'amount', 'type', 'linktype', 'fromtime', 'totime', 'listorder'])) {
+		if (checkParam($data, ['desc', 'xcx_pid', 'amount0','amount1','amount2',
+			'druation0','druation1','druation2',
+			'type', 'linktype', 'fromtime', 'totime', 'listorder'])) {
 			
 			if (array_get($data, 'type') == 0 && !checkParam($data, ['img'])) {
 				return ApiResponse::makeResponse(false, "参数错误" . json_encode($data), ApiResponse::INNER_ERROR);

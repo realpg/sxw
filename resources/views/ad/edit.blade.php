@@ -64,10 +64,36 @@
         </div>
 
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格1：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{{$data->amount?$data->amount:''}}" placeholder=""
-                       id="articletitle2" name="amount">
+                <input type="number" step="1" min="0" class="input-text" value="{{$data->amount0?$data->amount0:''}}"
+                       placeholder=""
+                       id="amount0" name="amount0">积分/
+                <input type="number" step="1" min="0" class="input-text" value="{{$data->druation0?$data->druation0/86400:''}}"
+                                                            placeholder=""
+                                                            id="druation0" name="druation0">天
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格1：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="number" step="1" min="0" class="input-text" value="{{$data->amount1?$data->amount1:''}}"
+                       placeholder=""
+                       id="amount1" name="amount1">积分/
+                <input type="number" step="1" min="0" class="input-text" value="{{$data->druation1?$data->druation1/86400:''}}"
+                       placeholder=""
+                       id="druation1" name="druation1">天
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格1：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="number" step="1" min="0" class="input-text" value="{{$data->amount2?$data->amount2:''}}"
+                       placeholder=""
+                       id="amount2" name="amount2">积分/
+                <input type="number" step="1" min="0" class="input-text" value="{{$data->druation2?$data->druation2/86400:''}}"
+                       placeholder=""
+                       id="druation2" name="druation2">天
             </div>
         </div>
 
@@ -123,7 +149,8 @@
         <div class="row cl linktype linktype-1 @if($data->linktype!=1) hidden @endif">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>关联名片用户id：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" min="1" step="1" class="input-text" value="{{$data->userid?$data->userid:''}}" placeholder=""
+                <input type="number" min="1" step="1" class="input-text" value="{{$data->userid?$data->userid:''}}"
+                       placeholder=""
                        id="articletitle2" name="userid">
             </div>
         </div>
@@ -143,7 +170,8 @@
         <div class="row cl linktype linktype-2 @if($data->linktype!=2) hidden @endif">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>关联信息id：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" min="1" step="1" class="input-text" value="{{$data->item_id?$data->item_id:''}}" placeholder=""
+                <input type="number" min="1" step="1" class="input-text" value="{{$data->item_id?$data->item_id:''}}"
+                       placeholder=""
                        id="articletitle2" name="item_id">
             </div>
         </div>

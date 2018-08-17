@@ -44,7 +44,13 @@
                     <td>{{$data->itemid}}</td>
                     <td>{{$data->desc}}</td>
                     <td>{{$adplace->name}}</td>
-                    <td>{{$data->amount}}</td>
+                    <td><ul id="Huifold1" class="Huifold">
+                            <li class="item">
+                                <h4>点击查看<b>+</b></h4>
+                                <div class="info"> {{$data->amount0}}积分/{{$data->druation0/86400}}天 <br/> {{$data->amount1}}积分/{{$data->druation1/86400}}天 <br/> {{$data->amount2}}积分/{{$data->druation2/86400}}天 </div>
+                            </li>
+                        </ul>
+                        </td>
                     <td>
                         @if($data->type==0)
                             <span class="label label-primary radius">图片</span>
@@ -108,6 +114,41 @@
     <script type="text/javascript" src="{{ URL::asset('hui/lib/datatables/1.10.0/jquery.dataTables.min.js')}}"></script>
     <script type="text/javascript" src="{{ URL::asset('hui/lib/laypage/1.2/laypage.js')}}"></script>
     <script type="text/javascript">
+        $.Huifold = function (obj, obj_c, speed, obj_type, Event) {
+            if (obj_type == 2) {
+                $(obj + ":first").find("b").html("-");
+                $(obj_c + ":first").show()
+            }
+            $(obj).bind(Event, function () {
+                if ($(this).next().is(":visible")) {
+                    if (obj_type == 2) {
+                        return false
+                    }
+                    else {
+                        $(this).next().slideUp(speed).end().removeClass("selected");
+                        $(this).find("b").html("+")
+                    }
+                }
+                else {
+                    if (obj_type == 3) {
+                        $(this).next().slideDown(speed).end().addClass("selected");
+                        $(this).find("b").html("-")
+                    } else {
+                        $(obj_c).slideUp(speed);
+                        $(obj).removeClass("selected");
+                        $(obj).find("b").html("+");
+                        $(this).next().slideDown(speed).end().addClass("selected");
+                        $(this).find("b").html("-")
+                    }
+                }
+            })
+        }
+
+        $(function () {
+            $.Huifold("#Huifold1 .item h4", "#Huifold1 .item .info", "fast", 1, "click");
+            /*5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件*/
+        });
+
         $('.table-sort').dataTable({
             "aaSorting": [[1, "desc"]],//默认第几个排序
             "bStateSave": true,//状态保存
