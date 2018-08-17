@@ -61,6 +61,9 @@ class CommentController extends Controller
 			}
 			
 			$comment->save();
+			$user = MemberManager::getByUsername($comment->username);
+			if ($user)
+				$comment->businesscard = BussinessCardController::getByUserid($user->userid);
 			return ApiResponse::makeResponse(true, $comment, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
