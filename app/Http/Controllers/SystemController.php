@@ -42,7 +42,7 @@ class SystemController extends Controller
 	public static function systemKeyValues_get()
 	{
 		$keyValues = SystemManager::getList(['id', 'asc']);
-		return view('systemKeyValue', ['values' => $keyValues]);
+		return view('system.value', ['datas' => $keyValues]);
 	}
 	
 	public static function systemKeyValues_post(Request $request)

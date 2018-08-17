@@ -10,10 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
+//
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 Route::get('log', 'DemoController@log');
 
 Route::get('systemKeyValues', 'SystemController@systemKeyValues_get');//设置系统关键变量

@@ -22,12 +22,12 @@ class SystemLog
 		$method = $request->method();
 		
 		$response = $next($request);
-		if ($response->original)
-			if (!array_get($response->original,'result'))
-				$xcx_log = XCXLogManager::log($url, $method, $ip, $param, json_encode($response));
-			else
-				$xcx_log = XCXLogManager::log($url, $method, $ip, $param, '');
-		else
+//		if ($response->original)
+//			if (!array_get($response->original,'result'))
+//				$xcx_log = XCXLogManager::log($url, $method, $ip, $param, json_encode($response));
+//			else
+//				$xcx_log = XCXLogManager::log($url, $method, $ip, $param, '');
+//		else
 			$xcx_log = XCXLogManager::log($url, $method, $ip, $param, '');
 		return $response;
 	}
