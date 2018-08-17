@@ -237,15 +237,27 @@ class CommentController extends Controller
 			switch ($favorite->mid) {
 				case '5':
 					$favorite->item = SellManager::getById($favorite->tid);
+					if($favorite->item->username){
+						$user=MemberManager::getByUsername($favorite->item->username);
+						$favorite->businesscard=BussinessCardController::getByUserid($user->userid);
+					}
 					break;
 				case '6':
 					$favorite->item = BuyManager::getById($favorite->tid);
+					if($favorite->item->username){
+						$user=MemberManager::getByUsername($favorite->item->username);
+						$favorite->businesscard=BussinessCardController::getByUserid($user->userid);
+					}
 					break;
 				case '21':
 					$favorite->item = ArticleManager::getById($favorite->tid);
 					break;
 				case '88':
 					$favorite->item = FJMYManager::getById($favorite->tid);
+					if($favorite->item->username){
+						$user=MemberManager::getByUsername($favorite->item->username);
+						$favorite->businesscard=BussinessCardController::getByUserid($user->userid);
+					}
 					break;
 				default:
 					break;
