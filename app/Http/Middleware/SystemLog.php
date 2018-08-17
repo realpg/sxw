@@ -28,7 +28,7 @@ class SystemLog
 //			else
 //				$xcx_log = XCXLogManager::log($url, $method, $ip, $param, '');
 //		else
-			$xcx_log = XCXLogManager::log($url, $method, $ip, $param, '');
+		$xcx_log = XCXLogManager::log($url, $method, $ip, $param, '');
 		return $response;
 	}
 	

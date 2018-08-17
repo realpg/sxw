@@ -82,8 +82,12 @@ class SystemManager
 	public static function setSystem($system, $data)
 	{
 		if (array_key_exists('value', $data)) {
-			$system->value = array_get($data, 'value');
+		if($system->type!=2)
+				$system->value = array_get($data, 'value');
+		else
+			$system->value = json_encode(array_get($data, 'value'));
 		}
+		
 		return $system;
 	}
 }

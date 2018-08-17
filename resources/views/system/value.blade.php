@@ -108,15 +108,16 @@
                         @endif
                     </td>
                     <td>@if($data->type==0)
-                            {{$data->value}}
+                            <button class="btn radius btn-primary size-L"
+                                    onClick="edit_value(0,'{{$data->name}}','{{$data->value}}')">编辑
+                            </button>
                         @elseif($data->type==1)
                             <input name="value" id='{{$data->id}}' class="switch-btn switch-btn-animbg" type="checkbox"
                                    @if($data->value==1) checked @endif/>
                         @elseif($data->type==2)
-                            <a style="text-decoration:none"
-                               onclick="admin_add('编辑VIP','{{ URL::asset("vip_edit?id=").$data->id}}','800','500')"
-                               href="javascript:;" title="编辑">编辑</a>
-                            <button class="btn radius btn-primary size-L" onClick="modaldemo()">弹出对话框</button>
+                            <button class="btn radius btn-primary size-L"
+                                    onClick='edit_value(2,"{{$data->name}}","{{($data->value)}}")'>edit
+                            </button>
                         @endif</td>
                 </tr>
             @endforeach
@@ -124,21 +125,22 @@
         </table>
         {{--</div>--}}
     </div>
-    <div id="modal-demo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    <div id="edit_value" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content radius">
                 <div class="modal-header">
-                    <h3 class="modal-title">对话框标题</h3>
+                    <h3 class="modal-title" id="value-name"></h3>
                     <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
                 </div>
-                <div class="modal-body">
-                    <p>对话框内容…</p>
+                <form>
+                <div class="modal-body" id="value-value">
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary">确定</button>
+                    <button class="btn btn-primary submit">确定</button>
                     <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -187,8 +189,19 @@
             /*5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件*/
         });
 
-        function modaldemo(){
-            $("#modal-demo").modal("show")}
+        function edit_value(type, name, value) {
+            console.log(value);
+            $("#value-name").html(name);
+            var value_input = '';
+            if (type == 0) {
+                value_input = '<input type="number" name="value" value="' + value + '">';
+            }
+            else if (type == 2) {
+                value_input = '<textarea style="width: 100%;height: 70px" name="value">' + value + '</textarea>';
+            }
+            $("#value-value").html(value_input);
+            $("#edit_value").modal("show")
+        }
 
         $('.submit').on('click', function () {
             var param = {};
@@ -201,7 +214,7 @@
         $('.switch-btn').on('change', function () {
             var param = {};
             param.id = $(this).attr('id');
-            param.value = $(this).val() ? 1 : 0;
+            param.value = $(this).is(':checked') ? 1 : 0;
             param._token = "{{ csrf_token() }}";
             console.log('请求参数', param, "{{url()->full()}}");
             submit(param);
