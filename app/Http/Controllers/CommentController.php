@@ -87,8 +87,8 @@ class CommentController extends Controller
 		if (checkParam($data, ['item_mid', 'item_id'])) {
 			$ret = "请求成功";
 			if (AgreeManager::getByCon(
-				['item_mid' => $data['item_mid'],
-					'item_id' => $data['item_id'],
+				['item_mid' => [$data['item_mid']],
+					'item_id' => [$data['item_id']],
 					'username' => [$user->username]
 				])->first()) {
 				return ApiResponse::makeResponse(false, "您已经点过赞了", ApiResponse::MISSING_PARAM);
