@@ -47,7 +47,6 @@ class FJMYManager
 			$fjmy->status = 2;
 		else
 			$fjmy->status = 3;
-		
 		return $fjmy;
 	}
 	

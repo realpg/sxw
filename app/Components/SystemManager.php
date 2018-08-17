@@ -21,8 +21,9 @@ class SystemManager
 	 *
 	 * 2018/07/05
 	 */
-	public static function createObject(){
-		$system=new System();
+	public static function createObject()
+	{
+		$system = new System();
 		//这里可以对新建记录进行一定的默认设置
 		
 		return $system;
@@ -36,7 +37,7 @@ class SystemManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function getList($orderby=['id','desc'])
+	public static function getList($orderby = ['id', 'desc'])
 	{
 		$systems = System::orderby($orderby[0], $orderby[1])->get();
 		return $systems;
@@ -82,12 +83,8 @@ class SystemManager
 	public static function setSystem($system, $data)
 	{
 		if (array_key_exists('value', $data)) {
-		if($system->type!=2)
-				$system->value = array_get($data, 'value');
-		else
-			$system->value = json_encode(array_get($data, 'value'));
+			$system->value = array_get($data, 'value');
 		}
-		
 		return $system;
 	}
 }

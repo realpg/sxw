@@ -47,7 +47,6 @@ class BuyManager
 		else
 			$buy->status = 3;
 		$buy->pack = '';
-		
 		return $buy;
 	}
 	

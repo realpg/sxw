@@ -68,15 +68,11 @@
                             class="Hui-iconfont">&#xe68f;</i></a>
             </div>
         </form>
+        {{--<div class="mt-20"></div>--}}
         <div class="cl pd-5 bg-1 bk-gray mt-20">
-            <span class="l">
-                {{--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> --}}
-                <a class="btn btn-primary radius"
-                   onclick="admin_add('添加VIP','{{ URL::asset("vip_edit")}}','800','500')">
-                <i class="Hui-iconfont">&#xe600;</i> 添加VIP</a>
-                </span>
+
             <span class="r">共有数据：<strong>{{$datas->count()}}</strong> 条</span></div>
-        {{--<div class="mt-20">--}}
+
         <table class="table table-border table-bordered table-bg table-sort">
             <thead>
             <tr class="text-c">
@@ -109,14 +105,14 @@
                     </td>
                     <td>@if($data->type==0)
                             <button class="btn radius btn-primary size-L"
-                                    onClick="edit_value(0,'{{$data->name}}','{{$data->value}}')">编辑
+                                    onClick='edit_value(0,"{{$index}}")'>编辑
                             </button>
                         @elseif($data->type==1)
                             <input name="value" id='{{$data->id}}' class="switch-btn switch-btn-animbg" type="checkbox"
                                    @if($data->value==1) checked @endif/>
                         @elseif($data->type==2)
                             <button class="btn radius btn-primary size-L"
-                                    onClick='edit_value(2,"{{$data->name}}","{{($data->value)}}")'>edit
+                                    onClick='edit_value(2,"{{$index}}")'>编辑
                             </button>
                         @endif</td>
                 </tr>
@@ -133,13 +129,14 @@
                     <h3 class="modal-title" id="value-name"></h3>
                     <a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
                 </div>
-                <form>
-                <div class="modal-body" id="value-value">
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary submit">确定</button>
-                    <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
-                </div>
+                <form id="value-form">
+                    <input id="value-id" name="id" value="0" class="hidden">
+                    <div class="modal-body" id="value-value">
+                    </div>
+                    <div class="modal-footer">
+                        <div class="btn btn-primary submit">确定</div>
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -154,6 +151,7 @@
     <script type="text/javascript" src="{{ URL::asset('hui/lib/datatables/1.10.0/jquery.dataTables.min.js')}}"></script>
     <script type="text/javascript" src="{{ URL::asset('hui/lib/laypage/1.2/laypage.js')}}"></script>
     <script type="text/javascript">
+        var datas =@json($datas);
         $.Huifold = function (obj, obj_c, speed, obj_type, Event) {
             if (obj_type == 2) {
                 $(obj + ":first").find("b").html("-");
@@ -189,9 +187,14 @@
             /*5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件*/
         });
 
-        function edit_value(type, name, value) {
-            console.log(value);
+        function edit_value(type, index) {
+            console.log(datas);
+            var id, name, value;
+            id = datas[index].id;
+            name = datas[index].name;
+            value = datas[index].value;
             $("#value-name").html(name);
+            $("#value-id").val(id);
             var value_input = '';
             if (type == 0) {
                 value_input = '<input type="number" name="value" value="' + value + '">';
@@ -204,10 +207,7 @@
         }
 
         $('.submit').on('click', function () {
-            var param = {};
-            param.id = $(this).prev().attr('id');
-            param.value = $(this).prev().val();
-            param._token = "{{ csrf_token() }}";
+            var param = $("#value-form").serialize();
             console.log('请求参数', param, "{{url()->full()}}");
             submit(param);
         });
@@ -228,16 +228,12 @@
                 success: function (ret) {
                     console.log("ret is:", ret);
                     if (ret.result) {
-
-                        toast.success({
-                            title: "操作成功",
-                            duration: 2000
-                        });
+                        $.Huimodalalert('提交成功！', 2000);
+                        setTimeout(function () {
+                            location.replace(location.href);
+                        }, 2000)
                     } else {
-                        toast.fail({
-                            title: "提交失败",
-                            duration: 2000
-                        });
+                        $.Huimodalalert('提交失败！', 2000)
                     }
                 }
             })

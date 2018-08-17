@@ -47,7 +47,6 @@ class SellManager
 			$sell->status = 2;
 		else
 			$sell->status = 3;
-		
 		return $sell;
 	}
 	
