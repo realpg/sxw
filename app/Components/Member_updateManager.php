@@ -129,6 +129,7 @@ class Member_updateManager
 	{
 		$member = Member::where('userid', '=', $userid)->first();
 		$company = Company::where('userid', '=', $userid)->first();
+		$ywlbs=CompanyYWLBManager::getByCon(['userid'=>[$userid]])->pluck('ywlb_id');
 		
 		$history = [
 			'truename' => $member->company,
@@ -136,6 +137,7 @@ class Member_updateManager
 			'company' => $member->company,
 			'career' => $member->career,
 			'wxqr' => $member->wxqr,
+			'ywlb_ids' =>$ywlbs,
 			'business' => $company->business,
 			'address' => $company->address,
 			'introduce' => $company->introduce,

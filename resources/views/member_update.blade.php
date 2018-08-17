@@ -109,7 +109,7 @@
             var interText = doT.template($("#modal-content").text());
             var content = interText({data: data, history: history});
             showModal({
-                title: 'title',
+                title: '更新用户信息',
                 content: content,
                 buttons: ['通过', '驳回'],
                 success: ['submit({id:' + data.id + ',result:true})', 'submit({id:' + data.id + ',result:false})'],

@@ -200,7 +200,7 @@
                 value_input = '<input type="number" name="value" value="' + value + '">';
             }
             else if (type == 2) {
-                value_input = '<textarea style="width: 100%;height: 70px" name="value">' + value + '</textarea>';
+                value_input = '<textarea style="width: 100%;height: 210px" name="value">' + value + '</textarea>';
             }
             $("#value-value").html(value_input);
             $("#edit_value").modal("show")

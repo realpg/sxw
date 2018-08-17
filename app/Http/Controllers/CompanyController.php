@@ -32,7 +32,6 @@ class CompanyController extends Controller
 				$ret = "手机号码修改成功。";
 			} else
 				$ret = "手机号码修改失败。";
-			
 		}
 		
 		
