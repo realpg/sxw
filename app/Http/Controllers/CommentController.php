@@ -236,28 +236,67 @@ class CommentController extends Controller
 		foreach ($myFavorites as $favorite) {
 			switch ($favorite->mid) {
 				case '5':
-					$favorite->item = SellManager::getById($favorite->tid);
-					if($favorite->item->username){
-						$user=MemberManager::getByUsername($favorite->item->username);
-						$favorite->businesscard=BussinessCardController::getByUserid($user->userid);
+					$item = SellManager::getById($favorite->tid);
+					if ($item) {
+						$user = MemberManager::getByUsername($item->username);
+						
+						$item = SellManager::getInfo($item, ['content', 'userinfo', 'tags']);
+						$item->I_agree = AgreeManager::getByCon(
+							['item_mid' => ['5'],
+								'item_id' => [$item->itemid],
+								'username' => [$user->username]
+							])->first() ? true : false;
+						$item->I_favortie = FavoriteManager::getByCon(
+							['mid' => ['5'],
+								'tid' => [$item->itemid],
+								'userid' => [$user->userid]
+							]
+						)->first() ? true : false;
 					}
+					$favorite->item = $item;
 					break;
 				case '6':
-					$favorite->item = BuyManager::getById($favorite->tid);
-					if($favorite->item->username){
-						$user=MemberManager::getByUsername($favorite->item->username);
-						$favorite->businesscard=BussinessCardController::getByUserid($user->userid);
+					$item = BuyManager::getById($favorite->tid);
+					if ($item) {
+						$user = MemberManager::getByUsername($item->username);
+						
+						$item = BuyManager::getInfo($item, ['content', 'userinfo', 'tags']);
+						$item->I_agree = AgreeManager::getByCon(
+							['item_mid' => ['6'],
+								'item_id' => [$item->itemid],
+								'username' => [$user->username]
+							])->first() ? true : false;
+						$item->I_favortie = FavoriteManager::getByCon(
+							['mid' => ['6'],
+								'tid' => [$item->itemid],
+								'userid' => [$user->userid]
+							]
+						)->first() ? true : false;
 					}
+					$favorite->item = $item;
 					break;
 				case '21':
 					$favorite->item = ArticleManager::getById($favorite->tid);
 					break;
 				case '88':
-					$favorite->item = FJMYManager::getById($favorite->tid);
-					if($favorite->item->username){
-						$user=MemberManager::getByUsername($favorite->item->username);
-						$favorite->businesscard=BussinessCardController::getByUserid($user->userid);
+					$item = SellManager::getById($favorite->tid);
+					if ($item) {
+						$user = MemberManager::getByUsername($item->username);
+						
+						$item = FJMYManager::getInfo($item, ['content', 'userinfo', 'tags']);
+						$item->I_agree = AgreeManager::getByCon(
+							['item_mid' => ['88'],
+								'item_id' => [$item->itemid],
+								'username' => [$user->username]
+							])->first() ? true : false;
+						$item->I_favortie = FavoriteManager::getByCon(
+							['mid' => ['88'],
+								'tid' => [$item->itemid],
+								'userid' => [$user->userid]
+							]
+						)->first() ? true : false;
 					}
+					$favorite->item = $item;
 					break;
 				default:
 					break;
