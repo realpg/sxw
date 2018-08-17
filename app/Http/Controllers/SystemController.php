@@ -89,6 +89,9 @@ class SystemController extends Controller
 			$histories[$index] = json_decode($update->history);
 			$update->history = '';
 			$update->user = MemberManager::getById($update->userid);
+			$update->thumbs=explode(',',$update->thumb);
+			if($histories[$index])
+			$histories[$index]->thumbs=explode(',',$histories[$index]->thumb);
 		}
 		return view('member_update', ['datas' => $updates, 'histories' => $histories]);
 	}

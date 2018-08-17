@@ -103,7 +103,7 @@
 
         //审核
         function shenhe(data_str, history_str) {
-            console.log(data_str, history_str)
+            console.log(data_str, "history", history_str)
             var data = $.parseJSON(data_str);
             var history = $.parseJSON(history_str);
             var interText = doT.template($("#modal-content").text());
@@ -119,7 +119,7 @@
 
         //查看
         function check(data_str, history_str) {
-            console.log(data_str, history_str);
+            console.log(data_str,'history', history_str);
             var data = $.parseJSON(data_str);
             var history = $.parseJSON(history_str);
             var interText = doT.template($("#modal-content").text());
@@ -146,7 +146,7 @@
                         $("#modal-demo").modal("hide");
                         setTimeout(function () {
                             location.reload()
-                        },'2000')
+                        }, '2000')
 
                     } else {
                         $.Huimodalalert('提交失败！', 2000)
@@ -202,8 +202,16 @@
             </tr>
             <tr>
                 <td>相关图片</td>
-                <td>@{{=it.data.thumb }}</td>
-                <td>@{{=it.history.thumb }}</td>
+                <td>
+                    @{{~it.data.thumbs :src:idx }}
+                    <img height="150px" src="@{{=src }}">
+                    @{{~}}
+                </td>
+                <td>
+                    @{{~it.history.thumbs :src:idx }}
+                    <img height="150px" src="@{{=src }}">
+                    @{{~}}
+                </td>
             </tr>
             <tr>
                 <td>微信二维码</td>
