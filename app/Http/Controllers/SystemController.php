@@ -127,6 +127,7 @@ class SystemController extends Controller
 	public static function tag(Request $request)
 	{
 		$data = $request->all();
+		
 		$con = [];
 		if (array_key_exists('moduleid', $data)) if ($data['moduleid'] != 0)
 			$con['moduleid'] = [$data['moduleid']];

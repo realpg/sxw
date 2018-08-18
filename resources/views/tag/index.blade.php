@@ -5,11 +5,11 @@
             <div class="text-c">
                 {{--<button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>--}}
                 <span class="select-box inline">
-		<select name="moduleid " class="select">
-			<option value="0">全部分类</option>
-            <option value="1">已驳回</option>
-			<option value="2">未审核</option>
-			<option value="3">已通过</option>
+		<select name="moduleid" class="select">
+			<option value="0">全部模块</option>
+            <option value="5">供应</option>
+			<option value="6">求购</option>
+			<option value="88">纺机贸易</option>
 		</select>
 
 		</span>
