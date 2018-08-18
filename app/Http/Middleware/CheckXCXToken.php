@@ -11,15 +11,13 @@ namespace App\Http\Middleware;
 use App\Components\MemberManager;
 use App\Http\Controllers\ApiResponse;
 use Closure;
-use Illuminate\Support\Facades\Auth;
-use Mockery\Exception;
 
 class CheckXCXToken
 {
 	function handle($request, Closure $next, $guard = null)
 	{
 		$data = $request->all();
-		if (checkParam($data,['userid','_token'])) {
+		if (checkParam($data, ['userid', '_token'])) {
 			$userid = array_get($data, 'userid');
 			$token = array_get($data, '_token');
 			$jsonstr = base64_decode($token);
@@ -28,12 +26,12 @@ class CheckXCXToken
 			if ($json != null) {
 				$_userid = $json->userid;
 				$tokenLifetime = $json->lifetime;
-				if ($tokenLifetime != null & time() < $tokenLifetime & $_userid == $userid){
-					$member=MemberManager::getById($userid);
-					if($member->groupid!=2)
+				if ($tokenLifetime != null & time() < $tokenLifetime & $_userid == $userid) {
+//					$member = MemberManager::getById($userid);
+//					if ($member->groupid != 2)
 					return $next($request);
-					else
-						return ApiResponse::makeResponse(false, "未找到用户或用户被封禁", ApiResponse::NO_USER);
+//					else
+//						return ApiResponse::makeResponse(false, "未找到用户或用户被封禁", ApiResponse::NO_USER);
 				}
 				
 			}
