@@ -63,7 +63,7 @@ class ADController extends Controller
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
 		//检验参数
-		if (checkParam($data, ['itemid'])) {
+		if (checkParam($data, ['itemid', 'level'])) {
 			$ret = "请求成功";
 			$AD = ADManager::getById($data['itemid']);
 			if (!$AD) {
@@ -71,20 +71,39 @@ class ADController extends Controller
 			} elseif ($AD->onsell != '1') {
 				return ApiResponse::makeResponse(false, '广告位暂不出售', ApiResponse::UNKNOW_ERROR);
 			}
+			switch ($data['level']) {
+				case 0:
+					$amount = $AD->amount0;
+					$druation = $AD->druation0 / 86400;
+					break;
+				case 1:
+					$amount = $AD->amount1;
+					$druation = $AD->druation1 / 86400;
+					break;
+				case 2:
+					$amount = $AD->amount2;
+					$druation = $AD->druation2 / 86400;
+					break;
+				default:
+					return ApiResponse::makeResponse(false, "参数错误", ApiResponse::INNER_ERROR);
+					break;
+			}
 			if (CreditController::changeCredit([
 				'userid' => $user->userid,
-				'amount' => -$AD->amount,
+				'amount' => -$amount,
 				'reason' => "购买广告位" . $AD->name . ",itemid:" . $AD->itemid,
 				'note' => "购买广告位",
 				'ranking' => 1])
 			) {
+				$AD->onsell = 0;
+				$AD->save();
 				$admins = MemberManager::getByCon(['admin' => ['1']]);
 				foreach ($admins as $admin) {
 					if (!MessageController::sendSystemMessage([
 						'title' => "小程序广告位购买通知",
 						'content' => "用户【" . $user->username . "(userid=" . $user->userid .
 							")】刚刚购买了广告位【" . $AD->desc . ",itemid:" . $AD->itemid .
-							"】，请尽快联系。电话号码:" . $user->mobile,
+							"】" . $druation . "天，请尽快联系。电话号码:" . $user->mobile,
 						'touser' => $admin->username
 					]))
 						return ApiResponse::makeResponse(true, "购买成功，请主动联系客服", ApiResponse::SUCCESS_CODE);;
