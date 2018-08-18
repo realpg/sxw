@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Components\BuyDataManager;
 use App\Components\BuyManager;
 use App\Components\CommentManager;
+use App\Components\InfoManager;
 use App\Components\MemberManager;
 use App\Components\MobileMessageManager;
 use App\Components\SystemManager;
@@ -29,6 +30,7 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{// 构造请求数据
+		return InfoManager::getByPage(6,5);
 		$url = "http://localhost/destoon/admin.php?file=login&forward=http%3A%2F%2Flocalhost%2Fdestoon%2Fadmin.php";
 		$headers = self::createHeaders();
 		$body = ['username' => 'admin', 'password' => 'Aa123456'];
