@@ -27,7 +27,7 @@ class BuyController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$buys = BuyManager::getByCon(['status' => [3]], ['vip', 'desc'], true);
+		$buys = BuyManager::getByCon(['status' => [3]], ['vip', "desc",'itemid', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
 			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);

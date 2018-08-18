@@ -116,7 +116,13 @@ class BuyManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'], $paginate = false)
 	{
-		$buys = Buy::orderby($orderby['0'], $orderby['1']);
+		$buys = Buy::orderby($orderby[0], $orderby[1]);
+		$count = count($orderby);
+		$i = 2;
+		while (($count - $i) >= 2) {
+			$buys->orderby($orderby[$i], $orderby[$i + 1]);
+			$i += 2;
+		}
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'userid') {
 				$users = MemberManager::getByCon([$key => $value]);

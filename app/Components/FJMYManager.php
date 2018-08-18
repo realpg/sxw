@@ -118,7 +118,13 @@ class FJMYManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'], $paginate = false)
 	{
-		$fjmys = FJMY::orderby($orderby['0'], $orderby['1']);
+		$fjmys = FJMY::orderby($orderby[0], $orderby[1]);
+		$count = count($orderby);
+		$i = 2;
+		while (($count - $i) >= 2) {
+			$fjmys->orderby($orderby[$i], $orderby[$i + 1]);
+			$i += 2;
+		}
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'userid') {
 				$users = MemberManager::getByCon([$key => $value]);

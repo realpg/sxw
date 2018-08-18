@@ -27,7 +27,7 @@ class FJMYController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$fjmys = FJMYManager::getByCon(['status' => [3]], ['vip', "desc"], true);
+		$fjmys = FJMYManager::getByCon(['status' => [3]], ['vip', "desc",'itemid', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
 			$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);

@@ -27,7 +27,7 @@ class SellController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$sells = SellManager::getByCon(['status' => [3]], ['vip', "desc"], true);
+		$sells = SellManager::getByCon(['status' => [3]], ['vip', "desc",'itemid', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
