@@ -32,9 +32,9 @@ Route::get('thesauru', 'SystemController@thesauru');//搜索同义词
 Route::get('thesauru_edit', 'SystemController@thesauru_edit_get');//同义词编辑get
 Route::post('thesauru_edit', 'SystemController@thesauru_edit_post');//同义词编辑post
 
-Route::get('rebind', 'SystemController@rebind');//重绑小程序
-Route::post('rebind', 'SystemController@rebind_post');//重绑小程序
-Route::get('getUserByUserid', 'SystemController@getUserByUserid');//重绑小程序
+Route::get('rebind', 'SystemController@rebind');//重绑小程序 废弃
+Route::post('rebind', 'SystemController@rebind_post');//重绑小程序 废弃
+Route::get('getUserByUserid', 'SystemController@getUserByUserid');//重绑小程序  废弃
 
 Route::get('ywlb', 'SystemController@ywlb');//业务类别
 Route::get('ywlb_edit', 'SystemController@ywlb_edit_get');//业务类别编辑get
