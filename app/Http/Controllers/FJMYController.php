@@ -50,7 +50,7 @@ class FJMYController
 	{
 		$ret = [];
 		$ret['catids'] = array_arrange(CategoryManager::getByCon(['moduleid' => [88]]));
-		$ret['tags'] = array_arrange(TagManager::getByCon(['moduleid' => [6]]));
+		$ret['tags'] = array_arrange(TagManager::getByCon(['moduleid' => [88]]));
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
