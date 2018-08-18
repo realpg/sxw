@@ -45,20 +45,21 @@ class LoginController extends Controller
 		}
 		$user = MessageController::checkMessage($user);
 		
-		if (gettype($data['userInfo']) == 'string') {
-			$userInfo = json_decode($data['userInfo']);
+		if (array_get($data, 'userInfo') && array_get($data, 'userInfo') != [])
+			if (gettype($data['userInfo']) == 'string') {
+				$userInfo = json_decode($data['userInfo']);
 //		$user->username = 'xcx' . md5($user->user_id);
-			$user->passport = $userInfo->nickName ? $userInfo->nickName : $user->passport;
-			$user->gender = $userInfo->gender ? $userInfo->gender : $user->gender;
-			$user->avatarUrl = $userInfo->avatarUrl ? $userInfo->avatarUrl : $user->avatarUrl;
-			$user->save();
-		} else {
+				$user->passport = $userInfo->nickName ? $userInfo->nickName : $user->passport;
+				$user->gender = $userInfo->gender ? $userInfo->gender : $user->gender;
+				$user->avatarUrl = $userInfo->avatarUrl ? $userInfo->avatarUrl : $user->avatarUrl;
+				$user->save();
+			} else {
 //		$user->username = 'xcx' . md5($user->user_id);
-			$user->passport = array_key_exists('nickName', $data['userInfo']) ? $data['userInfo']['nickName'] : "新用户";
-			$user->gender = array_key_exists('gender', $data['userInfo']) ? $data['userInfo']['gender'] : $user->gender;
-			$user->avatarUrl = array_key_exists('avatarUrl', $data['userInfo']) ? $data['userInfo']['avatarUrl'] : $user->avatarUrl;
-			$user->save();
-		}
+				$user->passport = array_key_exists('nickName', $data['userInfo']) ? $data['userInfo']['nickName'] : "新用户";
+				$user->gender = array_key_exists('gender', $data['userInfo']) ? $data['userInfo']['gender'] : $user->gender;
+				$user->avatarUrl = array_key_exists('avatarUrl', $data['userInfo']) ? $data['userInfo']['avatarUrl'] : $user->avatarUrl;
+				$user->save();
+			}
 		
 		$user = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
 		$user->username = 'xcx' . $user->userid;
@@ -75,7 +76,7 @@ class LoginController extends Controller
 			$user->businesscard = BussinessCardController::getByUserid($company->userid);
 		}
 		$ret = $user;
-		$ret ->_token = $_token;
+		$ret->_token = $_token;
 //		$ret=$user;
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
