@@ -80,7 +80,7 @@ class FJMYManager
 		
 		$fjmys = FJMY::orderby('itemid', 'desc');
 		if ($paginate) {
-			$fjmys = $fjmys->paginate();
+			$fjmys = $fjmys->paginate(5);
 		} else {
 			$fjmys = $fjmys->get();
 		}
@@ -139,7 +139,7 @@ class FJMYManager
 			}
 		}
 		if ($paginate)
-			$fjmys = $fjmys->paginate();
+			$fjmys = $fjmys->paginate(5);
 		else
 			$fjmys = $fjmys->get();
 		return $fjmys;

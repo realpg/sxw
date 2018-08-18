@@ -72,7 +72,7 @@ class YWLBManager
 			$ywlbs = $ywlbs->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$ywlbs = $ywlbs->paginate();
+			$ywlbs = $ywlbs->paginate(5);
 		}
 		return $ywlbs;
 	}

@@ -73,7 +73,7 @@ class VIPUserManager
 			$vipUsers = $vipUsers->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$vipUsers = $vipUsers->paginate();
+			$vipUsers = $vipUsers->paginate(5);
 		}
 		return $vipUsers;
 	}

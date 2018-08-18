@@ -79,7 +79,7 @@ class BuyManager
 	{
 		$buys = Buy::orderby('itemid', 'desc');
 		if ($paginate)
-			$buys = $buys->paginate();
+			$buys = $buys->paginate(5);
 		else
 			$buys = $buys->get();
 		return $buys;
@@ -137,7 +137,7 @@ class BuyManager
 			}
 		}
 		if ($paginate)
-			$buys = $buys->paginate();
+			$buys = $buys->paginate(5);
 		else
 			$buys = $buys->get();
 		return $buys;

@@ -72,7 +72,7 @@ class CompanyYWLBManager
 			$companyYWLBs = $companyYWLBs->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$companyYWLBs = $companyYWLBs->paginate();
+			$companyYWLBs = $companyYWLBs->paginate(5);
 		}
 		return $companyYWLBs;
 	}

@@ -75,7 +75,7 @@ class ArticleManager
 	 */
 	public static function getList()
 	{
-		$articles = Article::orderby('itemid', 'desc')->paginate();
+		$articles = Article::orderby('itemid', 'desc')->paginate(5);
 		return $articles;
 	}
 	
@@ -124,7 +124,7 @@ class ArticleManager
 				$articles = $articles->whereIn($key, $value);
 			}
 		}
-		$articles = $articles->paginate();
+		$articles = $articles->paginate(5);
 		return $articles;
 	}
 	

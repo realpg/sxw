@@ -79,7 +79,7 @@ class SellManager
 	{
 		$sells = Sell::orderby('itemid', 'desc');
 		if ($paginate) {
-			$sells = $sells->paginate();
+			$sells = $sells->paginate(5);
 		} else {
 			$sells = $sells->get();
 		}
@@ -138,7 +138,7 @@ class SellManager
 			}
 		}
 		if ($paginate)
-			$sells = $sells->paginate();
+			$sells = $sells->paginate(5);
 		else
 			$sells = $sells->get();
 		return $sells;

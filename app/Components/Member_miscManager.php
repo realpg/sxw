@@ -79,7 +79,7 @@ class Member_miscManager
 			$member_miscs = $member_miscs->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$member_miscs = $member_miscs->paginate();
+			$member_miscs = $member_miscs->paginate(5);
 		}
 		return $member_miscs;
 	}

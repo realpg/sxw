@@ -45,7 +45,7 @@ class LLJLManager
 	 */
 	public static function getList()
 	{
-		$lljls = LLJL::orderby('id', 'desc')->paginate();
+		$lljls = LLJL::orderby('id', 'desc')->paginate(5);
 		return $lljls;
 	}
 	

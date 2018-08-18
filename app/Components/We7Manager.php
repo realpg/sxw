@@ -72,7 +72,7 @@ class We7Manager
 			$we7s = $we7s->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$we7s = $we7s->paginate();
+			$we7s = $we7s->paginate(5);
 		}
 		return $we7s;
 	}

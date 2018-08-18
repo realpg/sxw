@@ -72,7 +72,7 @@ class TemplateManager
 			$templates = $templates->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$templates = $templates->paginate();
+			$templates = $templates->paginate(5);
 		}
 		return $templates;
 	}

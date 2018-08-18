@@ -72,7 +72,7 @@ class VIPManager
 			$vips = $vips->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$vips = $vips->paginate();
+			$vips = $vips->paginate(5);
 		}
 		return $vips;
 	}

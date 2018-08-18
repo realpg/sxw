@@ -75,7 +75,7 @@ class FinanceCreditManager
 			$financeCredits = $financeCredits->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$financeCredits = $financeCredits->paginate();
+			$financeCredits = $financeCredits->paginate(5);
 		}
 		return $financeCredits;
 	}

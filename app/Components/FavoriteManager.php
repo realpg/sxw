@@ -78,7 +78,7 @@ class FavoriteManager
 			$favorites = $favorites->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$favorites = $favorites->paginate();
+			$favorites = $favorites->paginate(5);
 		}
 		return $favorites;
 	}

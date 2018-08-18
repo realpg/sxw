@@ -77,7 +77,7 @@ class UpgradeManager
 			$upgrades = $upgrades->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$upgrades = $upgrades->paginate();
+			$upgrades = $upgrades->paginate(5);
 		}
 		return $upgrades;
 	}

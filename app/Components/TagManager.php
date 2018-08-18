@@ -72,7 +72,7 @@ class TagManager
 			$tags = $tags->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$tags = $tags->paginate();
+			$tags = $tags->paginate(5);
 		}
 		return $tags;
 	}

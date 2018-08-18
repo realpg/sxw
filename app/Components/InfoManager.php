@@ -78,7 +78,7 @@ class InfoManager
 	 */
 	public static function getList()
 	{
-		$infos = Info::orderby('itemid', 'desc')->paginate();
+		$infos = Info::orderby('itemid', 'desc')->paginate(5);
 		return $infos;
 	}
 	

@@ -72,7 +72,7 @@ class ThesauruManager
 			$thesaurus = $thesaurus->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$thesaurus = $thesaurus->paginate();
+			$thesaurus = $thesaurus->paginate(5);
 		}
 		return $thesaurus;
 	}

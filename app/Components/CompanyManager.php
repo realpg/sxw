@@ -42,7 +42,7 @@ class CompanyManager
 	public static function getList($paginate = false)
 	{
 		if ($paginate)
-			$companys = Company::orderby('userid', 'desc')->paginate();
+			$companys = Company::orderby('userid', 'desc')->paginate(5);
 		else
 			$companys = Company::orderby('userid', 'desc')->get();
 		return $companys;
@@ -82,7 +82,7 @@ class CompanyManager
 			$companys = $companys->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$companys = $companys->paginate();
+			$companys = $companys->paginate(5);
 		}
 		return $companys;
 	}

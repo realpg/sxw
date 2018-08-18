@@ -72,7 +72,7 @@ class ADPlaceManager
 			$ad_places = $ad_places->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$ad_places = $ad_places->paginate();
+			$ad_places = $ad_places->paginate(5);
 		}
 		return $ad_places;
 	}

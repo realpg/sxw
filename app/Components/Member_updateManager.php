@@ -77,7 +77,7 @@ class Member_updateManager
 			$member_updates = $member_updates->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$member_updates = $member_updates->paginate();
+			$member_updates = $member_updates->paginate(5);
 		}
 		return $member_updates;
 	}

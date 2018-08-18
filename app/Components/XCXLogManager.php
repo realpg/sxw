@@ -70,7 +70,7 @@ class XCXLogManager
 			$XCXlogs = $XCXlogs->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$XCXlogs = $XCXlogs->paginate();
+			$XCXlogs = $XCXlogs->paginate(5);
 		}
 		return $XCXlogs;
 	}

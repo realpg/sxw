@@ -73,7 +73,7 @@ class ADManager
 			$ads = $ads->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$ads = $ads->paginate();
+			$ads = $ads->paginate(5);
 		}
 		return $ads;
 	}

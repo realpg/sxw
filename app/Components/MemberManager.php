@@ -82,7 +82,7 @@ class MemberManager
 			$members = $members->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$members = $members->paginate();
+			$members = $members->paginate(5);
 		}
 		return $members;
 	}

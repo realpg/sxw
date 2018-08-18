@@ -73,7 +73,7 @@ class RankingManager
 			$rankings = $rankings->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$rankings = $rankings->paginate();
+			$rankings = $rankings->paginate(5);
 		}
 		return $rankings;
 	}

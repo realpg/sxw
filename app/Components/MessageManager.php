@@ -75,7 +75,7 @@ class MessageManager
 			$messages = $messages->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$messages = $messages->paginate();
+			$messages = $messages->paginate(5);
 		}
 		return $messages;
 	}

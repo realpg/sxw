@@ -73,7 +73,7 @@ class ClockinManager
 			$clockins = $clockins->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$clockins = $clockins->paginate();
+			$clockins = $clockins->paginate(5);
 		}
 		return $clockins;
 	}
