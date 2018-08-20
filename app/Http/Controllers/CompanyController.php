@@ -121,8 +121,10 @@ class CompanyController extends Controller
 	{
 		$data = $request->all();
 		$ret = [];
+		$user = MemberManager::getById($data['userid']);
 		$ret['ywlb'] = YWLBManager::getByCon(['status' => '3']);
-		$ret['businesscard'] = BussinessCardController::getByUserid($data['userid']);
+		if ($user->groupid == 6)
+			$ret['businesscard'] = BussinessCardController::getByUserid($data['userid']);
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 }
