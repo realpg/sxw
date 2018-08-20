@@ -13,6 +13,7 @@ use App\Components\CompanyManager;
 use App\Components\FinanceCreditManager;
 use App\Components\MemberManager;
 use App\Components\RankingManager;
+use App\Models\Ranking;
 use Illuminate\Http\Request;
 
 class RankingController extends Controller
@@ -37,12 +38,12 @@ class RankingController extends Controller
 		 * 统计排名
 		 *
 		 */
-		$credits=FinanceCreditManager::getByCon(['start_time' => $start_time,'ranking'=>1])->groupBy('username');
+		$credits = FinanceCreditManager::getByCon(['start_time' => $start_time, 'ranking' => 1])->groupBy('username');
 		foreach ($credits as $username => $cost_credits) {
 			$user = MemberManager::getByCon(['username' => $username])->first();
-			$points=0;
-			foreach ($cost_credits as $cost_credit){
-				$points+=-$cost_credit->amount;
+			$points = 0;
+			foreach ($cost_credits as $cost_credit) {
+				$points += -$cost_credit->amount;
 			}
 			$ranking_container->push(['userid' => $user->userid, 'cost_credit' => $points]);
 		}
@@ -74,10 +75,10 @@ class RankingController extends Controller
 		$data = $request->all();
 		//检验参数
 		if (checkParam($data, ['type'])) {
-			$ranks = RankingManager::getByCon(['type' => [$data['type']]],['rank','asc']);
-			foreach ($ranks as  $rank){
-				$company=CompanyManager::getById($rank->userid);
-				$rank->businesscard=BussinessCardController::getByUserid($company->userid);
+			$ranks = RankingManager::getByCon(['type' => [$data['type']]], ['rank', 'asc']);
+			foreach ($ranks as $rank) {
+				$company = CompanyManager::getById($rank->userid);
+				$rank->businesscard = BussinessCardController::getByUserid($company->userid);
 			}
 			
 			$ret = array_arrange($ranks);
@@ -86,6 +87,16 @@ class RankingController extends Controller
 			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function clear($time = 2592000)
+	{
+		//默认清理一个月以前的排行榜记录
+		$now = time();
+		$rankings = Ranking::withTrashed()->where('addtime', '<', $now - $time);
+		foreach ($rankings as $ranking) {
+			$ranking->forceDelete();
 		}
 	}
 }
