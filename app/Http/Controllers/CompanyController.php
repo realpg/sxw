@@ -33,7 +33,11 @@ class CompanyController extends Controller
 			} else
 				$ret = "手机号码修改失败。";
 		}
-		
+		if (array_key_exists('avatarUrl', $data)){
+			$user->avatarUrl = $data['avatarUrl'];
+			$user->save();
+		}
+}
 		
 		if ($user->groupid == 5) {
 			return self::upgrade($request, $ret);
