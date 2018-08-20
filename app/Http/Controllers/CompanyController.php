@@ -36,6 +36,7 @@ class CompanyController extends Controller
 		if (array_key_exists('avatarUrl', $data)) {
 			$user->avatarUrl = $data['avatarUrl'];
 			$user->save();
+			$ret .= "修改头像成功";
 		}
 		
 		if ($user->groupid == 5) {
@@ -53,8 +54,10 @@ class CompanyController extends Controller
 				&& array_get($data, 'avatarUrl') == $bussinesscard['avatarUrl']
 				&& array_get($data, 'wxqr') == $bussinesscard['wxqr']
 			)
+			{
 				return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
-			else
+			}
+					else
 				return self::update($request, $ret);
 		} else {
 			return ApiResponse::makeResponse(false, "暂不支持", ApiResponse::UNKNOW_ERROR);
