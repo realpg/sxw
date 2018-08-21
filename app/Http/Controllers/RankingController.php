@@ -41,6 +41,11 @@ class RankingController extends Controller
 		$credits = FinanceCreditManager::getByCon(['start_time' => $start_time, 'ranking' => 1])->groupBy('username');
 		foreach ($credits as $username => $cost_credits) {
 			$user = MemberManager::getByCon(['username' => $username])->first();
+			if (!$user) {
+				continue;
+			} else if ($user->groupid != 6) {
+				continue;
+			}
 			$points = 0;
 			foreach ($cost_credits as $cost_credit) {
 				$points += -$cost_credit->amount;
