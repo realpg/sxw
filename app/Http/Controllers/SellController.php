@@ -27,7 +27,7 @@ class SellController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$sells = SellManager::getByCon(['status' => [3]], ['vip', "desc",'itemid', 'desc'], true);
+		$sells = SellManager::getByCon(['status' => [3]], ['vip', "desc", 'itemid', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
@@ -48,9 +48,14 @@ class SellController
 	
 	public function edit(Request $request)
 	{
+		$data = $request->all();
 		$ret = [];
 		$ret['catids'] = array_arrange(CategoryManager::getByCon(['moduleid' => [5]]));
 		$ret['tags'] = array_arrange(TagManager::getByCon(['moduleid' => [5]]));
+		if (checkParam($data, ['itemid'])) {
+			$item = SellManager::getById($data['itemid']);
+			$ret['item'] = SellManager::getInfo($item, ['content', 'tags']);
+		}
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	

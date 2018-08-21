@@ -27,7 +27,7 @@ class BuyController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$buys = BuyManager::getByCon(['status' => [3]], ['vip', "desc",'itemid', 'desc'], true);
+		$buys = BuyManager::getByCon(['status' => [3]], ['vip', "desc", 'itemid', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
 			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
@@ -48,9 +48,14 @@ class BuyController
 	
 	public function edit(Request $request)
 	{
+		$data = $request->all();
 		$ret = [];
 		$ret['catids'] = array_arrange(CategoryManager::getByCon(['moduleid' => [6]]));
 		$ret['tags'] = array_arrange(TagManager::getByCon(['moduleid' => [6]]));
+		if (checkParam($data, ['itemid'])) {
+			$item = BuyManager::getById($data['itemid']);
+			$ret['item'] = BuyManager::getInfo($item, ['content', 'tags']);
+		}
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	

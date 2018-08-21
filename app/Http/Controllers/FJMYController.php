@@ -27,7 +27,7 @@ class FJMYController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$fjmys = FJMYManager::getByCon(['status' => [3]], ['vip', "desc",'itemid', 'desc'], true);
+		$fjmys = FJMYManager::getByCon(['status' => [3]], ['vip', "desc", 'itemid', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
 			$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);
@@ -48,9 +48,14 @@ class FJMYController
 	
 	public function edit(Request $request)
 	{
+		$data = $request->all();
 		$ret = [];
 		$ret['catids'] = array_arrange(CategoryManager::getByCon(['moduleid' => [88]]));
 		$ret['tags'] = array_arrange(TagManager::getByCon(['moduleid' => [88]]));
+		if (checkParam($data, ['itemid'])) {
+			$item = FJMYManager::getById($data['itemid']);
+			$ret['item'] = FJMYManager::getInfo($item, ['content', 'tags']);
+		}
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
