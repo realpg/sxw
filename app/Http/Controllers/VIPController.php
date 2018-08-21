@@ -97,4 +97,11 @@ class VIPController
 		}
 	}
 	
+	public static function my(Request $request)
+	{
+		$data = $request->all();
+		$ret = VIPUserManager::getUserVIPTime($data['userid']);
+		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+	}
+	
 }

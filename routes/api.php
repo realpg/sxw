@@ -90,6 +90,7 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	
 	Route::get('vip/selling', 'VIPController@getSelling');//获得广告信息
 	Route::post('vip/buy', 'VIPController@buy');//获得广告信息
+	Route::get('vip/my', 'VIPController@my');//获得广告信息
 	
 	Route::get('category/getByMid', 'CategoryController@getByMid');//获得广告信息
 });

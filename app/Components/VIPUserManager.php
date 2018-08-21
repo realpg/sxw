@@ -111,4 +111,13 @@ class VIPUserManager
 		$vipuser = VIPUser::where('userid', '=', $userid)->where('status', '=', '3')->first();
 		return $vipuser ? $vipuser->vip : 0;
 	}
+	
+	public static function getUserVIPTime($userid)
+	{
+		$vipuser = VIPUser::where('userid', '=', $userid)->whereIn('status', ['0', '3'])->orderBy('totime', 'desc')->first();
+		if(!$vipuser){
+			return time();
+		}
+		return $vipuser->totime > time() ? $vipuser->totime : time();
+	}
 }
