@@ -166,7 +166,7 @@ class BuyController
 				}
 				return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 			} else
-				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(true, [], ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}

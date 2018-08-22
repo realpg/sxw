@@ -166,7 +166,7 @@ class SellController
 				}
 				return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 			} else
-				return ApiResponse::makeResponse(false, "未找到结果", ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(true, [], ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
