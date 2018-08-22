@@ -201,6 +201,11 @@ class FJMYManager
 		
 		$searchInfo->content .= $fjmy->title . ',';
 		
+		$company=CompanyManager::getByUsername($fjmy->username);
+		if($company){
+			$searchInfo->content .= $company->company . ',';
+		}
+		
 		$searchInfo->catid = $fjmy->catid;
 		$cat = CategoryManager::getById($fjmy->catid);
 		$searchInfo->content .= $cat->catname . ',';

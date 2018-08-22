@@ -65,6 +65,12 @@ class CompanyManager
 		return $company;
 	}
 	
+	public static function getByUsername($username)
+	{
+		$company = Company::where('username', '=', $username)->first();
+		return $company;
+	}
+	
 	/*
 	 * 根据条件数组获取
 	 *

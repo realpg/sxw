@@ -200,6 +200,11 @@ class SellManager
 		
 		$searchInfo->content .= $sell->title . ',';
 		
+		$company=CompanyManager::getByUsername($sell->username);
+		if($company){
+			$searchInfo->content .= $company->company . ',';
+		}
+		
 		$searchInfo->catid = $sell->catid;
 		$cat = CategoryManager::getById($sell->catid);
 		$searchInfo->content .= $cat->catname . ',';
@@ -208,6 +213,7 @@ class SellManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
+		
 		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}

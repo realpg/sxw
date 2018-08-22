@@ -199,6 +199,11 @@ class BuyManager
 		
 		$searchInfo->content .= $buy->title . ',';
 		
+		$company=CompanyManager::getByUsername($buy->username);
+		if($company){
+			$searchInfo->content .= $company->company . ',';
+		}
+		
 		$searchInfo->catid = $buy->catid;
 		$cat = CategoryManager::getById($buy->catid);
 		$searchInfo->content .= $cat->catname . ',';

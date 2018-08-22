@@ -9,6 +9,7 @@ use App\Components\CommentManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
 use App\Components\MobileMessageManager;
+use App\Components\SellManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
 use App\Models\Comment;
@@ -30,6 +31,16 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{// 构造请求数据
+		$sells=SellManager::getList();
+		
+		$arr=[];
+		foreach ($sells as $sell){
+			$searchInfo=SellManager::createSearchInfo($sell);
+			$searchInfo->save();
+			$arr[$sell->itemid]=true;
+		}
+		return $arr;
+		
 		return InfoManager::getByPage(6,5);
 		$url = "http://localhost/destoon/admin.php?file=login&forward=http%3A%2F%2Flocalhost%2Fdestoon%2Fadmin.php";
 		$headers = self::createHeaders();

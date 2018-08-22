@@ -164,7 +164,7 @@ class BuyController
 					}
 					$buy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $buy->tag)]));
 				}
-				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
 		} else {

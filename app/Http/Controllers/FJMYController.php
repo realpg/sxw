@@ -165,7 +165,7 @@ class FJMYController
 					$fjmy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]));
 				}
 				
-				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, $keyword, ApiResponse::SUCCESS_CODE);
 		} else {
