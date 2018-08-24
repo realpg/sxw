@@ -60,7 +60,7 @@ class Kernel extends ConsoleKernel
 			}
 			$fjmys=FJMYManager::getList();
 			foreach ($fjmys as $fjmy){
-				$searchInfo=SellManager::createSearchInfo($fjmy);
+				$searchInfo=FJMYManager::createSearchInfo($fjmy);
 				$searchInfo->save();
 			}
 		})->dailyAt('19:00');  //unix时间19点，即北京时间3点

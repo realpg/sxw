@@ -47,11 +47,11 @@ class DemoController extends Controller
 		}
 		$fjmys=FJMYManager::getList();
 		foreach ($fjmys as $fjmy){
-			$searchInfo=SellManager::createSearchInfo($fjmy);
+			$searchInfo=FJMYManager::createSearchInfo($fjmy);
 			$searchInfo->save();
 			array_push($arr,['mid'=>88,'itemid'=>$fjmy->itemid]);
 		}
-		return "21111";
+		return $arr;
 	}
 	
 	// 创建请求头
