@@ -78,11 +78,10 @@ class SellManager
 	public static function getList($paginate = false)
 	{
 		$sells = Sell::orderby('itemid', 'desc');
-		if ($paginate) {
+		if ($paginate)
 			$sells = $sells->paginate(5);
-		} else {
+		 else
 			$sells = $sells->get();
-		}
 		return $sells;
 	}
 	
@@ -213,7 +212,7 @@ class SellManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
-		
+		$searchInfo->content .= $sell->content;
 		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}

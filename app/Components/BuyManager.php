@@ -29,7 +29,7 @@ class BuyManager
 	{
 		$buy = new Buy();
 		//这里可以对新建记录进行一定的默认设置
-		$buy->catid = 2;//默认值
+		$buy->catid = 5;//默认值
 		$buy->typeid = 0;//默认值
 		$buy->n1 = $buy->n2 = $buy->n3 = '';
 		$buy->v1 = $buy->v2 = $buy->v3 = '';
@@ -212,6 +212,7 @@ class BuyManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
+		$searchInfo->content .= $buy->content;
 		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}

@@ -29,7 +29,7 @@ class FJMYManager
 	{
 		$fjmy = new FJMY();
 		//这里可以对新建记录进行一定的默认设置
-		$fjmy->catid = 2;//默认值
+		$fjmy->catid = 7;//默认值
 		$fjmy->typeid = 0;//默认值
 		$fjmy->n1 = $fjmy->n2 = $fjmy->n3 = '';
 		$fjmy->v1 = $fjmy->v2 = $fjmy->v3 = '';
@@ -77,13 +77,11 @@ class FJMYManager
 	 */
 	public static function getList($paginate = false)
 	{
-		
 		$fjmys = FJMY::orderby('itemid', 'desc');
-		if ($paginate) {
+		if ($paginate)
 			$fjmys = $fjmys->paginate(5);
-		} else {
+		else
 			$fjmys = $fjmys->get();
-		}
 		return $fjmys;
 	}
 	
@@ -214,6 +212,7 @@ class FJMYManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
+		$searchInfo->content .= $fjmy->content;
 		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}
