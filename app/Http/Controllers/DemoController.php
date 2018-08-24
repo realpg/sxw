@@ -32,20 +32,24 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{// 构造请求数据
+		$arr=array();
 		$sells=SellManager::getList();
 		foreach ($sells as $sell){
 			$searchInfo=SellManager::createSearchInfo($sell);
 			$searchInfo->save();
+			array_push($arr,['mid'=>5,'itemid'=>$sell->itemid]);
 		}
 		$buys=BuyManager::getList();
 		foreach ($buys as $buy){
 			$searchInfo=SellManager::createSearchInfo($buy);
 			$searchInfo->save();
+			array_push($arr,['mid'=>6,'itemid'=>$buy->itemid]);
 		}
 		$fjmys=FJMYManager::getList();
 		foreach ($fjmys as $fjmy){
 			$searchInfo=SellManager::createSearchInfo($fjmy);
 			$searchInfo->save();
+			array_push($arr,['mid'=>88,'itemid'=>$fjmy->itemid]);
 		}
 		return "21111";
 	}
