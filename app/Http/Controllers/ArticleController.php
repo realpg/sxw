@@ -24,8 +24,6 @@ class ArticleController
 		return ApiResponse::makeResponse(true, ArticleManager::getList(), ApiResponse::SUCCESS_CODE);
 	}
 	
-	
-	
 	public static function getById(Request $request)
 	{
 		$data = $request->all();
