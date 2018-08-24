@@ -31,6 +31,10 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{// 构造请求数据
+		$request->session()->put('userid', '1');
+		$request->session()->put('MG', '22');
+		return redirect()->to('lljl');
+		
 		$sells=SellManager::getList();
 		
 		$arr=[];

@@ -64,6 +64,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 	    //小程序token验证
 	    'checkXCXToken' => \App\Http\Middleware\CheckXCXToken::class,
-	    
+	    'checkAdmin' => \App\Http\Middleware\CheckAdmin::class,
     ];
 }
