@@ -55,7 +55,7 @@ class Kernel extends ConsoleKernel
 			}
 			$buys=BuyManager::getList();
 			foreach ($buys as $buy){
-				$searchInfo=SellManager::createSearchInfo($buy);
+				$searchInfo=BuyManager::createSearchInfo($buy);
 				$searchInfo->save();
 			}
 			$fjmys=FJMYManager::getList();

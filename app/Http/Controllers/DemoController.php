@@ -41,7 +41,7 @@ class DemoController extends Controller
 		}
 		$buys=BuyManager::getList();
 		foreach ($buys as $buy){
-			$searchInfo=SellManager::createSearchInfo($buy);
+			$searchInfo=BuyManager::createSearchInfo($buy);
 			$searchInfo->save();
 			array_push($arr,['mid'=>6,'itemid'=>$buy->itemid]);
 		}
