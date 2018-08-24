@@ -185,7 +185,7 @@ class SellManager
 		if (array_key_exists('telephone', $data)) {
 			$sell->telephone = array_get($data, 'telephone');
 		}
-		$sell->keyword = $sell->title . ',' . '求购' . '求购分类';//*****需要改动*****
+		$sell->keyword = $sell->title . ',' . '供应' ;//*****需要改动*****
 		$sell->editor = MemberManager::getById($data['userid'])->username;
 		$sell->editdate = date("Y-m-d");
 		$sell->edittime = time();

@@ -184,7 +184,7 @@ class BuyManager
 		if (array_key_exists('telephone', $data)) {
 			$buy->telephone = array_get($data, 'telephone');
 		}
-		$buy->keyword = $buy->title . ',' . '求购' . '求购分类';//*****需要改动*****
+		$buy->keyword = $buy->title . ',' . '求购';//*****需要改动*****
 		$buy->editor = MemberManager::getById($data['userid'])->username;
 		$buy->editdate = date("Y-m-d");
 		$buy->edittime = time();

@@ -70,8 +70,8 @@ class FJMYSearchManager
 		$fjmy_search = FJMY_search::where('itemid', '=', $id)->first();
 		if (!$fjmy_search) {
 			$fjmy_search = new FJMY_search();
+			$fjmy_search->itemid = $id;
 		}
-		$fjmy_search->itemid = $id;
 		return $fjmy_search;
 	}
 	

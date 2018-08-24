@@ -186,7 +186,7 @@ class FJMYManager
 		if (array_key_exists('telephone', $data)) {
 			$fjmy->telephone = array_get($data, 'telephone');
 		}
-		$fjmy->keyword = $fjmy->title . ',' . '求购' . '求购分类';//*****需要改动*****
+		$fjmy->keyword = $fjmy->title . ',' . '纺机';//*****需要改动*****
 		$fjmy->editor = MemberManager::getById($data['userid'])->username;
 		$fjmy->editdate = date("Y-m-d");
 		$fjmy->edittime = time();
