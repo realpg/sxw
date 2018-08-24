@@ -28,7 +28,7 @@ class CheckAdmin
 //				abort(404);
 			}
 			
-			
+			return ApiResponse::makeResponse(true, ['userid' => $userid, 'user' => $user], 200);
 			if ($seed != md5($userid . ":" . $user->username)) {
 				abort(404);
 			};
