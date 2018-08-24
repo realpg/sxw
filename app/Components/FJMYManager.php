@@ -212,7 +212,7 @@ class FJMYManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
-		$searchInfo->content .= $fjmy->content;
+		$searchInfo->content .= FJMYDataManager::getById($fjmy->itemid)->content;
 		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}

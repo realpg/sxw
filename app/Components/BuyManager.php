@@ -212,7 +212,7 @@ class BuyManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
-		$searchInfo->content .= $buy->content;
+		$searchInfo->content .= BuyDataManager::getById($buy->itemid)->content;
 		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}

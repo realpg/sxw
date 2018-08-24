@@ -212,7 +212,7 @@ class SellManager
 		foreach ($tags as $tag) {
 			$searchInfo->content .= $tag->tagname . ',';
 		}
-		$searchInfo->content .= $sell->content;
+		$searchInfo->content .= SellDataManager::getById($sell->itemid)->content;
 		$searchInfo->areaid = 0;
 		return $searchInfo;
 	}
