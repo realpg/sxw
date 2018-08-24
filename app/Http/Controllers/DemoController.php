@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Components\BuyDataManager;
 use App\Components\BuyManager;
 use App\Components\CommentManager;
+use App\Components\FJMYManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
 use App\Components\MobileMessageManager;
@@ -31,45 +32,22 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{// 构造请求数据
-		$request->session()->put('userid', '1');
-		$request->session()->put('MG', '22');
-		return redirect()->to('lljl');
-		
 		$sells=SellManager::getList();
-		
-		$arr=[];
 		foreach ($sells as $sell){
 			$searchInfo=SellManager::createSearchInfo($sell);
 			$searchInfo->save();
-			$arr[$sell->itemid]=true;
 		}
-		return $arr;
-		
-		return InfoManager::getByPage(6,5);
-		$url = "http://localhost/destoon/admin.php?file=login&forward=http%3A%2F%2Flocalhost%2Fdestoon%2Fadmin.php";
-		$headers = self::createHeaders();
-		$body = ['username' => 'admin', 'password' => 'Aa123456'];
-		// 拼接字符串
-		$fields_string = "";
-		foreach ($body as $key => $value) {
-			$fields_string .= $key . '=' . $value . '&';
+		$buys=BuyManager::getList();
+		foreach ($buys as $buy){
+			$searchInfo=SellManager::createSearchInfo($buy);
+			$searchInfo->save();
 		}
-		rtrim($fields_string, '&');
-		// 提交请求
-		$con = curl_init();
-		curl_setopt($con, CURLOPT_URL, $url);
-		curl_setopt($con, CURLOPT_SSL_VERIFYHOST, FALSE);
-		curl_setopt($con, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($con, CURLOPT_HEADER, 0);
-		curl_setopt($con, CURLOPT_POST, 1);
-		curl_setopt($con, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($con, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($con, CURLOPT_POSTFIELDS, $fields_string);
-		$result = curl_exec($con);
-		curl_close($con);
-		echo "" . $result;
-		
-//			return ['result' => (strpos("success:081314385758971112", "success") == 0)];
+		$fjmys=FJMYManager::getList();
+		foreach ($fjmys as $fjmy){
+			$searchInfo=SellManager::createSearchInfo($fjmy);
+			$searchInfo->save();
+		}
+		return "21111";
 	}
 	
 	// 创建请求头

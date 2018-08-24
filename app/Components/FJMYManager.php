@@ -197,7 +197,7 @@ class FJMYManager
 	public static function createSearchInfo($fjmy)
 	{
 		$searchInfo = FJMYSearchManager::getByItemId($fjmy->itemid);
-		$searchInfo->content = '求购，';
+		$searchInfo->content = '纺机，';
 		
 		$searchInfo->content .= $fjmy->title . ',';
 		

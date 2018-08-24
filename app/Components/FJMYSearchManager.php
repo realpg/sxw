@@ -124,7 +124,7 @@ class FJMYSearchManager
 				$results = $results->orWhere('content', 'like', '%' . $word . "%");
 			}
 		}
-			$results = $results->paginate(5);
+		$results = $results->paginate(5);
 		return $results;
 	}
 }
