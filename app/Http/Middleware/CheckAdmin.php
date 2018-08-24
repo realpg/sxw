@@ -22,21 +22,22 @@ class CheckAdmin
 		} else {
 			$userid = array_get($request->all(), '_userid');
 			$seed = array_get($request->all(), 'seed');
-			if (!$userid || !$seed) {
-				abort(404);
+			$user = MemberManager::getById($userid);
+			if (!$userid || !$seed || $user) {
+				return ApiResponse::makeResponse(false, ['userid' => $userid, 'user' => $user], 200)
+//				abort(404);
 			}
 			
-			$user = MemberManager::getById($userid);
+			
 			if ($seed != md5($userid . ":" . $user->username)) {
 				abort(404);
 			};
 		}
 		
-		if($user->admin==0){
+		if ($user->admin == 0) {
 			abort(404);
-		}
-		else{
-			$request->session()->put('_userid',$userid);
+		} else {
+			$request->session()->put('_userid', $userid);
 		}
 		return $next($request);
 	}
