@@ -24,8 +24,8 @@ class CheckAdmin
 			$seed = array_get($request->all(), 'seed');
 			$user = MemberManager::getById($userid);
 			if (!$userid || !$seed || !$user) {
-				return ApiResponse::makeResponse(false, ['userid' => $userid, 'user' => $user], 200);
-//				abort(404);
+//				return ApiResponse::makeResponse(false, ['userid' => $userid, 'user' => $user], 200);
+				abort(404);
 			}
 			
 			if ($seed != md5($userid . ":" . $user->username)) {

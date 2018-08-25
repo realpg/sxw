@@ -133,4 +133,11 @@ class ADController extends Controller
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
+	
+	public static function my(Request $request)
+	{
+		$data = $request->all();
+		$ret = array_arrange(ADPlaceRecordManager::getByCon(['userid' => [$data['userid']]]));
+		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+	}
 }
