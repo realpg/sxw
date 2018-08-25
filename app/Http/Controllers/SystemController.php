@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Components\ADManager;
 use App\Components\ADPlaceManager;
+use App\Components\ADPlaceRecordManager;
 use App\Components\CompanyManager;
 use App\Components\LLJLManager;
 use App\Components\Member_updateManager;
@@ -19,6 +20,7 @@ use App\Components\SystemManager;
 use App\Components\TagManager;
 use App\Components\ThesauruManager;
 use App\Components\VIPManager;
+use App\Components\VIPUserManager;
 use App\Components\YWLBManager;
 use App\Exceptions\Handler;
 use Illuminate\Http\Request;
@@ -392,6 +394,25 @@ class SystemController extends Controller
 		}
 	}
 	
+	public static function ads_record(){
+		$ads=ADPlaceRecordManager::getList();
+		return view('ad_record.index', ['datas' => $ads]);
+	}
+	public static function ads_record_post(Request $request){
+		$data=$request->all();
+		if (checkParam($data, ['id','note'])) {
+			$record=ADPlaceRecordManager::getById($data['id']);
+			$record->note=$data['note'];
+			$record->save();
+			$ret = $record;
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
 	public static function vip(){
 		$vips=VIPManager::getList();
 		return view('vip.index', ['datas' => $vips]);
@@ -405,7 +426,6 @@ class SystemController extends Controller
 		else
 			$vip = VIPManager::createObject();
 		return view('vip.edit', ['data' => $vip]);
-	
 	}
 	
 	public function vip_edit_post(Request $request)
@@ -425,5 +445,10 @@ class SystemController extends Controller
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数" . json_encode($data), ApiResponse::MISSING_PARAM);
 		}
+	}
+	
+	public static function vip_record(Request $request){
+		$datas=VIPUserManager::getList();
+		return view('vip_record.index', ['datas' => $datas]);
 	}
 }

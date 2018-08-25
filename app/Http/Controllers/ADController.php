@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Components\ADManager;
 use App\Components\ADPlaceManager;
+use App\Components\ADPlaceRecordManager;
 use App\Components\CompanyManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
@@ -91,12 +92,26 @@ class ADController extends Controller
 			if (CreditController::changeCredit([
 				'userid' => $user->userid,
 				'amount' => -$amount,
-				'reason' => "购买广告位" . $AD->name . ",itemid:" . $AD->itemid,
+				'reason' => "购买广告位" . $AD->name . ",（itemid:" . $AD->itemid."）".$druation."天",
 				'note' => "购买广告位",
 				'ranking' => 1])
 			) {
+				//广告位停止出售
 				$AD->onsell = 0;
 				$AD->save();
+				
+				$record = ADPlaceRecordManager::createObject();
+				$record = ADPlaceRecordManager::setADPlaceRecord($record, [
+					'userid' => $user->userid,
+					'itemid' => $AD->itemid,
+					'xcx_pid' => $AD->xcx_pid,
+					'amount' => $amount,
+					'addtime' => time(),
+					'druation' => $druation*86400,
+					'totime' => time() + $druation,
+				]);
+				$record->save();
+				
 				$admins = MemberManager::getByCon(['admin' => ['1']]);
 				foreach ($admins as $admin) {
 					if (!MessageController::sendSystemMessage([
@@ -117,5 +132,12 @@ class ADController extends Controller
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
+	}
+	
+	public static function my(Request $request)
+	{
+		$data = $request->all();
+		$ret = array_arrange(ADPlaceRecordManager::getByCon(['userid' => [$data['userid']]]));
+		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 }

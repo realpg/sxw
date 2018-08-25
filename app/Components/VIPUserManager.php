@@ -100,6 +100,7 @@ class VIPUserManager
 		$vipUser->vip = $vip->vip;
 		$vipUser->totime = $vipUser->fromtime + $vip->druation;
 		$vipUser->status = $vipUser->fromtime <= time() ? 3 : 0;
+		$vipUser->amount=$vip->amount;
 		return $vipUser;
 	}
 	
