@@ -87,8 +87,27 @@ class ADPlaceRecordManager
 	 */
 	public static function setADPlaceRecord($record, $data)
 	{
-		if (array_key_exists('name', $data)) {
-			$record->name = array_get($data, 'name');
+		
+		if (array_key_exists('userid', $data)) {
+			$record->userid = array_get($data, 'userid');
+		}
+		if (array_key_exists('itemid', $data)) {
+			$record->itemid = array_get($data, 'itemid');
+		}
+		if (array_key_exists('xcx_pid', $data)) {
+			$record->xcx_pid = array_get($data, 'xcx_pid');
+		}
+		if (array_key_exists('amount', $data)) {
+			$record->amount = array_get($data, 'amount');
+		}
+		if (array_key_exists('addtime', $data)) {
+			$record->addtime = array_get($data, 'addtime');
+		}
+		if (array_key_exists('druation', $data)) {
+			$record->druation = array_get($data, 'druation');
+		}
+		if (array_key_exists('totime', $data)) {
+			$record->totime = array_get($data, 'totime');
 		}
 		return $record;
 	}
