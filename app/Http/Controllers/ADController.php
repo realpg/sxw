@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Components\ADManager;
 use App\Components\ADPlaceManager;
+use App\Components\ADPlaceRecordManager;
 use App\Components\CompanyManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
@@ -95,8 +96,22 @@ class ADController extends Controller
 				'note' => "购买广告位",
 				'ranking' => 1])
 			) {
+				//广告位停止出售
 				$AD->onsell = 0;
 				$AD->save();
+				
+				$record = ADPlaceRecordManager::createObject();
+				$record = ADPlaceRecordManager::setADPlaceRecord($record, [
+					'userid' => $user->userid,
+					'itemid' => $AD->itemid,
+					'xcx_pid' => $AD->xcx_pid,
+					'amount' => $amount,
+					'addtime' => time(),
+					'druation' => $druation,
+					'totime' => time() + $druation,
+				]);
+				$record->save();
+				
 				$admins = MemberManager::getByCon(['admin' => ['1']]);
 				foreach ($admins as $admin) {
 					if (!MessageController::sendSystemMessage([
