@@ -61,7 +61,7 @@
                     <td>{{getPRCdate($data->addtime)}}</td>
                     <td>{{getPRCdate($data->fromtime)}}</td>
                     <td>{{getPRCdate($data->totime)}}</td>
-                    <td>=
+                    <td>
                         @if($data->status==0)
                             <span class="label label-secondary radius">待生效</span>
                         @elseif($data->status==2)

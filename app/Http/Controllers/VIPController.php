@@ -97,12 +97,19 @@ class VIPController
 		}
 	}
 	
+	public static function timeto(Request $request)
+	{
+		$data = $request->all();
+		$ret = VIPUserManager::getUserVIPTime($data['userid']);
+		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+	}
+	
 	public static function my(Request $request)
 	{
 		$data = $request->all();
-		$userid=$data['userid'];
-		$vips=  VIPUserManager::getByCon(['userid'=>[$userid]],false,['addtime','desc']);
-		$ret=$vips->groupBy('status');
+		$userid = $data['userid'];
+		$vips = VIPUserManager::getByCon(['userid' => [$userid]], false, ['addtime', 'desc']);
+		$ret = $vips->groupBy('status');
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
