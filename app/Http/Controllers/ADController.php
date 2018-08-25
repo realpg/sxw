@@ -92,7 +92,7 @@ class ADController extends Controller
 			if (CreditController::changeCredit([
 				'userid' => $user->userid,
 				'amount' => -$amount,
-				'reason' => "购买广告位" . $AD->name . ",itemid:" . $AD->itemid,
+				'reason' => "购买广告位" . $AD->name . ",（itemid:" . $AD->itemid."）".$druation."天",
 				'note' => "购买广告位",
 				'ranking' => 1])
 			) {
@@ -107,7 +107,7 @@ class ADController extends Controller
 					'xcx_pid' => $AD->xcx_pid,
 					'amount' => $amount,
 					'addtime' => time(),
-					'druation' => $druation,
+					'druation' => $druation*86400,
 					'totime' => time() + $druation,
 				]);
 				$record->save();
