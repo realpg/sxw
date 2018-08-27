@@ -195,12 +195,13 @@ class FJMYManager
 	public static function createSearchInfo($fjmy)
 	{
 		$searchInfo = FJMYSearchManager::getByItemId($fjmy->itemid);
-		$searchInfo->content = '纺机，';
+		$searchInfo->content = '纺机,';
 		
-		$searchInfo->content .= $fjmy->title . ',';
+		if ($fjmy->title)
+			$searchInfo->content .= $fjmy->title . ',';
 		
-		$company=CompanyManager::getByUsername($fjmy->username);
-		if($company){
+		$company = CompanyManager::getByUsername($fjmy->username);
+		if ($company) {
 			$searchInfo->content .= $company->company . ',';
 		}
 		

@@ -80,7 +80,7 @@ class SellManager
 		$sells = Sell::orderby('itemid', 'desc');
 		if ($paginate)
 			$sells = $sells->paginate(5);
-		 else
+		else
 			$sells = $sells->get();
 		return $sells;
 	}
@@ -184,7 +184,7 @@ class SellManager
 		if (array_key_exists('telephone', $data)) {
 			$sell->telephone = array_get($data, 'telephone');
 		}
-		$sell->keyword = $sell->title . ',' . '供应' ;//*****需要改动*****
+		$sell->keyword = $sell->title . ',' . '供应';//*****需要改动*****
 		$sell->editor = MemberManager::getById($data['userid'])->username;
 		$sell->editdate = date("Y-m-d");
 		$sell->edittime = time();
@@ -195,12 +195,13 @@ class SellManager
 	public static function createSearchInfo($sell)
 	{
 		$searchInfo = SellSearchManager::getByItemId($sell->itemid);
-		$searchInfo->content = '供应，';
+		$searchInfo->content = '供应,';
 		
-		$searchInfo->content .= $sell->title . ',';
+		if ($sell->title)
+			$searchInfo->content .= $sell->title . ',';
 		
-		$company=CompanyManager::getByUsername($sell->username);
-		if($company){
+		$company = CompanyManager::getByUsername($sell->username);
+		if ($company) {
 			$searchInfo->content .= $company->company . ',';
 		}
 		

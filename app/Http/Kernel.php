@@ -41,7 +41,7 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            'throttle:60,1',
+//            'throttle:60,1',
             'bindings',
         ],
     ];
@@ -61,7 +61,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+//        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 	    //小程序token验证
 	    'checkXCXToken' => \App\Http\Middleware\CheckXCXToken::class,
 	    'checkAdmin' => \App\Http\Middleware\CheckAdmin::class,
