@@ -69,6 +69,7 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::post('member/sendVertifyCode', 'MessageController@sendVertifyCode');//发送验证码
 	
 	Route::get('businesscard', 'BussinessCardController@getList');//名片列表
+	Route::get('businesscard/search', 'BussinessCardController@search');//名片列表
 	Route::get('businesscard/getByYWLB', 'BussinessCardController@getByYWLB');//业务类别
 	Route::get('businesscard/getYWLB', 'BussinessCardController@getYWLB');//业务类别
 	Route::get('businesscard/getByUserid', 'BussinessCardController@getByUserid_get');//业务类别

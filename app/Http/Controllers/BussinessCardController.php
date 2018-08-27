@@ -109,4 +109,25 @@ class BussinessCardController extends Controller
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
+	
+	public static function search(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['keyword'])) {
+			$keyword = $data['keyword'];
+			$searchResults = CompanyManager::search($keyword);
+			$userids = [];
+			if ($searchResults->count() > 0) {
+				foreach ($searchResults as $result) {
+					$result->businesscard=BussinessCardController::getByUserid($result->userid);
+				}
+			}
+			
+			return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
 }
