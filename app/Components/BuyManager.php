@@ -195,9 +195,9 @@ class BuyManager
 	public static function createSearchInfo($buy)
 	{
 		$searchInfo = BuySearchManager::getByItemId($buy->itemid);
-		$searchInfo->content = '求购，';
+		$searchInfo->content = '求购,';
 		
-		$searchInfo->content .= $buy->title . ',';
+//		$searchInfo->content .= $buy->title . ',';
 		
 		$company=CompanyManager::getByUsername($buy->username);
 		if($company){

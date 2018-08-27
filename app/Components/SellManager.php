@@ -195,9 +195,9 @@ class SellManager
 	public static function createSearchInfo($sell)
 	{
 		$searchInfo = SellSearchManager::getByItemId($sell->itemid);
-		$searchInfo->content = '供应，';
+		$searchInfo->content = '供应,';
 		
-		$searchInfo->content .= $sell->title . ',';
+//		$searchInfo->content .= $sell->title . ',';
 		
 		$company=CompanyManager::getByUsername($sell->username);
 		if($company){
