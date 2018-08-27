@@ -169,4 +169,24 @@ class CompanyManager
 			$businessCard = null;
 		return $businessCard;
 	}
+	
+	public static function search($keyword)
+	{
+		$results=Company::where('company','like','%'.$keyword."%")
+			->orWhere('business','like','%'.$keyword."%")
+			->orWhere('introduce','like','%'.$keyword."%")
+			->orWhere('keyword','like','%'.$keyword."%")
+			->orWhere('address','like','%'.$keyword."%");
+		
+		$thesauru = ThesauruManager::getByKeyword($keyword);
+		if ($thesauru)
+		{
+			$words=explode('=',$thesauru->content);
+			foreach ($words as $word){
+				$results = $results->orWhere('content', 'like', '%' . $word . "%");
+			}
+		}
+		$results = $results->paginate(5);
+		return $results;
+	}
 }
