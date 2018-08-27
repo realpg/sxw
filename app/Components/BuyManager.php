@@ -197,10 +197,11 @@ class BuyManager
 		$searchInfo = BuySearchManager::getByItemId($buy->itemid);
 		$searchInfo->content = '求购,';
 		
-//		$searchInfo->content .= $buy->title . ',';
+		if ($buy->title)
+			$searchInfo->content .= $buy->title . ',';
 		
-		$company=CompanyManager::getByUsername($buy->username);
-		if($company){
+		$company = CompanyManager::getByUsername($buy->username);
+		if ($company) {
 			$searchInfo->content .= $company->company . ',';
 		}
 		
