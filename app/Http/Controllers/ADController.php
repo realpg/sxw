@@ -92,7 +92,7 @@ class ADController extends Controller
 			if (CreditController::changeCredit([
 				'userid' => $user->userid,
 				'amount' => -$amount,
-				'reason' => "购买广告位" . $AD->name . ",（itemid:" . $AD->itemid."）".$druation."天",
+				'reason' => "购买广告位" . $AD->name . ",（itemid:" . $AD->itemid . "）" . $druation . "天",
 				'note' => "购买广告位",
 				'ranking' => 1])
 			) {
@@ -107,7 +107,7 @@ class ADController extends Controller
 					'xcx_pid' => $AD->xcx_pid,
 					'amount' => $amount,
 					'addtime' => time(),
-					'druation' => $druation*86400,
+					'druation' => $druation * 86400,
 					'totime' => time() + $druation,
 				]);
 				$record->save();
@@ -116,9 +116,9 @@ class ADController extends Controller
 				foreach ($admins as $admin) {
 					if (!MessageController::sendSystemMessage([
 						'title' => "小程序广告位购买通知",
-						'content' => "用户【" . $user->username . "(userid=" . $user->userid .
-							")】刚刚购买了广告位【" . $AD->desc . ",itemid:" . $AD->itemid .
-							"】" . $druation . "天，请尽快联系。电话号码:" . $user->mobile,
+						'content' => "用户【" . $user->username . "(用户id：" . $user->userid .
+							")】刚刚购买了广告位【" . $AD->desc . ",广告位id：" . $AD->itemid .
+							"】" . $druation . "天，请尽快联系处理。电话号码:" . $user->mobile,
 						'touser' => $admin->username
 					]))
 						return ApiResponse::makeResponse(true, "购买成功，请主动联系客服", ApiResponse::SUCCESS_CODE);;
@@ -139,5 +139,56 @@ class ADController extends Controller
 		$data = $request->all();
 		$ret = array_arrange(ADPlaceRecordManager::getByCon(['userid' => [$data['userid']]]));
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+	}
+	
+	public static function change(Request $request)
+	{
+		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
+		//检验参数
+		if (checkParam($data, ['ad_id', 'mid'])) {
+			$AD = ADManager::getById($data['ad_id']);
+			$moudle_name = "";
+			$info="";
+			switch ($data['mid']) {
+				case '2';
+					$moudle_name = "名片";
+					$info="用户id:".$user->userid;
+					break;
+				case '5';
+					$moudle_name = "供应信息";
+					$info="信息id:".$data['itemid'];
+					break;
+				case '6';
+					$moudle_name = "求购信息";
+					$info="信息id:".$data['itemid'];
+					break;
+				case '88';
+					$moudle_name = "纺机贸易";
+					$info="信息id:".$data['itemid'];
+					break;
+			}
+			
+			$message = ["title" => "小程序用户广告位变更申请"];
+			$message['content'] = "用户【" . $user->username . "(用户id：" . $user->userid .
+				")】刚刚购变更了广告位【" . $AD->desc . ",广告位id:" . $AD->itemid .
+				"】的内容，请尽快联系处理。
+			变更信息为：【" .$moudle_name. "】".$info."
+			电话号码:" . $user->mobile;
+			
+			$admins = MemberManager::getByCon(['admin' => ['1']]);
+			foreach ($admins as $admin) {
+				$message['touser']=$admin->username;
+				if (!MessageController::sendSystemMessage($message))
+					return ApiResponse::makeResponse(false, "发送失败，请主动联系客服", ApiResponse::SUCCESS_CODE);;
+			}
+			
+			$ret = "请求成功";
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
 	}
 }
