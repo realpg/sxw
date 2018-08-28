@@ -183,7 +183,11 @@ class CompanyManager
 		{
 			$words=explode('=',$thesauru->content);
 			foreach ($words as $word){
-				$results = $results->orWhere('content', 'like', '%' . $word . "%");
+				$results = $results->orWhere('company','like','%'.$word."%")
+					->orWhere('business','like','%'.$word."%")
+					->orWhere('introduce','like','%'.$word."%")
+					->orWhere('keyword','like','%'.$word."%")
+					->orWhere('address','like','%'.$word."%");
 			}
 		}
 		$results = $results->paginate(5);
