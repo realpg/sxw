@@ -108,7 +108,7 @@ class ADController extends Controller
 					'amount' => $amount,
 					'addtime' => time(),
 					'druation' => $druation * 86400,
-					'totime' => time() + $druation,
+					'totime' => time() + $druation* 86400,
 				]);
 				$record->save();
 				
