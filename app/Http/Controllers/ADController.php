@@ -137,7 +137,13 @@ class ADController extends Controller
 	public static function my(Request $request)
 	{
 		$data = $request->all();
-		$ret = array_arrange(ADPlaceRecordManager::getByCon(['userid' => [$data['userid']]]));
+		$records = array_arrange(ADPlaceRecordManager::getByCon(['userid' => [$data['userid']]]));
+		foreach ($records as $record) {
+			$record->adplace = ADPlaceManager::getById($record->xcx_pid);
+			$record->ad = ADManager::getById($record->itemid);
+		}
+		
+		$ret = $records;
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 	
@@ -149,23 +155,23 @@ class ADController extends Controller
 		if (checkParam($data, ['ad_id', 'mid'])) {
 			$AD = ADManager::getById($data['ad_id']);
 			$moudle_name = "";
-			$info="";
+			$info = "";
 			switch ($data['mid']) {
 				case '2';
 					$moudle_name = "名片";
-					$info="用户id:".$user->userid;
+					$info = "用户id:" . $user->userid;
 					break;
 				case '5';
 					$moudle_name = "供应信息";
-					$info="信息id:".$data['itemid'];
+					$info = "信息id:" . $data['itemid'];
 					break;
 				case '6';
 					$moudle_name = "求购信息";
-					$info="信息id:".$data['itemid'];
+					$info = "信息id:" . $data['itemid'];
 					break;
 				case '88';
 					$moudle_name = "纺机贸易";
-					$info="信息id:".$data['itemid'];
+					$info = "信息id:" . $data['itemid'];
 					break;
 			}
 			
@@ -173,12 +179,12 @@ class ADController extends Controller
 			$message['content'] = "用户【" . $user->username . "(用户id：" . $user->userid .
 				")】刚刚购变更了广告位【" . $AD->desc . ",广告位id:" . $AD->itemid .
 				"】的内容，请尽快联系处理。
-			变更信息为：【" .$moudle_name. "】".$info."
+			变更信息为：【" . $moudle_name . "】" . $info . "
 			电话号码:" . $user->mobile;
 			
 			$admins = MemberManager::getByCon(['admin' => ['1']]);
 			foreach ($admins as $admin) {
-				$message['touser']=$admin->username;
+				$message['touser'] = $admin->username;
 				if (!MessageController::sendSystemMessage($message))
 					return ApiResponse::makeResponse(false, "发送失败，请主动联系客服", ApiResponse::SUCCESS_CODE);;
 			}
