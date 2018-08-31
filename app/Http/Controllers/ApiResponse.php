@@ -49,7 +49,7 @@ class ApiResponse
     const NO_ENTERPRISE = 501;  //暂无企业信息
 
     //映射错误信息
-    public static $returnMessage = [
+    public static $returnMessage  = [
         self::SUCCESS_CODE => '操作成功',
 
         self::UNKNOW_ERROR => '未知错误',
@@ -99,8 +99,8 @@ class ApiResponse
             if ($ret) {
                 $rsp['message'] = $ret;
             } else {
-                if (array_key_exists($code, self::$returnMassage)) {
-                    $rsp['message'] = self::$returnMassage[$code];
+                if (array_key_exists($code, self::$returnMessage)) {
+                    $rsp['message'] = self::$returnMessage[$code];
                 } else {
                     $rsp['message'] = 'undefind error code';
                 }

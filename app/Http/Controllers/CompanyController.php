@@ -57,6 +57,7 @@ class CompanyController extends Controller
 				&& array_get($data, 'wxqr') == $bussinesscard['wxqr']
 			)
 			{
+				$ret.="信息未修改";
 				return ApiResponse::makeResponse(false, $ret, ApiResponse::UNKNOW_ERROR);
 			}
 					else
