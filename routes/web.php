@@ -39,7 +39,7 @@ Route::group(['middleware' => ['checkAdmin']], function () {
 	Route::get('ywlb_edit', 'SystemController@ywlb_edit_get');//业务类别编辑get
 	Route::post('ywlb_edit', 'SystemController@ywlb_edit_post');//业务类别编辑post
 	
-	Route::post('upload', 'UploadController@upload');//上传
+	Route::post('upload', 'UploadController@store');//上传
 	
 	Route::get('adplace', 'SystemController@adplace');//业务类别
 	Route::get('adplace_edit', 'SystemController@adplace_edit');//业务类别
