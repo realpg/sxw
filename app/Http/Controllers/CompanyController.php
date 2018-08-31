@@ -57,7 +57,7 @@ class CompanyController extends Controller
 				&& array_get($data, 'wxqr') == $bussinesscard['wxqr']
 			)
 			{
-				return ApiResponse::makeResponse(false, $ret, ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(false, $ret, ApiResponse::UNKNOW_ERROR);
 			}
 					else
 				return self::update($request, $ret);
