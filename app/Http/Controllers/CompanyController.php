@@ -24,7 +24,7 @@ class CompanyController extends Controller
 		$user = MemberManager::getById($data['userid']);
 		
 		$ret = "";
-		if (array_key_exists('mobile', $data) && array_key_exists('vertify_code', $data)) {
+		if (checkParam($data, ['vertify_code', 'mobile'])) {
 			$vertify_result = VertifyManager::judgeVertifyCode($data['mobile'], $data['vertify_code']);
 			if ($vertify_result) {
 				$user->mobile = $data['mobile'];
@@ -33,11 +33,15 @@ class CompanyController extends Controller
 			} else
 				$ret = "手机号码修改失败。";
 		}
-		if (array_key_exists('avatarUrl', $data)) {
-			$user->avatarUrl = $data['avatarUrl'];
-			$user->save();
-			$ret .= "修改头像成功";
-		}
+		if (checkParam($data, ['avatarUrl']))
+			if ($user->avatarUrl != $data['avatarUrl']) {
+				
+				$user->avatarUrl = $data['avatarUrl'];
+				$user->save();
+				if ($ret)
+					$ret .= ",";
+				$ret .= "修改头像成功";
+			}
 		
 		if ($user->groupid == 5) {
 			return self::upgrade($request, $ret);
@@ -53,11 +57,12 @@ class CompanyController extends Controller
 				&& array_get($data, 'thumb') == $bussinesscard['thumb']
 				&& array_get($data, 'avatarUrl') == $bussinesscard['avatarUrl']
 				&& array_get($data, 'wxqr') == $bussinesscard['wxqr']
-			)
-			{
-				return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
-			}
-					else
+			) {
+				if ($ret)
+					$ret .= ",";
+				$ret .= "信息未修改";
+				return ApiResponse::makeResponse(false, $ret, ApiResponse::UNKNOW_ERROR);
+			} else
 				return self::update($request, $ret);
 		} else {
 			return ApiResponse::makeResponse(false, "暂不支持", ApiResponse::UNKNOW_ERROR);
@@ -90,6 +95,8 @@ class CompanyController extends Controller
 			$company->save();
 			$upgrade->save();
 			
+			if ($ret)
+				$ret .= "。";
 			$ret .= "修改信息申请已提交，请等待审核";
 //			$user->ywlb = CompanyYWLBManager::getByCon(['userid' => $user->userid]);
 //			$ret = ['user' => $user, 'company' => $company, 'upgrade' => $upgrade];
@@ -115,6 +122,8 @@ class CompanyController extends Controller
 			$update->history = json_encode(Member_updateManager::getHistory($update->userid));
 			$update->save();
 			
+			if ($ret)
+				$ret .= ".";
 			$ret .= "修改信息申请已提交，请等待审核";
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
