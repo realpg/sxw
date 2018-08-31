@@ -63,7 +63,7 @@
                         </td>
                         <td>{{$data->userid}}</td>
                         <td>{{$data->username}}</td>
-                        <td>{{$data->user->passport}}</td>
+                        <td>{{isset($data->user)?$data->user->passport:""}}</td>
                         <td>{{getPRCdate($data->addtime)}}</td>
                         <td>
                             @if($data->status==2)
