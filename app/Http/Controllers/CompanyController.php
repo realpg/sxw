@@ -24,7 +24,7 @@ class CompanyController extends Controller
 		$user = MemberManager::getById($data['userid']);
 		
 		$ret = "";
-		if (array_key_exists('mobile', $data) && array_key_exists('vertify_code', $data)) {
+		if (checkParam($data, ['vertify_code', 'mobile'])) {
 			$vertify_result = VertifyManager::judgeVertifyCode($data['mobile'], $data['vertify_code']);
 			if ($vertify_result) {
 				$user->mobile = $data['mobile'];
@@ -33,7 +33,9 @@ class CompanyController extends Controller
 			} else
 				$ret = "手机号码修改失败。";
 		}
-		if (array_key_exists('avatarUrl', $data)) {
+		if (checkParam($data, ['avatarUrl']))
+		if($user->avatarUrl != $data['avatarUrl']){
+			
 			$user->avatarUrl = $data['avatarUrl'];
 			$user->save();
 			$ret .= "修改头像成功";
@@ -55,7 +57,7 @@ class CompanyController extends Controller
 				&& array_get($data, 'wxqr') == $bussinesscard['wxqr']
 			)
 			{
-				return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(false, $ret, ApiResponse::SUCCESS_CODE);
 			}
 					else
 				return self::update($request, $ret);
