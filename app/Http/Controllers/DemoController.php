@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use App\Components\BuyDataManager;
 use App\Components\BuyManager;
 use App\Components\CommentManager;
+use App\Components\CompanyDataManager;
+use App\Components\CompanyManager;
 use App\Components\FJMYManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
@@ -32,24 +34,13 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{// 构造请求数据
-		$arr=array();
-		$sells=SellManager::getList();
-		foreach ($sells as $sell){
-			$searchInfo=SellManager::createSearchInfo($sell);
-			$searchInfo->save();
-			array_push($arr,['mid'=>5,'itemid'=>$sell->itemid]);
-		}
-		$buys=BuyManager::getList();
-		foreach ($buys as $buy){
-			$searchInfo=BuyManager::createSearchInfo($buy);
-			$searchInfo->save();
-			array_push($arr,['mid'=>6,'itemid'=>$buy->itemid]);
-		}
-		$fjmys=FJMYManager::getList();
-		foreach ($fjmys as $fjmy){
-			$searchInfo=FJMYManager::createSearchInfo($fjmy);
-			$searchInfo->save();
-			array_push($arr,['mid'=>88,'itemid'=>$fjmy->itemid]);
+		$arr=[];
+		$companies=CompanyManager::getList();
+		foreach ($companies as $company){
+			$companyData=CompanyDataManager::getById($company->userid);
+			$companyData->content=$company->introduce?$company->introduce:$companyData;
+			$companyData->save();
+			$arr[$company->userid]=true;
 		}
 		return $arr;
 	}

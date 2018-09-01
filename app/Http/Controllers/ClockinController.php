@@ -20,7 +20,7 @@ class ClockinController extends Controller
 			$ret = "签到成功";
 			$clockins = ClockinManager::getByDate($data['userid'], date("Y-m-d"));
 			if ($clockins->count() > 0) {
-				return ApiResponse::makeResponse(false, "已有今日签到记录", ApiResponse::UNKNOW_ERROR);
+				return ApiResponse::makeResponse(false, "今日已签到", ApiResponse::UNKNOW_ERROR);
 			}
 			$clockin = ClockinManager::createObject();
 			$clockin = ClockinManager::setClockin($clockin, $data);

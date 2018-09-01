@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 
 use App\Components\CompanyManager;
 use App\Components\Member_miscManager;
+use App\Components\Member_updateManager;
 use App\Components\MemberManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
+use App\Components\UpgradeManager;
 use App\Models\Member;
 use App\Models\Test;
 use Illuminate\Http\Request;
@@ -74,6 +76,8 @@ class LoginController extends Controller
 		if ($user) {
 			$user->companyInfo = $company = CompanyManager::getById($user->userid);
 			$user->businesscard = BussinessCardController::getByUserid($company->userid);
+			$user->updating = (UpgradeManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0)
+				|| (Member_updateManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0);
 		}
 		$ret = $user;
 		$ret->_token = $_token;

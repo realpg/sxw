@@ -11,6 +11,7 @@
 namespace App\Components;
 
 use App\Models\Company;
+use App\Models\CompanyData;
 use App\Models\CompanyYWLB;
 use App\Models\Favorite;
 
@@ -114,6 +115,9 @@ class CompanyManager
 		}
 		if (array_key_exists('introduce', $data)) {
 			$company->introduce = array_get($data, 'introduce');
+			$companyData=CompanyDataManager::getById($company->userid);
+			$companyData->content=$company->introduce;
+			$companyData->save();
 		}
 		
 		if (array_key_exists('thumb', $data)) {
