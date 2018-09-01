@@ -237,6 +237,10 @@ class BuyManager
 					$user = MemberManager::getByUsername($comment->username);
 					if ($user)
 						$comment->businesscard = BussinessCardController::getByUserid($user->userid);
+					$replyer = MemberManager::getByUsername($comment->replyer);
+					if ($replyer) {
+						$comment->replyer_businesscard = BussinessCardController::getByUserid($replyer->userid);
+					}
 				}
 			}
 		}
