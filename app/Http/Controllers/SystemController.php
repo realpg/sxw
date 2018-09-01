@@ -16,6 +16,7 @@ use App\Components\CompanyManager;
 use App\Components\LLJLManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
+use App\Components\MessageManager;
 use App\Components\SystemManager;
 use App\Components\TagManager;
 use App\Components\ThesauruManager;
@@ -31,8 +32,8 @@ class SystemController extends Controller
 	{
 		$data = $request->all();
 		//检验参数
-		if (checkParam($data, [ 'id'])) {
-			$ret=SystemManager::getById($data['id']);
+		if (checkParam($data, ['id'])) {
+			$ret = SystemManager::getById($data['id']);
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
@@ -91,9 +92,9 @@ class SystemController extends Controller
 			$histories[$index] = json_decode($update->history);
 			$update->history = '';
 			$update->user = MemberManager::getById($update->userid);
-			$update->thumbs=explode(',',$update->thumb);
-			if($histories[$index])
-			$histories[$index]->thumbs=explode(',',$histories[$index]->thumb);
+			$update->thumbs = explode(',', $update->thumb);
+			if ($histories[$index])
+				$histories[$index]->thumbs = explode(',', $histories[$index]->thumb);
 		}
 		return view('member_update', ['datas' => $updates, 'histories' => $histories]);
 	}
@@ -113,11 +114,24 @@ class SystemController extends Controller
 				$update->status = 3;
 				$update->save();
 				
-				$ywlbs=explode(',',$update->ywlb_ids);
-				CompanyManager::setYWLB($company,$ywlbs);
+				$ywlbs = explode(',', $update->ywlb_ids);
+				CompanyManager::setYWLB($company, $ywlbs);
+				
+				MessageController::sendSystemMessage([
+					'title' => "个人信息审核结果通知",
+					'content' => "尊敬的会员：<br/>您的个人信息升级审核已通过！<br/>感谢您的支持！",
+					'touser' => $member->username
+				]);
 			} else {
 				$update->status = 1;
 				$update->save();
+				$userid = $update->userid;
+				$member = MemberManager::getById($userid);
+				MessageController::sendSystemMessage([
+					'title' => "个人信息审核结果通知",
+					'content' => "尊敬的会员：<br/>非常抱歉，您的个人信息升级审核未能通过通过！<br/>感谢您的支持！",
+					'touser' => $member->username
+				]);
 			}
 			
 			return ApiResponse::makeResponse(true, $update, ApiResponse::SUCCESS_CODE);
@@ -360,8 +374,8 @@ class SystemController extends Controller
 		$data = $request->all();
 		//检验参数
 //		return $data;
-		if (checkParam($data, ['desc', 'xcx_pid', 'amount0','amount1','amount2',
-			'druation0','druation1','druation2',
+		if (checkParam($data, ['desc', 'xcx_pid', 'amount0', 'amount1', 'amount2',
+			'druation0', 'druation1', 'druation2',
 			'type', 'linktype', 'fromtime', 'totime', 'listorder'])) {
 			
 			if (array_get($data, 'type') == 0 && !checkParam($data, ['img'])) {
@@ -394,15 +408,18 @@ class SystemController extends Controller
 		}
 	}
 	
-	public static function ads_record(){
-		$ads=ADPlaceRecordManager::getList();
+	public static function ads_record()
+	{
+		$ads = ADPlaceRecordManager::getList();
 		return view('ad_record.index', ['datas' => $ads]);
 	}
-	public static function ads_record_post(Request $request){
-		$data=$request->all();
-		if (checkParam($data, ['id','note'])) {
-			$record=ADPlaceRecordManager::getById($data['id']);
-			$record->note=$data['note'];
+	
+	public static function ads_record_post(Request $request)
+	{
+		$data = $request->all();
+		if (checkParam($data, ['id', 'note'])) {
+			$record = ADPlaceRecordManager::getById($data['id']);
+			$record->note = $data['note'];
 			$record->save();
 			$ret = $record;
 			
@@ -413,8 +430,9 @@ class SystemController extends Controller
 		}
 	}
 	
-	public static function vip(){
-		$vips=VIPManager::getList();
+	public static function vip()
+	{
+		$vips = VIPManager::getList();
 		return view('vip.index', ['datas' => $vips]);
 	}
 	
@@ -434,11 +452,11 @@ class SystemController extends Controller
 		//检验参数
 //		return $data;
 		if (checkParam($data, ['vip', 'druation', 'desc', 'amount'])) {
-			if (array_get( $data,'id'))
+			if (array_get($data, 'id'))
 				$vip = VIPManager::getById($data['id']);
 			else
 				$vip = VIPManager::createObject();
-			$vip=VIPManager::setVIP($vip,$data);
+			$vip = VIPManager::setVIP($vip, $data);
 			$vip->save();
 			return ApiResponse::makeResponse(true, $vip, ApiResponse::SUCCESS_CODE);
 			
@@ -447,8 +465,9 @@ class SystemController extends Controller
 		}
 	}
 	
-	public static function vip_record(Request $request){
-		$datas=VIPUserManager::getList();
+	public static function vip_record(Request $request)
+	{
+		$datas = VIPUserManager::getList();
 		return view('vip_record.index', ['datas' => $datas]);
 	}
 }
