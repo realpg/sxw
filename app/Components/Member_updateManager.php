@@ -160,7 +160,12 @@ class Member_updateManager
 		$company->company = $update->company;
 		$company->business = $update->business;
 		$company->address = $update->address;
+		
 		$company->introduce = $update->introduce;
+		$companyData=CompanyDataManager::getById($company->userid);
+		$companyData->content=$company->introduce;
+		$companyData->save();
+		
 		$company->thumb = $update->thumb;
 		return $company;
 	}
