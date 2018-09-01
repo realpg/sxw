@@ -38,7 +38,7 @@ class DemoController extends Controller
 		$companies=CompanyManager::getList();
 		foreach ($companies as $company){
 			$companyData=CompanyDataManager::getById($company->userid);
-			$companyData->content=$company->introduce?$company->introduce:$companyData;
+			$companyData->content=$company->introduce?$company->introduce:$companyData->content;
 			$companyData->save();
 			$arr[$company->userid]=true;
 		}
