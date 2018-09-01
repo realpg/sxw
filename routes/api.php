@@ -54,6 +54,7 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::post('fjmy/search', 'FJMYController@searchPost');//查询POST
 	
 	Route::post('comment', 'CommentController@comment');//评论
+	Route::post('comment/reply', 'CommentController@reply');//评论
 	Route::post('agree', 'CommentController@agree');//点赞
 	Route::get('agreeStatus', 'CommentController@agreeStatus');//收藏
 	Route::post('favorite', 'CommentController@favorite');//收藏
