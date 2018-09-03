@@ -183,6 +183,8 @@ class CommentController extends Controller
 				if (array_key_exists('cancle', $data)) {
 					if ($favorite) {
 						$favorite->delete();
+						$item->favorite--;
+						$item->save();
 						return ApiResponse::makeResponse(true, "取消成功", ApiResponse::SUCCESS_CODE);
 					} else {
 						return ApiResponse::makeResponse(false, "没有关注记录", ApiResponse::UNKNOW_ERROR);
