@@ -25,6 +25,7 @@ Route::get('newMember', 'DemoController@newMember');
 
 
 Route::post('revision_credit', 'We7Controller@revision_credit');
+Route::get('getXCXQR', 'LoginController@getXCXQR');
 
 Route::get('getOpenid', 'LoginController@getOpenid');
 Route::post('user/login', 'LoginController@login');

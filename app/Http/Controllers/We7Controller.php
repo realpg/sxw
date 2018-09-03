@@ -25,8 +25,6 @@ use App\Http\Controllers\RankingController;
 
 class We7Controller extends Controller
 {
-	
-	
 	public static function revision_credit(Request $request)
 	{
 		$data = $request->all();
@@ -46,7 +44,7 @@ class We7Controller extends Controller
 				$record->result=CreditController::changeCredit([
 					'userid'=>$user->userid,
 					'amount'=>$record->amount,
-					'reason'=>$record->reason,
+					'reason'=>'微擎:'.$record->reason,
 					'note'=>'微擎改动时间：【'.$record->addtime."】"
 				]);
 //				array_push($ret, $user);

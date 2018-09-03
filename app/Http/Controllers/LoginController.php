@@ -119,4 +119,43 @@ class LoginController extends Controller
 		}
 	}
 	
+	public function getACCESS_TOKEN()
+	{
+		$url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $this->AppId . '&secret=' . $this->AppSecret;
+		//yourAppid为开发者appid.appSecret为开发者的appsecret,都可以从微信公众平台获取；
+		$info = file_get_contents($url);
+		//发送HTTPs请求并获取返回的数据，推荐使用curl
+		$json = json_decode($info);//对json数据解码
+		return $json;
+	}
+	
+	public function getXCXQR()
+	{
+		$access_token = $this->getACCESS_TOKEN()->access_token;
+		if (!$access_token)
+			return ApiResponse::makeResponse(false, "获取access_token失败", ApiResponse::UNKNOW_ERROR);
+		$url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' . $access_token;
+		$headers = array('Content-type: ' . 'application/json');
+		$body = [
+//			'access_token'=>$access_token,
+			'scene' => 'userid=1',
+//			'page' => "pages/index/index",
+		];
+		// 拼接字符串
+		$fields_string = json_encode($body);
+		
+		$con = curl_init();
+		curl_setopt($con, CURLOPT_URL, $url);
+//		curl_setopt($con, CURLOPT_SSL_VERIFYHOST, FALSE);
+//		curl_setopt($con, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($con, CURLOPT_HEADER, 0);
+		curl_setopt($con, CURLOPT_POST, 1);
+		curl_setopt($con, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($con, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($con, CURLOPT_POSTFIELDS, $fields_string);
+		$info = curl_exec($con);
+		//发送HTTPs请求并获取返回的数据，推荐使用curl
+		$json = json_decode($info);//对json数据解码
+		return $json;
+	}
 }
