@@ -70,10 +70,10 @@ class Kernel extends ConsoleKernel
 			VIPController::check();
 		})->dailyAt('17:00');  //unix时间17点，即北京时间1点
 		
-		$schedule->call(function () {
-			//每周一清理log
-			XCXLogManager::clearLog();
-		})->weekly()->mondays()->at('18:00');
+//		$schedule->call(function () {
+//			//每周一清理log
+//			XCXLogManager::clearLog();
+//		})->weekly()->mondays()->at('18:00');
 	}
 	
 	/**

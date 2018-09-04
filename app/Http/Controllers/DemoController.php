@@ -15,6 +15,7 @@ use App\Components\MobileMessageManager;
 use App\Components\SellManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
+use App\Components\We7CreditManager;
 use App\Models\Comment;
 use App\Models\Member;
 use App\Models\System;
@@ -34,15 +35,8 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{// 构造请求数据
-		$arr=[];
-		$companies=CompanyManager::getList();
-		foreach ($companies as $company){
-			$companyData=CompanyDataManager::getById($company->userid);
-			$companyData->content=$company->introduce?$company->introduce:$companyData->content;
-			$companyData->save();
-			$arr[$company->userid]=true;
-		}
-		return $arr;
+		VIPController::check();
+		return [111111111,22222222];
 	}
 	
 	// 创建请求头

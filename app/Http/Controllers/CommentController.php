@@ -281,7 +281,7 @@ class CommentController extends Controller
 					$favorite->item = ArticleManager::getById($favorite->tid);
 					break;
 				case '88':
-					$item = SellManager::getById($favorite->tid);
+					$item = FJMYManager::getById($favorite->tid);
 					if ($item) {
 						$user = MemberManager::getByUsername($item->username);
 						

@@ -39,7 +39,7 @@ class LoginController extends Controller
 		$data = $request->all();
 //		return $data;
 		$openId = $data['openId'];
-		$user = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
+		$user = MemberManager::getByopenId($openId);
 		if ($user == null) {
 			$user = MemberManager::createObject();
 			$user->wx_openId = $openId;
@@ -63,7 +63,7 @@ class LoginController extends Controller
 				$user->save();
 			}
 		
-		$user = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
+		$user = MemberManager::getByopenId($openId);
 		$user->username = 'xcx' . $user->userid;
 		$user->save();
 		$user_misc = Member_miscManager::getById($user->userid);

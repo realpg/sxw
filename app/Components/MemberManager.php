@@ -68,6 +68,11 @@ class MemberManager
 		return $member;
 	}
 	
+	public static function getByopenId($id)
+	{
+		$member = Member::where('wx_openId', '=', $id)->first();
+		return $member;
+	}
 	/*
 	 * 根据条件数组获取
 	 *
