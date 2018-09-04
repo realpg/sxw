@@ -112,6 +112,7 @@ class MessageManager
 			->orWhere('groupids', 'like', '%,' . $user->groupid . "%")
 			->orWhere('groupids', 'like', '%' . $user->groupid . ',')
 			->orWhere('groupids', '=', '%' . $user->groupid . "%")
+			->orderBy("isread",'asc')->orderBy('addtime','desc')
 			->get();
 		return $messages;
 	}
