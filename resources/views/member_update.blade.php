@@ -215,8 +215,9 @@
             </tr>
             <tr>
                 <td>微信二维码</td>
-                <td>@{{=it.data.wxqr }}</td>
-                <td>@{{=it.history.wxqr }}</td>
+                <td>
+                    <img height="150px" src="@{{=it.data.wxqr }}"></td>
+                <td><img height="150px" src="@{{=it.history.wxqr }}">@</td>
             </tr>
         </table>
     </script>
