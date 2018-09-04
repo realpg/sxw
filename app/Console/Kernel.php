@@ -35,10 +35,10 @@ class Kernel extends ConsoleKernel
 			RankingController::createDailyRanking(1);
 		})->everyThirtyMinutes()->hourlyAt(30);
 		
-//		$schedule->call(function () {
-//			//每分钟生成日榜
-//			RankingController::createDailyRanking(1);
-//		})->everyMinute();
+		$schedule->call(function () {
+			//每分钟生成日榜
+			RankingController::createDailyRanking(1);
+		})->everyMinute();
 		
 		$schedule->call(function () {
 			//每小时生成周排行榜
