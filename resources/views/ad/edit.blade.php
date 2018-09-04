@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格1：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格2：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="number" step="1" min="0" class="input-text" value="{{$data->amount1?$data->amount1:''}}"
                        placeholder=""
@@ -86,7 +86,7 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格1：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格3：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="number" step="1" min="0" class="input-text" value="{{$data->amount2?$data->amount2:''}}"
                        placeholder=""

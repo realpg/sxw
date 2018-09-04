@@ -42,7 +42,7 @@ class VIPController
 			$vip_user = VIPUserManager::setVIPUserByUserAndVIP($vip_user, $user, $vip);
 			if (!CreditController::changeCredit(
 				['userid' => $data['userid'], 'amount' => -1 * $vip->amount,
-					'reason' => '购买vip', 'note' => $vip->desc])) {
+					'reason' => '购买vip', 'note' => $vip->desc,'ranking'=>1])) {
 				return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
 			};
 			$vip_user->save();
