@@ -123,7 +123,6 @@ class SellSearchManager
 				$results = $results->orWhere('content', 'like', '%' . $word . "%");
 			}
 		}
-		$results = $results->paginate(5);
-		return $results;
+		return $results->get();
 	}
 }
