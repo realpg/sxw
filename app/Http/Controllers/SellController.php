@@ -31,17 +31,7 @@ class SellController
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
-			$sell->I_agree = AgreeManager::getByCon(
-				['item_mid' => ['5'],
-					'item_id' => [$sell->itemid],
-					'username' => [$user->username]
-				])->first() ? true : false;
-			$sell->I_favortie = FavoriteManager::getByCon(
-				['mid' => ['5'],
-					'tid' => [$sell->itemid],
-					'userid' => [$user->userid]
-				]
-			)->first() ? true : false;
+			$sell=SellManager::getAgreeAndFavorite($sell,$user);
 		}
 		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 	}
@@ -122,17 +112,7 @@ class SellController
 				$lljl->save();
 				$sell = SellManager::getData($sell);
 				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags', 'comments']);
-				$sell->I_agree = AgreeManager::getByCon(
-					['item_mid' => ['5'],
-						'item_id' => [$sell->itemid],
-						'username' => [$user->username]
-					])->first() ? true : false;
-				$sell->I_favortie = FavoriteManager::getByCon(
-					['mid' => ['5'],
-						'tid' => [$sell->itemid],
-						'userid' => [$user->userid]
-					]
-				)->first() ? true : false;
+				$sell=SellManager::getAgreeAndFavorite($sell,$user);
 				return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -144,6 +124,7 @@ class SellController
 	public static function searchPost(Request $request)
 	{
 		$data = $request->all();
+		$I=MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['keyword'])) {
 			$ret = null;
@@ -163,6 +144,7 @@ class SellController
 						$sell->businesscard = BussinessCardController::getByUserid($company->userid);
 					}
 					$sell->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $sell->tag)]));
+					$sell=SellManager::getAgreeAndFavorite($sell,$I);
 				}
 				return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 			} else
@@ -189,17 +171,7 @@ class SellController
 			$sells = SellManager::getByCon($Con, ['vip', "desc"], true);
 			foreach ($sells as $sell) {
 				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
-				$sell->I_agree = AgreeManager::getByCon(
-					['item_mid' => ['5'],
-						'item_id' => [$sell->itemid],
-						'username' => [$user->username]
-					])->first() ? true : false;
-				$sell->I_favortie = FavoriteManager::getByCon(
-					['mid' => ['5'],
-						'tid' => [$sell->itemid],
-						'userid' => [$user->userid]
-					]
-				)->first() ? true : false;
+				$sell=SellManager::getAgreeAndFavorite($sell,$user);
 			}
 			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		} else {

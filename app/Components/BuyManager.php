@@ -246,4 +246,19 @@ class BuyManager
 		}
 		return $buy;
 	}
+	
+	public static function getAgreeAndFavorite($buy,$user){
+		$buy->I_agree = AgreeManager::getByCon(
+			['item_mid' => ['6'],
+				'item_id' => [$buy->itemid],
+				'username' => [$user->username]
+			])->first() ? true : false;
+		$buy->I_favortie = FavoriteManager::getByCon(
+			['mid' => ['6'],
+				'tid' => [$buy->itemid],
+				'userid' => [$user->userid]
+			]
+		)->first() ? true : false;
+		return $buy;
+	}
 }
