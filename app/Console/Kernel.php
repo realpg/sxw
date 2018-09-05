@@ -70,7 +70,7 @@ class Kernel extends ConsoleKernel
 			foreach ($buys as $buy) {
 				$user = MemberManager::getByUsername($buy->username);
 				if (!$user) {
-					$sell->delete();
+					$buy->delete();
 				} else {
 					$searchInfo = BuyManager::createSearchInfo($buy);
 					$searchInfo->save();
@@ -80,7 +80,7 @@ class Kernel extends ConsoleKernel
 			foreach ($fjmys as $fjmy) {
 				$user = MemberManager::getByUsername($fjmy->username);
 				if (!$user) {
-					$sell->delete();
+					$fjmy->delete();
 				} else {
 					$searchInfo = FJMYManager::createSearchInfo($fjmy);
 					$searchInfo->save();
