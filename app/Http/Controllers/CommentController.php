@@ -234,7 +234,11 @@ class CommentController extends Controller
 	public static function myFavorite(Request $request)
 	{
 		$data = $request->all();
-		$myFavorites = FavoriteManager::getByCon(['userid' => [$data['userid']]], true);
+		$con = ['userid' => [$data['userid']]];
+		if (array_key_exists('mid', $data)) {
+			$con['mid'] = [$data['mid']];
+		}
+		$myFavorites = FavoriteManager::getByCon($con, true);
 		foreach ($myFavorites as $favorite) {
 			switch ($favorite->mid) {
 				case '5':
@@ -312,15 +316,15 @@ class CommentController extends Controller
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
 		//检验参数
-		if (checkParam($data, ['itemid','reply'])) {
-			$comment=CommentManager::getById($data['itemid']);
-			if($comment->item_username!=$user->username){
+		if (checkParam($data, ['itemid', 'reply'])) {
+			$comment = CommentManager::getById($data['itemid']);
+			if ($comment->item_username != $user->username) {
 				return ApiResponse::makeResponse(false, "只能回复自己发布的信息!", ApiResponse::UNKNOW_ERROR);
 			}
 			
-			$comment->reply=$data['reply'];
-			$comment->replytime=time();
-			$comment->replyer=$user->username;
+			$comment->reply = $data['reply'];
+			$comment->replytime = time();
+			$comment->replyer = $user->username;
 			$comment->save();
 			
 			$ret = "回复成功";
