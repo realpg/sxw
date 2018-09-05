@@ -238,6 +238,7 @@ class CommentController extends Controller
 	public static function myFavorite(Request $request)
 	{
 		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
 		$con = ['userid' => [$data['userid']]];
 		if (array_key_exists('mid', $data)) {
 			$con['mid'] = [$data['mid']];
@@ -248,40 +249,16 @@ class CommentController extends Controller
 				case '5':
 					$item = SellManager::getById($favorite->tid);
 					if ($item) {
-						$user = MemberManager::getByUsername($item->username);
-						
 						$item = SellManager::getInfo($item, ['content', 'userinfo', 'tags']);
-						$item->I_agree = AgreeManager::getByCon(
-							['item_mid' => ['5'],
-								'item_id' => [$item->itemid],
-								'username' => [$user->username]
-							])->first() ? true : false;
-						$item->I_favortie = FavoriteManager::getByCon(
-							['mid' => ['5'],
-								'tid' => [$item->itemid],
-								'userid' => [$user->userid]
-							]
-						)->first() ? true : false;
+						$item=SellManager::getAgreeAndFavorite($item,$user);
 					}
 					$favorite->item = $item;
 					break;
 				case '6':
 					$item = BuyManager::getById($favorite->tid);
 					if ($item) {
-						$user = MemberManager::getByUsername($item->username);
-						
 						$item = BuyManager::getInfo($item, ['content', 'userinfo', 'tags']);
-						$item->I_agree = AgreeManager::getByCon(
-							['item_mid' => ['6'],
-								'item_id' => [$item->itemid],
-								'username' => [$user->username]
-							])->first() ? true : false;
-						$item->I_favortie = FavoriteManager::getByCon(
-							['mid' => ['6'],
-								'tid' => [$item->itemid],
-								'userid' => [$user->userid]
-							]
-						)->first() ? true : false;
+						$item=BuyManager::getAgreeAndFavorite($item,$user);
 					}
 					$favorite->item = $item;
 					break;
@@ -291,20 +268,8 @@ class CommentController extends Controller
 				case '88':
 					$item = FJMYManager::getById($favorite->tid);
 					if ($item) {
-						$user = MemberManager::getByUsername($item->username);
-						
 						$item = FJMYManager::getInfo($item, ['content', 'userinfo', 'tags']);
-						$item->I_agree = AgreeManager::getByCon(
-							['item_mid' => ['88'],
-								'item_id' => [$item->itemid],
-								'username' => [$user->username]
-							])->first() ? true : false;
-						$item->I_favortie = FavoriteManager::getByCon(
-							['mid' => ['88'],
-								'tid' => [$item->itemid],
-								'userid' => [$user->userid]
-							]
-						)->first() ? true : false;
+						$item=FJMYManager::getAgreeAndFavorite($item,$user);
 					}
 					$favorite->item = $item;
 					break;
