@@ -243,7 +243,7 @@ class CommentController extends Controller
 		if (array_key_exists('mid', $data)) {
 			$con['mid'] = [$data['mid']];
 		}
-		$myFavorites = FavoriteManager::getByCon($con, true);
+		$myFavorites = FavoriteManager::getByCon($con, true,['itemid', 'desc']);
 		foreach ($myFavorites as $favorite) {
 			switch ($favorite->mid) {
 				case '5':
