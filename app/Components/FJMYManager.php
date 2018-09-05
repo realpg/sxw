@@ -246,4 +246,19 @@ class FJMYManager
 		}
 		return $fjmy;
 	}
+	
+	public static function getAgreeAndFavorite($fjmy,$user){
+		$fjmy->I_agree = AgreeManager::getByCon(
+			['item_mid' => ['88'],
+				'item_id' => [$fjmy->itemid],
+				'username' => [$user->username]
+			])->first() ? true : false;
+		$fjmy->I_favortie = FavoriteManager::getByCon(
+			['mid' => ['88'],
+				'tid' => [$fjmy->itemid],
+				'userid' => [$user->userid]
+			]
+		)->first() ? true : false;
+		return $fjmy;
+	}
 }

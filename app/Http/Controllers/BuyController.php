@@ -27,21 +27,11 @@ class BuyController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$buys = BuyManager::getByCon(['status' => [3]], ['itemid' , "desc",'vip', 'desc'], true);
+		$buys = BuyManager::getByCon(['status' => [3]], ['itemid', "desc", 'vip', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
 			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
-			$buy->I_agree = AgreeManager::getByCon(
-				['item_mid' => ['6'],
-					'item_id' => [$buy->itemid],
-					'username' => [$user->username]
-				])->first() ? true : false;
-			$buy->I_favortie = FavoriteManager::getByCon(
-				['mid' => ['6'],
-					'tid' => [$buy->itemid],
-					'userid' => [$user->userid]
-				]
-			)->first() ? true : false;
+			$buy = BuyManager::getAgreeAndFavorite($buy, $user);
 		}
 		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 	}
@@ -122,17 +112,7 @@ class BuyController
 				$lljl->save();
 				$buy = BuyManager::getData($buy);
 				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags', 'comments']);
-				$buy->I_agree = AgreeManager::getByCon(
-					['item_mid' => ['6'],
-						'item_id' => [$buy->itemid],
-						'username' => [$user->username]
-					])->first() ? true : false;
-				$buy->I_favortie = FavoriteManager::getByCon(
-					['mid' => ['6'],
-						'tid' => [$buy->itemid],
-						'userid' => [$user->userid]
-					]
-				)->first() ? true : false;
+				$buy = BuyManager::getAgreeAndFavorite($buy, $user);
 				return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -144,6 +124,7 @@ class BuyController
 	public static function searchPost(Request $request)
 	{
 		$data = $request->all();
+		$I = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['keyword'])) {
 			$ret = null;
@@ -163,6 +144,7 @@ class BuyController
 						$buy->businesscard = BussinessCardController::getByUserid($company->userid);
 					}
 					$buy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $buy->tag)]));
+					$buy = BuyManager::getAgreeAndFavorite($buy, $I);
 				}
 				return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 			} else
@@ -189,17 +171,7 @@ class BuyController
 			$buys = BuyManager::getByCon($Con, ['vip', 'desc'], true);
 			foreach ($buys as $buy) {
 				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
-				$buy->I_agree = AgreeManager::getByCon(
-					['item_mid' => ['6'],
-						'item_id' => [$buy->itemid],
-						'username' => [$user->username]
-					])->first() ? true : false;
-				$buy->I_favortie = FavoriteManager::getByCon(
-					['mid' => ['6'],
-						'tid' => [$buy->itemid],
-						'userid' => [$user->userid]
-					]
-				)->first() ? true : false;
+				$buy = BuyManager::getAgreeAndFavorite($buy, $user);
 			}
 			return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		} else {

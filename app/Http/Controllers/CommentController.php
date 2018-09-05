@@ -180,13 +180,19 @@ class CommentController extends Controller
 			
 			if ($item) {
 				$favorite = FavoriteManager::getByCon(['mid' => $data['mid'], 'tid' => $data['tid'], 'userid' => $data['userid']])->first();
+				
 				if (array_key_exists('cancle', $data)) {
 					if ($favorite) {
 						$favorite->delete();
+						$item->favorite--;
+						$item->save();
 						return ApiResponse::makeResponse(true, "取消成功", ApiResponse::SUCCESS_CODE);
 					} else {
 						return ApiResponse::makeResponse(false, "没有关注记录", ApiResponse::UNKNOW_ERROR);
 					}
+				}
+				else if($favorite){
+					return ApiResponse::makeResponse(false, "请不要重复收藏", ApiResponse::UNKNOW_ERROR);
 				}
 				$favorite = $favorite ? $favorite : FavoriteManager::createObject();
 				$favorite = FavoriteManager::setFavorite($favorite, $data);
@@ -232,7 +238,11 @@ class CommentController extends Controller
 	public static function myFavorite(Request $request)
 	{
 		$data = $request->all();
-		$myFavorites = FavoriteManager::getByCon(['userid' => [$data['userid']]], true);
+		$con = ['userid' => [$data['userid']]];
+		if (array_key_exists('mid', $data)) {
+			$con['mid'] = [$data['mid']];
+		}
+		$myFavorites = FavoriteManager::getByCon($con, true);
 		foreach ($myFavorites as $favorite) {
 			switch ($favorite->mid) {
 				case '5':
@@ -279,7 +289,7 @@ class CommentController extends Controller
 					$favorite->item = ArticleManager::getById($favorite->tid);
 					break;
 				case '88':
-					$item = SellManager::getById($favorite->tid);
+					$item = FJMYManager::getById($favorite->tid);
 					if ($item) {
 						$user = MemberManager::getByUsername($item->username);
 						
@@ -310,15 +320,15 @@ class CommentController extends Controller
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
 		//检验参数
-		if (checkParam($data, ['itemid','reply'])) {
-			$comment=CommentManager::getById($data['itemid']);
-			if($comment->item_username!=$user->username){
+		if (checkParam($data, ['itemid', 'reply'])) {
+			$comment = CommentManager::getById($data['itemid']);
+			if ($comment->item_username != $user->username) {
 				return ApiResponse::makeResponse(false, "只能回复自己发布的信息!", ApiResponse::UNKNOW_ERROR);
 			}
 			
-			$comment->reply=$data['reply'];
-			$comment->replytime=time();
-			$comment->replyer=$user->username;
+			$comment->reply = $data['reply'];
+			$comment->replytime = time();
+			$comment->replyer = $user->username;
 			$comment->save();
 			
 			$ret = "回复成功";

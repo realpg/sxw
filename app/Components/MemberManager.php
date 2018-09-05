@@ -31,6 +31,8 @@ class MemberManager
 		$member->paysalt=randomSalt();
 		$member->groupid="5";//普通会员
 		$member->note="小程序用户";
+		$member->gender=1;
+		$member->email=$member->turename='';
 		return $member;
 	}
 	
@@ -66,6 +68,11 @@ class MemberManager
 		return $member;
 	}
 	
+	public static function getByopenId($id)
+	{
+		$member = Member::where('wx_openId', '=', $id)->first();
+		return $member;
+	}
 	/*
 	 * 根据条件数组获取
 	 *

@@ -17,10 +17,10 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-	private $AppId = "wxd80c70c308c99008";
-	private $AppSecret = 'f5d639500976d9d0604c36b2cb08a6d5';
+	private $AppId = "wx3c1f8dfde816c48f";
+	private $AppSecret = '95006aa78e8f4f7c146d0654a2bf0e55';
 	
-	//登录页面111
+	//登录页面
 	public function getOpenid(Request $request)
 	{
 		$data = $request->all();
@@ -39,7 +39,7 @@ class LoginController extends Controller
 		$data = $request->all();
 //		return $data;
 		$openId = $data['openId'];
-		$user = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
+		$user = MemberManager::getByopenId($openId);
 		if ($user == null) {
 			$user = MemberManager::createObject();
 			$user->wx_openId = $openId;
@@ -63,7 +63,7 @@ class LoginController extends Controller
 				$user->save();
 			}
 		
-		$user = MemberManager::getByCon(['wx_openId' => [$openId]], ['userid', 'asc'])->first();
+		$user = MemberManager::getByopenId($openId);
 		$user->username = 'xcx' . $user->userid;
 		$user->save();
 		$user_misc = Member_miscManager::getById($user->userid);
