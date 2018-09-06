@@ -24,12 +24,16 @@ Route::get('getAllMembers', 'DemoController@getAllMembers');
 Route::get('newMember', 'DemoController@newMember');
 
 
+Route::post('revision_credit', 'We7Controller@revision_credit');
+Route::get('getXCXQR', 'LoginController@getXCXQR');
+
 Route::get('getOpenid', 'LoginController@getOpenid');
 Route::post('user/login', 'LoginController@login');
 
 Route::group(['middleware' => ['checkXCXToken']], function () {
 	
 	Route::get('info/getList','InfoController@getList' );//首页获取
+	Route::get('info/getByUserid','InfoController@getInfoByUserid' );//根据userid获取
 	
 	//供应
 	Route::get('sell/getList', 'SellController@getList');//根据id获取供应内容
