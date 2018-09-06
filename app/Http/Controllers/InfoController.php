@@ -38,4 +38,31 @@ class InfoController extends Controller
 		return ApiResponse::makeResponse(true, $infos, ApiResponse::SUCCESS_CODE);
 	}
 	
+	public static function getInfoByUserid(Request $request){
+		$data=$request->all();
+		$user=MemberManager::getById($data['userid']);
+		//检验参数
+		if (checkParam($data, ['item_userid'])) {
+			$itemuser=MemberManager::getById($data['item_userid']);
+			$page = array_get($request->all(), 'page') ? array_get($data, 'page') : 1;
+			$infos = InfoManager::getByUsernameAndPage($itemuser->username,$page, 5);
+			foreach ($infos['data'] as $info) {
+				$info->I_agree = AgreeManager::getByCon(
+					['item_mid' => [$info->mid],
+						'item_id' => [$info->itemid],
+						'username' => [$user->username]
+					])->first() ? true : false;
+				$info->I_favortie = FavoriteManager::getByCon(
+					['mid' => [$info->mid],
+						'tid' => [$info->itemid],
+						'userid' => [$user->userid]
+					]
+				)->first() ? true : false;
+			}
+			
+			return ApiResponse::makeResponse(true, $infos, ApiResponse::SUCCESS_CODE);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
 }
