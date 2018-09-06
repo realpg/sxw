@@ -7,6 +7,7 @@ use App\Components\CompanyManager;
 use App\Components\Member_miscManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
+use App\Components\MessageManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
 use App\Components\UpgradeManager;
@@ -44,6 +45,8 @@ class LoginController extends Controller
 			$user = MemberManager::createObject();
 			$user->wx_openId = $openId;
 			$user->save();
+			$user->username = 'xcx' . $user->userid;
+			$user->save();
 		}
 		$user = MessageController::checkMessage($user);
 		
@@ -64,7 +67,7 @@ class LoginController extends Controller
 			}
 		
 		$user = MemberManager::getByopenId($openId);
-		$user->username = 'xcx' . $user->userid;
+		$user->message=MessageManager::getNumberByUserid($user->userid);
 		$user->save();
 		$user_misc = Member_miscManager::getById($user->userid);
 		$user_misc->save();

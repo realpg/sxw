@@ -116,4 +116,16 @@ class MessageManager
 			->get();
 		return $messages;
 	}
+	
+	public static function getNumberByUserid($userid)
+	{
+		$user = MemberManager::getById($userid);
+		$messages = Message::where('touser', '=', $user->username)
+			->orWhere('groupids', 'like', '%,' . $user->groupid . "%")
+			->orWhere('groupids', 'like', '%' . $user->groupid . ',')
+			->orWhere('groupids', '=', '%' . $user->groupid . "%")
+			->where("isread",'=',"0")//未读
+			->count();
+		return $messages;
+	}
 }
