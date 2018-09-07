@@ -18,6 +18,7 @@ use App\Components\SystemManager;
 use App\Components\TestManager;
 use App\Components\We7\We7CreditRecordManager;
 use App\Components\We7\We7SyncManager;
+use App\Components\We7\We7UserManager;
 use App\Models\Comment;
 use App\Models\Member;
 use App\Models\System;
@@ -35,22 +36,11 @@ class DemoController extends Controller
 		return view('demo/home');
 	}
 	
+	
 	public function test(Request $request)
 	{
-		$records = We7CreditRecordManager::getByTime(0, time());
-		foreach ($records as $record) {
-			if (We7SyncManager::getByCon(['we7_itemid' => [$record->id]]))
-				continue;
-			else {
-				$sync = We7SyncManager::createObject();
-				$sync = We7SyncManager::syncFromWe7($sync, $records);
-				if ($sync){
-					$sync->save();
-					$record->SYNC=true;
-				}
-			}
-		}
-		return ApiResponse::makeResponse(true,$records,ApiResponse::SUCCESS_CODE);
+		We7Controller::syncCreditRecordFromWe7();
+		We7Controller::syncCreditToWe7();
 	}
 	
 	// 创建请求头

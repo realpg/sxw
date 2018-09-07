@@ -24,7 +24,14 @@ class We7CreditRecordManager
 	public static function createObject(){
 		$record=new We7CreditRecord();
 		//这里可以对新建记录进行一定的默认设置
-		
+		$record->credittype='credit1';
+		$record->operator='1';
+		$record->module='system';
+		$record->clerk_id='0';
+		$record->store_id='0';
+		$record->clerk_type='1';
+		$record->createtime='1';
+		$record->remark='DT同步积分';
 		return $record;
 	}
 	
@@ -94,7 +101,8 @@ class We7CreditRecordManager
 	}
 	
 	public static function getByTime($start,$end){
-		$records=We7CreditRecord::where("createtime",'>',$start)->where("createtime",'<=',$end);
+		$records=We7CreditRecord::where("createtime",'>',$start)->where("createtime",'<=',$end)->get();
 		return $records;
 	}
+	
 }

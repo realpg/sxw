@@ -32,7 +32,7 @@ class MemberManager
 		$member->groupid="5";//普通会员
 		$member->note="小程序用户";
 		$member->gender=1;
-		$member->email=$member->turename='';
+		$member->email=$member->truename='';
 		return $member;
 	}
 	
@@ -46,6 +46,14 @@ class MemberManager
 	public static function getList()
 	{
 		$members = Member::get();
+		return $members;
+	}
+	
+	public static function getXCXMembers()
+	{
+		$members = Member::whereNotNull('wx_openId')
+//			->where('wx_openId', '<>', '')
+		->get();
 		return $members;
 	}
 	

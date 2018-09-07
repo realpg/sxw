@@ -9,6 +9,7 @@ use App\Components\SellManager;
 use App\Components\XCXLogManager;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\VIPController;
+use App\Http\Controllers\We7Controller;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -36,10 +37,11 @@ class Kernel extends ConsoleKernel
 			RankingController::createDailyRanking(1);
 		})->everyThirtyMinutes()->hourlyAt(30);
 
-//		$schedule->call(function () {
-//			//每分钟生成日榜
-//			RankingController::createDailyRanking(1);
-//		})->everyMinute();
+		$schedule->call(function () {
+			//每分钟同步积分
+			We7Controller::syncCreditRecordFromWe7();
+			We7Controller::syncCreditToWe7();
+		})->everyMinute();
 		
 		$schedule->call(function () {
 			//每小时生成周排行榜

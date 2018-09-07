@@ -106,10 +106,19 @@ class We7SyncManager
 			'amount' => (int)$we7record->num,
 			'reason' => $we7record->remark,
 			'note' => '来自微擎同步,同步时间' . date("Y/m/d h:i:sa")]);
+		if(!$financeCredit){
+			return false;
+		}
 		$sync->we7_itemid = $we7record->id;
 		$sync->dt_itemid = $financeCredit->itemid;
 		$sync->stream = 2;
 		$sync->time = time();
 		return $sync;
+	}
+	
+	public static function lastSyncTime(){
+		$time=We7Sync::where('stream', 2)->max('time');
+		
+		return $time;
 	}
 }
