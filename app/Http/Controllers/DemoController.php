@@ -17,6 +17,8 @@ use App\Components\SellManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
 use App\Components\We7CreditManager;
+use App\Components\We7CreditRecordManager;
+use App\Components\We7SyncManager;
 use App\Models\Comment;
 use App\Models\Member;
 use App\Models\System;
@@ -36,10 +38,20 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		RankingController::createDailyRanking(3);
-		RankingController::clear();
-		$ranks = RankingManager::getByCon(['type' => [3]], ['rank', 'asc']);
-		return $ranks;
+		$records = We7CreditRecordManager::getByTime(0, time());
+		foreach ($records as $record) {
+			if (We7SyncManager::getByCon(['we7_itemid' => [$record->id]]))
+				continue;
+			else {
+				$sync = We7SyncManager::createObject();
+				$sync = We7SyncManager::syncFromWe7($sync, $records);
+				if ($sync){
+					$sync->save();
+					$record->SYNC=true;
+				}
+			}
+		}
+		return $records;
 	}
 	
 	// 创建请求头
