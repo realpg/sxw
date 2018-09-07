@@ -50,7 +50,7 @@ class DemoController extends Controller
 				}
 			}
 		}
-		return $records;
+		return ApiResponse::makeResponse(true,$records,ApiResponse::SUCCESS_CODE);
 	}
 	
 	// 创建请求头
