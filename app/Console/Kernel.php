@@ -62,6 +62,13 @@ class Kernel extends ConsoleKernel
 				if (!$user) {
 					$sell->delete();
 				} else {
+					if($sell->thumbs==''){
+						$sell->thumbs.=$sell->thumb;
+						$sell->thumbs=$sell->thumbs?($sell->thumbs.','.$sell->thumb1):$sell->thumbs;
+						$sell->thumbs=$sell->thumbs?($sell->thumbs.','.$sell->thumb2):$sell->thumbs;
+						$sell->save();
+					}
+					
 					$searchInfo = SellManager::createSearchInfo($sell);
 					$searchInfo->save();
 				}
@@ -72,6 +79,12 @@ class Kernel extends ConsoleKernel
 				if (!$user) {
 					$buy->delete();
 				} else {
+					if($buy->thumbs==''){
+						$buy->thumbs.=$buy->thumb;
+						$buy->thumbs=$buy->thumbs?($buy->thumbs.','.$buy->thumb1):$buy->thumbs;
+						$buy->thumbs=$buy->thumbs?($buy->thumbs.','.$buy->thumb2):$buy->thumbs;
+						$buy->save();
+					}
 					$searchInfo = BuyManager::createSearchInfo($buy);
 					$searchInfo->save();
 				}
@@ -82,6 +95,12 @@ class Kernel extends ConsoleKernel
 				if (!$user) {
 					$fjmy->delete();
 				} else {
+					if($fjmy->thumbs==''){
+						$fjmy->thumbs.=$fjmy->thumb;
+						$fjmy->thumbs=$fjmy->thumbs?($fjmy->thumbs.','.$fjmy->thumb1):$fjmy->thumbs;
+						$fjmy->thumbs=$fjmy->thumbs?($fjmy->thumbs.','.$fjmy->thumb2):$fjmy->thumbs;
+						$fjmy->save();
+					}
 					$searchInfo = FJMYManager::createSearchInfo($fjmy);
 					$searchInfo->save();
 				}

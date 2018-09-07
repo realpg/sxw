@@ -12,6 +12,7 @@ use App\Components\FJMYManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
 use App\Components\MobileMessageManager;
+use App\Components\RankingManager;
 use App\Components\SellManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
@@ -35,52 +36,10 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$arr=[];
-		//每天清理信息
-		//每天生成搜索信息
-		$sells = SellManager::getList();
-		$arr['sell']=[];
-		foreach ($sells as $sell) {
-			$value=['itemid'=>$sell->itemid];
-			$user = MemberManager::getByUsername($sell->username);
-			if (!$user) {
-				$sell->delete();
-				$value['delete']=true;
-			} else {
-				$searchInfo = SellManager::createSearchInfo($sell);
-				$searchInfo->save();
-			}
-			array_push($arr['sell'],$value);
-		}
-		$buys = BuyManager::getList();
-		$arr['buy']=[];
-		foreach ($buys as $buy) {
-			$value=['itemid'=>$buy->itemid];
-			$user = MemberManager::getByUsername($buy->username);
-			if (!$user) {
-				$buy->delete();
-				$value['delete']=true;
-			} else {
-				$searchInfo = BuyManager::createSearchInfo($buy);
-				$searchInfo->save();
-			}
-			array_push($arr['buy'],$value);
-		}
-		$fjmys = FJMYManager::getList();
-		$arr['fjmy']=[];
-		foreach ($fjmys as $fjmy) {
-			$value=['itemid'=>$fjmy->itemid];
-			$user = MemberManager::getByUsername($fjmy->username);
-			if (!$user) {
-				$fjmy->delete();
-				$value['delete']=true;
-			} else {
-				$searchInfo = FJMYManager::createSearchInfo($fjmy);
-				$searchInfo->save();
-			}
-			array_push($arr['fjmy'],$value);
-		}
-		return $arr;
+		RankingController::createDailyRanking(3);
+		RankingController::clear();
+		$ranks = RankingManager::getByCon(['type' => [3]], ['rank', 'asc']);
+		return $ranks;
 	}
 	
 	// 创建请求头
