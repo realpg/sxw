@@ -26,7 +26,7 @@ class CreditController extends Controller
 			$financeCredit = FinanceCreditManager::createObject();
 			$financeCredit = FinanceCreditManager::setFinanceCredit($financeCredit, $data);
 			$financeCredit->save();
-			return true;
+			return $financeCredit;
 			
 		} else {
 			return false;

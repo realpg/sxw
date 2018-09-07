@@ -10,9 +10,9 @@
 
 namespace App\Components;
 
-use App\Models\We7;
+use App\Models\We7\We7User;
 
-class We7Manager
+class We7UserManager
 {
 	/*
 	 * 创建新的对象
@@ -23,15 +23,15 @@ class We7Manager
 	 */
 	public static function createObject()
 	{
-		$we7 = new We7();
+		$user = new We7User();
 		//这里可以对新建记录进行一定的默认设置
 		
-		return $we7;
+		return $user;
 	}
 	
 	
 	/*
-	 * 获取we7的list
+	 * 获取user的list
 	 *
 	 * By Zhangli
 	 *
@@ -39,8 +39,8 @@ class We7Manager
 	 */
 	public static function getList()
 	{
-		$we7s = We7::orderby('we7_uid', 'desc')->get();
-		return $we7s;
+		$users = We7User::orderby('id', 'desc')->get();
+		return $users;
 	}
 	
 	/*
@@ -52,8 +52,8 @@ class We7Manager
 	 */
 	public static function getById($id)
 	{
-		$we7 = We7::where('we7_uid', '=', $id)->first();
-		return $we7;
+		$user = We7User::where('id', '=', $id)->first();
+		return $user;
 	}
 	
 	/*
@@ -63,18 +63,19 @@ class We7Manager
 	 *
 	 * 2018-07-18
 	 */
-	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['we7_uid', 'asc'])
+	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
-		$we7s = We7::orderby($orderby['0'], $orderby['1']);
+		
+		$users = We7User::orderby($orderby['0'], $orderby['1']);
 		if (!$paginate)
-			$we7s = $we7s->get();
+			$users = $users->get();
 		foreach ($ConArr as $key => $value) {
-			$we7s = $we7s->whereIn($key, $value);
+			$users = $users->whereIn($key, $value);
 		}
 		if ($paginate) {
-			$we7s = $we7s->paginate(5);
+			$users = $users->paginate(5);
 		}
-		return $we7s;
+		return $users;
 	}
 	
 	
@@ -85,18 +86,20 @@ class We7Manager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setWe7($we7, $data)
+	public static function setWe7User($user, $data)
 	{
 		if (array_key_exists('name', $data)) {
-			$we7->name = array_get($data, 'name');
+			$user->name = array_get($data, 'name');
 		}
-		return $we7;
+		return $user;
 	}
 	
-	public static function getUserByWe7_uid($we7_uid)
+	public static function getDTUserByWe7uid($uid)
 	{
-		$we7 = self::getById($we7_uid);
-		$user = MemberManager::getById($we7->userid);
+		$openId = We7User::where('uid', '=', $uid)->first()->openid;
+		$user = null;
+		if ($openId)
+			$user = MemberManager::getByopenId($openId);
 		return $user;
 	}
 }

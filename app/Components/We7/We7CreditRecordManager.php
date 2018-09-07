@@ -10,9 +10,9 @@
 
 namespace App\Components;
 
-use App\Models\We7\FinanceCredit;
+use App\Models\We7\We7CreditRecord;
 
-class We7CreditManager
+class We7CreditRecordManager
 {
 	/*
 	 * 创建新的对象
@@ -22,7 +22,7 @@ class We7CreditManager
 	 * 2018/07/05
 	 */
 	public static function createObject(){
-		$record=new FinanceCredit();
+		$record=new We7CreditRecord();
 		//这里可以对新建记录进行一定的默认设置
 		
 		return $record;
@@ -38,7 +38,7 @@ class We7CreditManager
 	 */
 	public static function getList()
 	{
-		$records = FinanceCredit::orderby('id', 'desc')->get();
+		$records = We7CreditRecord::orderby('id', 'desc')->get();
 		return $records;
 	}
 	
@@ -51,7 +51,7 @@ class We7CreditManager
 	 */
 	public static function getById($id)
 	{
-		$record = FinanceCredit::where('id', '=', $id)->first();
+		$record = We7CreditRecord::where('id', '=', $id)->first();
 		return $record;
 	}
 	
@@ -65,7 +65,7 @@ class We7CreditManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$records = FinanceCredit::orderby($orderby['0'], $orderby['1']);
+		$records = We7CreditRecord::orderby($orderby['0'], $orderby['1']);
 		if (!$paginate)
 			$records = $records->get();
 		foreach ($ConArr as $key => $value) {
@@ -85,11 +85,16 @@ class We7CreditManager
 	 *
 	 * 2018-04-02
 	 */
-	public static function setFinanceCredit($record, $data)
+	public static function setWe7CreditRecord($record, $data)
 	{
 		if (array_key_exists('name', $data)) {
 			$record->name = array_get($data, 'name');
 		}
 		return $record;
+	}
+	
+	public static function getByTime($start,$end){
+		$records=We7CreditRecord::where("createtime",'>',$start)->where("createtime",'<=',$end);
+		return $records;
 	}
 }

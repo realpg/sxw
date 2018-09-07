@@ -15,10 +15,14 @@ use App\Components\MobileMessageManager;
 use App\Components\SellManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
+use App\Components\We7CreditRecordManager;
+use App\Components\We7SyncManager;
 use App\Models\Comment;
 use App\Models\Member;
 use App\Models\System;
 use App\Models\Test;
+use App\Models\We7\We7Sync;
+use App\Models\We7\We7User;
 use App\Models\XCXLog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RankingController;
@@ -34,18 +38,18 @@ class We7Controller extends Controller
 				$records = json_decode($data['records']);
 			else
 				$records = $data['records'];
-		
+			
 			foreach ($records as $record) {
 				$user = MemberManager::getByCon(['wx_openId' => [$record->openId]], ['userid', 'asc'])->first();
-				if(!$user){
-					$record->result=false;
+				if (!$user) {
+					$record->result = false;
 					continue;
 				}
-				$record->result=CreditController::changeCredit([
-					'userid'=>$user->userid,
-					'amount'=>$record->amount,
-					'reason'=>'微擎:'.$record->reason,
-					'note'=>'微擎改动时间：【'.$record->addtime."】"
+				$record->result = CreditController::changeCredit([
+					'userid' => $user->userid,
+					'amount' => $record->amount,
+					'reason' => '微擎:' . $record->reason,
+					'note' => '微擎改动时间：【' . $record->addtime . "】"
 				]);
 //				array_push($ret, $user);
 			}
@@ -55,6 +59,21 @@ class We7Controller extends Controller
 			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function syncCreditRecord()
+	{
+		$records = We7CreditRecordManager::getByTime(0, time());
+		foreach ($records as $record) {
+			if (We7SyncManager::getByCon(['we7_itemid' => [$record->id]]))
+				continue;
+			else {
+				$sync = We7SyncManager::createObject();
+				$sync = We7SyncManager::syncFromWe7($sync, $records);
+				if ($sync)
+					$sync->save();
+			}
 		}
 	}
 	
