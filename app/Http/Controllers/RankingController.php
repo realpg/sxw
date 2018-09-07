@@ -59,6 +59,7 @@ class RankingController extends Controller
 			$users_agrees = AgreeManager::getByCon(['start_time' => $start_time])->get()->groupBy('item_username');
 			foreach ($users_agrees as $username => $agrees) {
 				$user = MemberManager::getByCon(['username' => $username])->first();
+				if($user)
 				$ranking_container->push(['userid' => $user->userid, 'get_agree' => count($agrees)]);
 			}
 			$rankings = $ranking_container->getArray();
