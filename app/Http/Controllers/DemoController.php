@@ -17,7 +17,7 @@ use App\Components\SellManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
 use App\Components\We7CreditManager;
-use App\Components\We7CreditRecordManager;
+use App\Components\We7\We7CreditRecordManager;
 use App\Components\We7SyncManager;
 use App\Models\Comment;
 use App\Models\Member;

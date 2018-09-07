@@ -8,7 +8,7 @@
  * 模版Manager
  */
 
-namespace App\Components;
+namespace App\Components\We7;
 
 use App\Models\We7\We7User;
 
