@@ -116,6 +116,8 @@ class SystemController extends Controller
 				
 				$ywlbs = explode(',', $update->ywlb_ids);
 				CompanyManager::setYWLB($company, $ywlbs);
+				$company = CompanyManager::setKeyWords($company, $ywlbs, $member);
+				$company->save();
 				
 				MessageController::sendSystemMessage([
 					'title' => "个人信息审核结果通知",
@@ -469,5 +471,84 @@ class SystemController extends Controller
 	{
 		$datas = VIPUserManager::getList();
 		return view('vip_record.index', ['datas' => $datas]);
+	}
+	
+	public static function member_detail(Request $request)
+	{
+		$data = $request->all();
+		if (checkParam($data, ['userid'])) {
+			$user = MemberManager::getById($data['userid']);
+			if ($user) {
+				$card = BussinessCardController::getByUserid($data['userid']);
+				return view('member.detail', ['data' => $card]);
+			}
+		}
+		//参数缺少或用户不存在则返回404
+		abort('404');
+	}
+	
+	public static function member_index(Request $request)
+	{
+		$members = MemberManager::getList();
+		return view('member.index', ['datas' => $members]);
+	}
+	
+	public static function member_edit(Request $request)
+	{
+		$data = $request->all();
+		$card = null;
+		if (checkParam($data, ['userid'])) {
+			$user = MemberManager::getById($data['userid']);
+			if ($user) {
+				$card = BussinessCardController::getByUserid($data['userid']);
+			}
+		}
+		
+		
+		$ywlbs = YWLBManager::getByCon(['status' => '3']);
+		return view('member.edit', ['data' => $card, 'ywlbs' => $ywlbs]);
+		
+		
+		//参数缺少或用户不存在则返回404
+//		abort('404');
+	}
+	
+	public function member_edit_post(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+//		return [$data,gettype($data),gettype($data['thumb'])];
+		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business', 'introduce'])) {
+			$userid = array_get($data, 'userid');
+			if ($userid)
+				$member = MemberManager::getById($userid);
+			else {
+				$member = MemberManager::createObject();
+				$member->wx_openId = '';
+				$member->group_id = $data['groupid'] or '6';
+				$member->save();
+				$member->username = 'xcx' . $member->userid;
+				$member->save();
+				$userid = $member->userid;
+			}
+			$company = CompanyManager::getById($userid);
+			MemberManager::setMember($member, $data)->save();
+			CompanyManager::setCompany($company, $data, $member)->save();
+			
+			$ywlbs = $data['ywlb_ids'];
+			CompanyManager::setYWLB($company, $ywlbs);
+			$company = CompanyManager::setKeyWords($company, $ywlbs, $member);
+			$company->save();
+
+//			MessageController::sendSystemMessage([
+//				'title' => "个人信息审核结果通知",
+//				'content' => "尊敬的会员：<br/>您的个人信息升级审核已通过！<br/>感谢您的支持！",
+//				'touser' => $member->username
+//			]);
+			return ApiResponse::makeResponse(true, $member, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数" . json_encode($data), ApiResponse::MISSING_PARAM);
+		}
 	}
 }

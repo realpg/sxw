@@ -25,9 +25,9 @@
     <script type="text/javascript" src="{{ URL::asset('hui/lib/DD_belatedPNG_0.0.8a-min.js')}}"></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ URL::asset('hui/lib/webuploader/0.1.5/webuploader.css')}}" rel="stylesheet" type="text/css"/>
-
     {{--<link rel="stylesheet" type="text/css" href="{{ URL::asset('/css/app.css') }}"/>--}}
     {{--<link rel="stylesheet" type="text/css" href="{{ URL::asset('/css/aui.css') }}"/>--}}
     {{--<link rel="stylesheet" type="text/css" href="{{ URL::asset('/css/default/style.css') }}"/>--}}
@@ -35,241 +35,126 @@
 </head>
 <body>
 <article class="page-container">
-    <form class="form form-horizontal" id="form-article-add" method="post">
-        {{csrf_field()}}
-        <div class="row cl hidden">
-            <label class="form-label col-xs-4 col-sm-2">id：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{{$data->itemid?$data->itemid:''}}" placeholder=""
-                       id="itemid" name="itemid">
-            </div>
-        </div>
+    {{--{{json_encode($data)}}--}}
+    <table class="table table-border table-bordered table-striped">
+        <thead>
+        <tr>
+            <th width="33" ></th>
+            <th width="67" style="width: 67%"></th>
+        </tr>
+        </thead>
+        <tr>
+            <td style="text-align: center">用户id</td>
+            <td>{{array_get($data,'userid')}}</td>
+        </tr>
+        <tr>
+            <td style="text-align: center">姓名</td>
+            @if(array_get($data,'truename'))
+                <td>{{array_get($data,'truename')}}</td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+        <tr>
+        <tr>
+            <td style="text-align: center">头像</td>
+            @if(array_get($data,'avatarUrl'))
+                <td>
+                    <img height="150px" src="{{array_get($data,'avatarUrl') }}"></td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+        <tr>
+        <tr>
+            <td style="text-align: center">手机号</td>
+            @if(array_get($data,'mobile'))
+                <td>{{array_get($data,'mobile')}}</td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+        <tr>
+            <td style="text-align: center">公司名称</td>
+            @if(array_get($data,'company'))
+                <td>{{array_get($data,'company')}}</td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+        <tr>
+            <td style="text-align: center">职位</td>
+            @if(array_get($data,'career'))
+                <td>{{array_get($data,'career')}}</td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+        <tr>
+            <td style="text-align: center">业务类别</td>
+            @if(count(array_get($data,'ywlb'))>0)
+                <td>
+                    @foreach(array_get($data,'ywlb') as $ywlb)
+                        <span class="label label-primary radius">{{array_get($ywlb,'name')}}</span>
+                    @endforeach
+                </td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+        <tr>
+            <td style="text-align: center">详细地址</td>
+            @if(array_get($data,'address'))
+                <td>{{array_get($data,'address')}}</td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+        <tr>
+            <td style="text-align: center">主营产品</td>
+            @if(array_get($data,'business'))
+                <td>{{array_get($data,'business')}}</td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+        <tr>
+            <td style="text-align: center">公司简介</td>
+            @if(array_get($data,'introduce'))
+                <td>{{array_get($data,'introduce')}}</td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+        <tr>
+            <td style="text-align: center">公司图片</td>
+            @if(array_get($data,'thumb'))
+                <td>
+                    @foreach(explode(',',array_get($data,'thumb')) as $src)
+                        <img height="150px" style="margin:5px 5px;border: solid black 0.5px" src="{{$src}}">
+                    @endforeach
+                </td>
+            @else
+                <td class="c-warning">未设置</td>@endif
 
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>描述：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{{$data->desc?$data->desc:''}}" placeholder=""
-                       id="articletitle2" name="desc">
-            </div>
-        </div>
-
-        <div class="row cl hidden">
-            <label class="form-label col-xs-4 col-sm-2">xcx_pid：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{{$data->xcx_pid?$data->xcx_pid:$adplace->pid}}"
-                       placeholder=""
-                       id="xcx_pid" name="xcx_pid">
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格1：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" step="1" min="0" class="input-text" value="{{$data->amount0?$data->amount0:''}}"
-                       placeholder=""
-                       id="amount0" name="amount0">积分/
-                <input type="number" step="1" min="0" class="input-text" value="{{$data->druation0?$data->druation0/86400:''}}"
-                                                            placeholder=""
-                                                            id="druation0" name="druation0">天
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格2：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" step="1" min="0" class="input-text" value="{{$data->amount1?$data->amount1:''}}"
-                       placeholder=""
-                       id="amount1" name="amount1">积分/
-                <input type="number" step="1" min="0" class="input-text" value="{{$data->druation1?$data->druation1/86400:''}}"
-                       placeholder=""
-                       id="druation1" name="druation1">天
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>价格3：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" step="1" min="0" class="input-text" value="{{$data->amount2?$data->amount2:''}}"
-                       placeholder=""
-                       id="amount2" name="amount2">积分/
-                <input type="number" step="1" min="0" class="input-text" value="{{$data->druation2?$data->druation2/86400:''}}"
-                       placeholder=""
-                       id="druation2" name="druation2">天
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">展示类型：</label>
-            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
-			<select id="type" class="select" name="type" size="1">
-				@if(substr_count($adplace->types,'0'))
-                    <option value="0" {{$data->type==0?'selected':''}}>图片</option>@endif
-                @if(substr_count($adplace->types,'1'))
-                    <option value="1" {{$data->type==1?'selected':''}}>名片 </option>@endif
-                @if(substr_count($adplace->types,'2'))
-                    <option value="2" {{$data->type==2?'selected':''}}>信息</option>@endif
-			</select>
-			</span></div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">链接类型：</label>
-            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
-			<select id="linktype" class="select" name="linktype" size="1">
-                <option id="linktype_1" value="1" {{$data->linktype==1?'selected':''}}>名片 </option>
-                <option id="linktype_2" value="2" {{$data->linktype==2?'selected':''}}>信息</option>
-                <option id="linktype_3" value="3" {{$data->linktype==3?'selected':''}}>外部链接</option>
-                <option id="linktype_4" value="4" {{$data->linktype==4?'selected':''}}>客服</option>
-			</select>
-			</span></div>
-        </div>
-
-        <div class="row cl type type-0 @if($data->type!=0) hidden @endif">
-            <label class="form-label col-xs-4 col-sm-2">图片：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <div class="uploader-thum-container">
-                    @if($data->img==''||$data->img==null)
-                        <div id="fileList" class="uploader-list">
-                        </div>
-                        <div id="filePicker">选择图片</div>
-                        <div id="btn-star" class="btn btn-default btn-uploadstar radius ml-10">开始上传</div>
-                    @else
-                        <div id="fileList" class="uploader-list">
-                            <div id="file.id'" class="item">
-                                <div class="pic-box" id="filePicker"><img height="300" src='{{$data->img}}'></div>
-                                <div class="info"></div>
-                            </div>
-                            <input class="hidden" name="img" value="{{$data->img}}"/>
-                        </div>
-                        <div id="btn-star" class="btn btn-default btn-uploadstar radius ml-10">重新上传</div>
-                    @endif
-                </div>
-            </div>
-        </div>
-
-        <div class="row cl linktype linktype-1 @if($data->linktype!=1) hidden @endif">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>关联名片用户id：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" min="1" step="1" class="input-text" value="{{$data->userid?$data->userid:''}}"
-                       placeholder=""
-                       id="userid" name="userid">
-                <a onclick="UserDetail('{{ URL::asset("member/detail")}}')">查看用户信息</a>
-            </div>
-        </div>
-
-        <div class="row cl linktype linktype-2 @if($data->linktype!=2) hidden @endif">
-            <label class="form-label col-xs-4 col-sm-2">信息模块：</label>
-            <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
-			<select class="select" name="item_mid" size="1">
-				<option value="5" {{$data->item_mid==5?'selected':''}}>供应</option>
-				<option value="6" {{$data->item_mid==6?'selected':''}}>求购</option>
-				<option value="88" {{$data->item_mid==88?'selected':''}}>纺机贸易</option>
-                {{--<option value="3">栏目编辑</option>--}}
-			</select>
-			</span></div>
-        </div>
-
-        <div class="row cl linktype linktype-2 @if($data->linktype!=2) hidden @endif">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>关联信息id：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" min="1" step="1" class="input-text" value="{{$data->item_id?$data->item_id:''}}"
-                       placeholder=""
-                       id="articletitle2" name="item_id">
-            </div>
-        </div>
-
-        <div class="row cl linktype linktype-3 @if($data->linktype!=3) hidden @endif">
-            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>外部链接：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="{{$data->url?$data->url:''}}" placeholder=""
-                       id="articletitle2" name="url">
-            </div>
-        </div>
-
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">排序值：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="number" class="input-text" value="{{$data->listorder?$data->listorder:0}}" placeholder=""
-                       id="articlesort" name="listorder">
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">有效期：</label>
-            <div class="formControls col-xs-8 col-sm-9 bs-docs-example">
-
-                <input name='fromtime' type="text" value="{{getPRCdate($data->fromtime?$data->fromtime:0,"Y-m-d")}}"
-                       onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'logmax\')||\'%y-%M-%d\'}' })" id="logmin"
-                       class="input-text Wdate" style="width:120px;">
-                -
-                <input name='totime' type="text" value="{{getPRCdate($data->totime?$data->totime:0,"Y-m-d")}}"
-                       onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'logmin\')}' })" id="logmax"
-                       class="input-text Wdate" style="width:120px;">
-
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">统计点击次数：</label>
-            <div class="formControls col-xs-8 col-sm-9 bs-docs-example">
-                <div class="switch">
-                    <input id="create-switch" name="stat" type="checkbox"
-                           value="1" {{$data->stat==1?'checked':''}}/>
-                </div>
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">展示状态：</label>
-            <div class="formControls col-xs-8 col-sm-9 bs-docs-example">
-                <div class="switch">
-                    <input id="create-switch" name="status" type="checkbox"
-                           value="3" {{$data->status==3?'checked':''}}/>
-                </div>
-            </div>
-        </div>
-
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">出售状态：</label>
-            <div class="formControls col-xs-8 col-sm-9 bs-docs-example">
-                <div class="switch">
-                    <input id="create-switch" name="onsell" type="checkbox"
-                           value="1" {{$data->onsell==1?'checked':''}}/>
-                </div>
-            </div>
-        </div>
-
-        <div class="row cl">
-            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-                <button onClick="save_submit();" class="btn btn-primary radius" type="button"><i
-                            class="Hui-iconfont">&#xe632;</i> 保存并提交
-                </button>
-                {{--<button onClick="article_save();" class="btn btn-secondary radius" type="button"><i--}}
-                {{--class="Hui-iconfont">&#xe632;</i> 保存草稿--}}
-                {{--</button>--}}
-                <button onClick="layer_close();" class="btn btn-default radius" type="button">
-                    &nbsp;&nbsp;取消&nbsp;&nbsp;
-                </button>
-            </div>
-        </div>
-    </form>
+        </tr>
+        <tr>
+            <td style="text-align: center">微信二维码</td>
+            @if(array_get($data,'wxqr'))
+                <td>
+                    <img height="150px" style="margin:5px 5px;border: solid black 0.5px" src="{{array_get($data,'wxqr') }}"></td>
+            @else
+                <td class="c-warning">未设置</td>@endif
+        </tr>
+    </table>
 </article>
 
+{{--<script type="text/javascript" src="{{ URL::asset('js/app.js') }}"></script>--}}
+{{--<script type="text/javascript" src="{{ URL::asset('js/doT.min.js') }}"></script>--}}
+{{--<script type="text/javascript" src="{{ URL::asset('hui/static/h-ui.admin/js/H-ui.admin.js') }}"></script>--}}
 <script type="text/javascript" src="{{ URL::asset('js/jquery-3.3.1.min.js') }}"></script>
+{{--<script type="text/javascript" src="{{ URL::asset('hui/lib/layer/2.4/layer.js') }}"></script>--}}
+{{--<script type="text/javascript" src="{{ URL::asset('hui/static/h-ui/js/H-ui.js') }}"></script>--}}
+<script type="text/javascript" src="{{ URL::asset('hui/lib/My97DatePicker/4.8/WdatePicker.js')}}"></script>
 <script type="text/javascript" src="{{ URL::asset('hui/lib/jquery.validation/1.14.0/jquery.validate.js')}}"></script>
 <script type="text/javascript" src="{{ URL::asset('hui/lib/jquery.validation/1.14.0/validate-methods.js')}}"></script>
 <script type="text/javascript" src="{{ URL::asset('hui/lib/jquery.validation/1.14.0/messages_zh.js')}}"></script>
 <script type="text/javascript" src="{{ URL::asset('hui/lib/webuploader/0.1.5/webuploader.min.js')}}"></script>
-{{--<script type="text/javascript" src="{{ URL::asset('hui/lib/ueditor/1.4.3/ueditor.config.js')}}"></script>--}}
+<script type="text/javascript" src="{{ URL::asset('hui/lib/ueditor/1.4.3/ueditor.config.js')}}"></script>
 <script type="text/javascript" src="{{ URL::asset('hui/lib/ueditor/1.4.3/ueditor.all.min.js')}}"></script>
 <script type="text/javascript" src="{{ URL::asset('hui/lib/ueditor/1.4.3/lang/zh-cn/zh-cn.js')}}"></script>
 <script type="text/javascript" src="{{ URL::asset('hui/bootstrapSwitch.js')}}"></script>
-
-<script type="text/javascript" src="{{ URL::asset('hui/lib/layer/2.4/layer.js') }}"></script>
-<script type="text/javascript" src="{{ URL::asset('hui/static/h-ui.admin/js/H-ui.admin.js')}}"></script>
-
-<script type="text/javascript" src="{{ URL::asset('hui/lib/My97DatePicker/4.8/WdatePicker.js')}}"></script>
-<script type="text/javascript" src="{{ URL::asset('hui/lib/datatables/1.10.0/jquery.dataTables.min.js')}}"></script>
-<script type="text/javascript" src="{{ URL::asset('hui/lib/laypage/1.2/laypage.js')}}"></script>
 
 <script>
     //    $('#create-switch').wrap('<div class="switch" />').parent().bootstrapSwitch();
@@ -300,77 +185,12 @@
         parent.layer.close(index);
     }
 
-    $("#type").on("change", function () {
-        var $this = $(this);
-        console.log($this.val())
-        switch ($this.val()) {
-            case "0": {
-                $("#linktype_1").removeClass("hidden");
-                $("#linktype_2").removeClass("hidden");
-                $("#linktype_3").removeClass("hidden");
-                $("#linktype_4").removeClass("hidden");
-                $(".type-0").removeClass("hidden");
-                break;
-            }
-            case "1": {
-                $("#linktype").val("1");
-                $("#linktype_1").removeClass("hidden");
-                $("#linktype_2").addClass("hidden");
-                $("#linktype_3").addClass("hidden");
-                $("#linktype_4").addClass("hidden");
-                $(".type-0").addClass("hidden");
-                break;
-            }
-            case "2": {
-                $("#linktype").val("2");
-                $("#linktype_1").addClass("hidden");
-                $("#linktype_2").removeClass("hidden");
-                $("#linktype_3").addClass("hidden");
-                $("#linktype_4").addClass("hidden");
-                $(".type-0").addClass("hidden");
-                break;
-            }
-        }
-    });
-    $("#linktype").on("change", function () {
-        console.log($(this).val())
-        linktypeChange($(this).val());
-    });
-
-    function linktypeChange(val) {
-        switch (val) {
-            case "1": {
-                $(".linktype").addClass("hidden");
-                $(".linktype-1").removeClass("hidden");
-                break;
-            }
-            case "2": {
-                $(".linktype").addClass("hidden");
-                $(".linktype-2").removeClass("hidden");
-                break;
-            }
-            case "3": {
-                $(".linktype").addClass("hidden");
-                $(".linktype-3").removeClass("hidden");
-                break;
-            }
-            case "4": {
-                $(".linktype").addClass("hidden");
-                $(".linktype-4").removeClass("hidden");
-                break;
-            }
-        }
-    }
-
-
     $(function () {
 //        $('.skin-minimal input').iCheck({
 //            checkboxClass: 'icheckbox-blue',
 //            radioClass: 'iradio-blue',
 //            increaseArea: '20%'
 //        });
-
-        linktypeChange($("#linktype").val());
 
         $list = $("#fileList"),
             $btn = $("#btn-star"),
@@ -439,13 +259,13 @@
         // 文件上传成功，给item添加成功class, 用样式标记上传成功。
         uploader.on('uploadSuccess', function (file, ret) {
             console.log(file, ret);
-            var img = ret.ret;
+            var icon_path = ret.ret;
             $('#' + file.id).addClass('upload-state-success').find(".state").text("已上传");
             var $li = $(
                 '<div id="' + file.id + '" class="item">' +
-                '<div class="pic-box"><img src=' + img + '></div>' +
+                '<div class="pic-box"><img src=' + icon_path + '></div>' +
                 '<div class="info">' + file.name + '</div>' +
-                '</div>' + '<input class="hidden" name="img" value="' + img + '"/>'
+                '</div>' + '<input class="hidden" name="icon_path" value="' + icon_path + '"/>'
                 ),
                 $img = $li.find('img');
             $list.html($li);
@@ -1064,14 +884,7 @@
     //    $(function () {
     //        var ue = UE.getEditor('editor');
     //    });
-
-    function UserDetail(url){
-        var userid=$('#userid').val();
-        console.log(url+'?userid='+userid);
-        layer_show('用户详情', url+'?userid='+userid, 800, 500)
-    }
 </script>
-
 
 </body>
 </html>

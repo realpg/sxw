@@ -115,13 +115,16 @@ class CompanyManager
 		}
 		if (array_key_exists('introduce', $data)) {
 			$company->introduce = array_get($data, 'introduce');
-			$companyData=CompanyDataManager::getById($company->userid);
-			$companyData->content=$company->introduce;
+			$companyData = CompanyDataManager::getById($company->userid);
+			$companyData->content = $company->introduce;
 			$companyData->save();
 		}
 		
 		if (array_key_exists('thumb', $data)) {
-			$company->thumb = array_get($data, 'thumb');
+			if (gettype(array_get($data,'thumb')) == 'string')
+				$company->thumb = array_get($data, 'thumb');
+			elseif (gettype(array_get($data,'thumb')) == 'array')
+				$company->thumb = implode(',', array_get($data, 'thumb'));
 		}
 		
 		$company->userid = $user->userid;
@@ -139,6 +142,7 @@ class CompanyManager
 				$companyYWLB->delete();
 			}
 		}
+		
 		foreach ($ywlbs as $ywlb) {
 			$YWLB = YWLBManager::getById($ywlb);
 			$companyYWLB = CompanyYWLBManager::createObject();
@@ -147,7 +151,20 @@ class CompanyManager
 			$companyYWLB->name = $YWLB->name;
 			$companyYWLB->status = $status;
 			$companyYWLB->save();
+			$company->keyword.= $YWLB->name . ',';
 		}
+		
+	}
+	
+	public static function setKeyWords($company, $ywlbs, $user)
+	{
+		$company->keyword = $user->truename;
+		foreach ($ywlbs as $ywlb) {
+			$YWLB = YWLBManager::getById($ywlb);
+			$company->keyword .= ',' . $YWLB->name;
+		}
+		$company->keyword = trim($company->keyword, ',');
+		return $company;
 	}
 	
 	public static function getBussinessCard($company)
@@ -176,22 +193,21 @@ class CompanyManager
 	
 	public static function search($keyword)
 	{
-		$results=Company::where('company','like','%'.$keyword."%")
-			->orWhere('business','like','%'.$keyword."%")
-			->orWhere('introduce','like','%'.$keyword."%")
-			->orWhere('keyword','like','%'.$keyword."%")
-			->orWhere('address','like','%'.$keyword."%");
+		$results = Company::where('company', 'like', '%' . $keyword . "%")
+			->orWhere('business', 'like', '%' . $keyword . "%")
+			->orWhere('introduce', 'like', '%' . $keyword . "%")
+			->orWhere('keyword', 'like', '%' . $keyword . "%")
+			->orWhere('address', 'like', '%' . $keyword . "%");
 		
 		$thesauru = ThesauruManager::getByKeyword($keyword);
-		if ($thesauru)
-		{
-			$words=explode('=',$thesauru->content);
-			foreach ($words as $word){
-				$results = $results->orWhere('company','like','%'.$word."%")
-					->orWhere('business','like','%'.$word."%")
-					->orWhere('introduce','like','%'.$word."%")
-					->orWhere('keyword','like','%'.$word."%")
-					->orWhere('address','like','%'.$word."%");
+		if ($thesauru) {
+			$words = explode('=', $thesauru->content);
+			foreach ($words as $word) {
+				$results = $results->orWhere('company', 'like', '%' . $word . "%")
+					->orWhere('business', 'like', '%' . $word . "%")
+					->orWhere('introduce', 'like', '%' . $word . "%")
+					->orWhere('keyword', 'like', '%' . $word . "%")
+					->orWhere('address', 'like', '%' . $word . "%");
 			}
 		}
 		$results = $results->paginate(5);

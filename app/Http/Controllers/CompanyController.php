@@ -90,6 +90,7 @@ class CompanyController extends Controller
 			$upgrade->groupid = 6;
 			$ywlbs = explode(',', $data['ywlb_ids']);
 			CompanyManager::setYWLB($company, $ywlbs, 3);
+			$company=CompanyManager::setKeyWords($company, $ywlbs,$user);
 			
 			$user->save();
 			$company->save();
