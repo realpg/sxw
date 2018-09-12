@@ -501,6 +501,7 @@ class SystemController extends Controller
 			$user = MemberManager::getById($data['userid']);
 			if ($user) {
 				$card = BussinessCardController::getByUserid($data['userid']);
+				$card['user']=$user;
 			}
 		}
 		
@@ -518,19 +519,23 @@ class SystemController extends Controller
 		$data = $request->all();
 		//检验参数
 //		return [$data,gettype($data),gettype($data['thumb'])];
-		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business', 'introduce'])) {
+		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business', 'introduce','groupid'])) {
 			$userid = array_get($data, 'userid');
 			if ($userid)
 				$member = MemberManager::getById($userid);
 			else {
 				$member = MemberManager::createObject();
 				$member->wx_openId = '';
-				$member->group_id = $data['groupid'] or '6';
+				
 				$member->save();
 				$member->username = 'xcx' . $member->userid;
 				$member->save();
 				$userid = $member->userid;
 			}
+			
+			$member->groupid = $data['groupid'];
+			$member->avatarUrl = $data['avatarUrl'];
+			$member->mobile = $data['mobile'];
 			$company = CompanyManager::getById($userid);
 			MemberManager::setMember($member, $data)->save();
 			CompanyManager::setCompany($company, $data, $member)->save();

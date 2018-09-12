@@ -84,6 +84,36 @@
         </div>
 
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>会员级别：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <div class="radio-box">
+                    <input type="radio" id="groupid-5" name="groupid" value="5"
+                           @if(array_get($data,'groupid')==5)checked
+                            @endif>
+                    <label for="groupid-5">个人会员</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="groupid-6" name="groupid" value="6"
+                           @if(isset($data['user']))
+                           @if(array_get($data['user'],'groupid')==6)checked
+                            @endif
+                            @endif>
+                    <label for="groupid-6">企业会员</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="groupid-1" name="groupid" value="1"
+                           @if(isset($data['user']))
+                           @if(array_get($data['user'],'groupid')==1)checked
+                            @endif
+                            @endif disabled>
+                    <label for="groupid-1">管理员</label>
+                </div>
+                {{--<input type="text" class="input-text" value="{{array_get($data,'ywlb_ids')}}" placeholder=""--}}
+                {{--id="ywlb_ids" name="ywlb_ids">--}}
+            </div>
+        </div>
+
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>手机：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="{{array_get($data,'mobile')}}" placeholder=""
@@ -93,7 +123,7 @@
 
 
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-2">公司图片：</label>
+            <label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>公司照片：</label>
             {{--<div class="formControls col-xs-8 col-sm-9">--}}
             {{--<div class="uploader-list-container">--}}
             {{--<div class="queueList">--}}
@@ -175,7 +205,7 @@
                     </div>
                 @endforeach
                 {{--<input type="text" class="input-text" value="{{array_get($data,'ywlb_ids')}}" placeholder=""--}}
-                       {{--id="ywlb_ids" name="ywlb_ids">--}}
+                {{--id="ywlb_ids" name="ywlb_ids">--}}
             </div>
         </div>
 
@@ -224,6 +254,12 @@
                         <div id="btn-star1" class="btn btn-default btn-uploadstar radius ml-10">重新上传</div>
                     @endif
                 </div>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <p class="c-danger">* 请尽量避免修改活跃用户的信息</p>
             </div>
         </div>
 
@@ -282,6 +318,7 @@
             ywlb_ids: "业务类别",
             thumb: "公司照片",
             avatarUrl: "头像",
+            groupid:"会员级别"
         }
         var t = $form.serializeArray();
         $.each(t, function () {

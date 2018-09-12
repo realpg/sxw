@@ -62,3 +62,5 @@ Route::group(['middleware' => ['checkAdmin']], function () {
 	Route::get('member/edit', 'SystemController@member_edit');//用户列表
 	Route::post('member/edit', 'SystemController@member_edit_post');//用户列表
 });
+
+Route::post('UploadExcel', 'FileReaderController@UploadExcel');//上传
