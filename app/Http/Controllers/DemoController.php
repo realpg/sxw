@@ -55,7 +55,7 @@ class DemoController extends Controller
 			$ywlbs=CompanyYWLBManager::getCompanyYWLB($user->userid);
 			if($company){
 				$company=CompanyManager::setKeyWords($company,$ywlbs,$user);
-//				$company->save();
+				$company->save();
 				array_push($companies,$company->keyword,$user->truename);
 			}
 		}
