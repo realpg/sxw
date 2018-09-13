@@ -61,7 +61,8 @@
                                 <span class="label label-default radius">未知</span>
                             @endif
                         </td>
-                        <td>{{$data->userid}}</td>
+                        <td><a onclick="layer_show('用户详情', '{{ URL::asset("member/detail?userid=").$data->userid}}', 800, 500)">{{$data->userid}}</a>
+                        </td>
                         <td>{{$data->username}}</td>
                         <td>{{isset($data->user)?$data->user->passport:""}}</td>
                         <td>{{getPRCdate($data->addtime)}}</td>

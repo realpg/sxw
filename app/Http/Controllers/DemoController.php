@@ -26,6 +26,13 @@ use App\Models\Test;
 use App\Models\XCXLog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RankingController;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+//use Maatwebsite\Excel\Facades\Excel;
 
 class DemoController extends Controller
 {
@@ -39,8 +46,11 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		We7Controller::syncCreditRecordFromWe7();
-		We7Controller::syncCreditToWe7();
+		
+		
+		$date = date_create("2016-09-25",new \DateTimeZone('Asia/Shanghai'));
+		echo $date->getTimestamp();
+		
 	}
 	
 	// 创建请求头

@@ -55,4 +55,15 @@ Route::group(['middleware' => ['checkAdmin']], function () {
 	Route::get('vip_edit', 'SystemController@vip_edit');//广告
 	Route::post('vip_edit', 'SystemController@vip_edit_post');//广告
 	Route::get('vip/record', 'SystemController@vip_record');//广告
+	
+	Route::get('member', 'SystemController@member_index');//用户列表
+	Route::get('member/index', 'SystemController@member_index');//用户列表
+	Route::get('member/detail', 'SystemController@member_detail');//用户详情
+	Route::get('member/edit', 'SystemController@member_edit');//用户列表
+	Route::post('member/edit', 'SystemController@member_edit_post');//用户列表
+	
+	Route::get('import/info', 'SystemController@ImportInfo');//上传
+	Route::post('UploadExcel', 'FileReaderController@UploadExcel');//上传
+	Route::post('import/start', 'FileReaderController@readData');//上传
+	Route::get('import/result', 'FileReaderController@downloadResult');//上传
 });
