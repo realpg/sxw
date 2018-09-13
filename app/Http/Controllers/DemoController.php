@@ -59,7 +59,7 @@ class DemoController extends Controller
 				array_push($companies,$company->keyword,$user->truename);
 			}
 		}
-		return [$companies];
+		dd($companies);
 	}
 	
 	// 创建请求头
