@@ -556,4 +556,8 @@ class SystemController extends Controller
 			return ApiResponse::makeResponse(false, "缺少参数" . json_encode($data), ApiResponse::MISSING_PARAM);
 		}
 	}
+	
+	public static function ImportInfo(Request $request){
+		return view('import.info');
+	}
 }

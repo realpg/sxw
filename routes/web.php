@@ -61,6 +61,9 @@ Route::group(['middleware' => ['checkAdmin']], function () {
 	Route::get('member/detail', 'SystemController@member_detail');//用户详情
 	Route::get('member/edit', 'SystemController@member_edit');//用户列表
 	Route::post('member/edit', 'SystemController@member_edit_post');//用户列表
+	
+	Route::get('import/info', 'SystemController@ImportInfo');//上传
+	Route::post('UploadExcel', 'FileReaderController@UploadExcel');//上传
+	Route::post('import/start', 'FileReaderController@readData');//上传
+	Route::get('import/result', 'FileReaderController@downloadResult');//上传
 });
-
-Route::post('UploadExcel', 'FileReaderController@UploadExcel');//上传
