@@ -8,6 +8,7 @@ use App\Components\BuyManager;
 use App\Components\CommentManager;
 use App\Components\CompanyDataManager;
 use App\Components\CompanyManager;
+use App\Components\CompanyYWLBManager;
 use App\Components\FJMYManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
@@ -46,11 +47,19 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		
-		
-		$date = date_create("2016-09-25",new \DateTimeZone('Asia/Shanghai'));
-		echo $date->getTimestamp();
-		
+		$users=MemberManager::getByCon(['groupid'=>[6]]);
+		$companies=[];
+		$arr=[];
+		foreach ($users as $user){
+			$company=CompanyManager::getById($user->userid);
+			$ywlbs=CompanyYWLBManager::getCompanyYWLB($user->userid);
+			if($company){
+				$company=CompanyManager::setKeyWords($company,$ywlbs,$user);
+//				$company->save();
+				array_push($companies,$company->keyword,$user->truename);
+			}
+		}
+		return [$companies];
 	}
 	
 	// 创建请求头

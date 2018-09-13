@@ -179,7 +179,7 @@ class FileReaderController extends Controller
 			} elseif (array_get($row, 'addtime')) {
 				$date = date_create(array_get($row, 'addtime'), new \DateTimeZone('Asia/Shanghai'));
 				$item->addtime = $date->getTimestamp();
-				$item->save();  
+				$item->save();
 			}
 			
 			$row['result'] = "成功";

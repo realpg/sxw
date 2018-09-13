@@ -100,4 +100,9 @@ class CompanyYWLBManager
 		$companyYWLB->name=$YWLB->name;
 		return $companyYWLB;
 	}
+	
+	public static function getCompanyYWLB($userid){
+		return CompanyYWLB::where('userid',$userid)->where('status', '3')
+			->pluck('ywlb_id');
+	}
 }
