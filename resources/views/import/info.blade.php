@@ -98,7 +98,7 @@
                             // 此处可对 data 作相关处理
                             console.log(ret, ret.ret, ret.ret.data)
                             $(".show_if_has_data").removeClass('hidden')
-                            alert('提交成功！');
+                            alert('上传成功！');
                             data_length = ret.ret.data_length;
                             file_path = ret.ret.file_path;
                             $("#data_length").html(ret.ret.data_length);

@@ -178,7 +178,7 @@ class FJMYManager
 			$thumb = explode(',', $data['thumb']);
 			$fjmy->thumb = $thumb[0];
 			$fjmy->thumb1 = count($thumb) > 1 ? $thumb[1] : ($fjmy->thumb1 ? $fjmy->thumb1 : "");
-			$fjmy->thumb2 = count($thumb) > 2 ? $thumb[2] : ($fjmy->thumb1 ? $fjmy->thumb1 : "");
+			$fjmy->thumb2 = count($thumb) > 2 ? $thumb[2] : ($fjmy->thumb2 ? $fjmy->thumb2 : "");
 			$fjmy->thumbs = join(',', $thumb);
 		}
 		if (array_key_exists('telephone', $data)) {

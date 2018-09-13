@@ -106,7 +106,7 @@
                            @if(array_get($data['user'],'groupid')==1)checked
                             @endif
                             @endif disabled>
-                    <label for="groupid-1">管理员</label>
+                    <label for="groupid-1"><del> 管理员 </del></label>
                 </div>
                 {{--<input type="text" class="input-text" value="{{array_get($data,'ywlb_ids')}}" placeholder=""--}}
                 {{--id="ywlb_ids" name="ywlb_ids">--}}
