@@ -159,6 +159,9 @@ class CompanyManager
 	public static function setKeyWords($company, $ywlbs, $user)
 	{
 		$company->keyword = $user->truename;
+		if($user->mobile){
+			$company->keyword.=','.$user->mobile;
+		}
 		foreach ($ywlbs as $ywlb) {
 			$YWLB = YWLBManager::getById($ywlb);
 			$company->keyword .= ',' . $YWLB->name;
