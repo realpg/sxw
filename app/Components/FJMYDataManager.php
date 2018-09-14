@@ -84,6 +84,9 @@ class FJMYDataManager
 		if (array_key_exists('content', $data)) {
 			$fjmyData->content = array_get($data, 'content');
 		}
+		if (array_key_exists('desc', $data)) {
+			$fjmyData->content = array_get($data, 'desc');
+		}
 		return $fjmyData;
 	}
 }

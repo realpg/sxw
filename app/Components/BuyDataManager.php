@@ -84,6 +84,9 @@ class BuyDataManager
 		if (array_key_exists('content', $data)) {
 			$buyData->content = array_get($data, 'content');
 		}
+		if (array_key_exists('desc', $data)) {
+			$buyData->content = array_get($data, 'desc');
+		}
 		return $buyData;
 	}
 }
