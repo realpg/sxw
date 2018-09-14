@@ -7,6 +7,7 @@ use App\Components\AgreeManager;
 use App\Components\ArticleManager;
 use App\Components\BuyManager;
 use App\Components\CommentManager;
+use App\Components\CompanyManager;
 use App\Components\FavoriteManager;
 use App\Components\FJMYManager;
 use App\Components\MemberManager;
@@ -95,9 +96,12 @@ class CommentController extends Controller
 			}
 			$item = null;
 			//获得被评论的信息
-			if ($data['item_mid'] == 5) {
+			if ($data['mid'] == 2) {
+				$item=CompanyManager::getById($data['tid']);
+			}
+			elseif ($data['mid'] == 5) {
 				//供应
-				$item = SellManager::getById($data['item_id']);
+				$item = SellManager::getById($data['tid']);
 //				$item=5;
 			} elseif ($data['item_mid'] == 6) {
 				//求购
@@ -163,7 +167,10 @@ class CommentController extends Controller
 			$ret = "收藏成功";
 			$item = null;
 			//获得被评论的信息
-			if ($data['mid'] == 5) {
+			if ($data['mid'] == 2) {
+				$item=CompanyManager::getById($data['tid']);
+			}
+			elseif ($data['mid'] == 5) {
 				//供应
 				$item = SellManager::getById($data['tid']);
 //				$item=5;
@@ -246,6 +253,10 @@ class CommentController extends Controller
 		$myFavorites = FavoriteManager::getByCon($con, true,['itemid', 'desc']);
 		foreach ($myFavorites as $favorite) {
 			switch ($favorite->mid) {
+				case '2':
+					$item = BussinessCardController::getByUserid($favorite->tid);
+					$favorite->item = $item;
+					break;
 				case '5':
 					$item = SellManager::getById($favorite->tid);
 					if ($item) {
