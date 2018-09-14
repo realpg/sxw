@@ -92,7 +92,7 @@
 
                 function uploadfile() {
                     $("#file-form").ajaxSubmit({
-                        type: 'post', // 提交方式 get/post
+                        type: 'POST', // 提交方式 get/post
                         url: '{{URL::asset('UploadExcel')}}', // 需要提交的 url
                         success: function (ret) { // data 保存提交后返回的数据，一般为 json 数据
                             // 此处可对 data 作相关处理
