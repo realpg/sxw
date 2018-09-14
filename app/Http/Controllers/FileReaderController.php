@@ -196,7 +196,7 @@ class FileReaderController extends Controller
 //			return json_encode($file);
 //		});
 		$date=date('Ymdhis');
-		$name = iconv('UTF-8', 'GBK', '导入结果'.$date);
+		$name = iconv('UTF-8', 'GBK', 'result'.$date);
 		Excel::create($name, function ($excel) use ($arr) {
 			
 			$excel->sheet('result', function ($sheet) use ($arr) {
@@ -207,7 +207,7 @@ class FileReaderController extends Controller
 			
 		})->store('xls');
 		
-		$result_file_path= '/导入结果'.$date.'.xls';
+		$result_file_path= '/result'.$date.'.xls';
 		
 		
 //		->export('xls');
