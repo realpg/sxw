@@ -483,7 +483,7 @@ class SystemController extends Controller
 				return view('member.detail', ['data' => $card]);
 			}
 		}elseif (checkParam($data, ['username'])) {
-			$user = MemberManager::getById($data['username']);
+			$user = MemberManager::getByUsername($data['username']);
 			if ($user) {
 				$card = BussinessCardController::getByUserid($data['userid']);
 				return view('member.detail', ['data' => $card]);
