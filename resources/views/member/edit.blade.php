@@ -604,10 +604,10 @@
             resize: false,
 
             // swf文件路径
-            swf: "http://localhost/sxw-master/public/hui/lib/webuploader/0.1.5/Uploader.swf",
+            swf: "{{ URL::asset('hui/lib/webuploader/0.1.5/Uploader.swf')}}",
 
             // 文件接收服务端。
-            server: "http://localhost/sxw-master/public/upload",
+            server: "{{ URL::asset('upload')}}",
             formData: {
                 uid: 123,
                 _token: "{{csrf_token()}}"
