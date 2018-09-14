@@ -88,7 +88,10 @@ class AgreeManager
 		if (array_key_exists('item_mid', $data)) {
 			$agree->item_mid = array_get($data, 'item_mid');
 		}
-		$agree->item_id = $item->itemid;
+		if (array_get($data, 'item_mid') == 2)
+			$agree->item_id = $item->userid;
+		else
+			$agree->item_id = $item->itemid;
 		$agree->item_title = $item->title ? $item->title : '';
 		$agree->item_username = $item->username;
 		return $agree;
