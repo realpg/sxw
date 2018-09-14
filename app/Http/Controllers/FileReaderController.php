@@ -38,7 +38,7 @@ class FileReaderController extends Controller
 		$path = $request->file('file')->storeAs('/public/' . date('Y-m-d') . '/upload',$saveName);
 //		$file_path = $file->getpath();
 //		$file_path = Storage::url($file);//就是很简单的一个步骤
-		$file_path='public/'. date('Y-m-d') . '/upload/'.$saveName;
+		$file_path='/storage/app/public/'. date('Y-m-d') . '/upload/'.$saveName;
 //		$file_path = str_replace("\\", "/", $path);
 		
 		$excel_data = self::ReadExcel($file_path);
