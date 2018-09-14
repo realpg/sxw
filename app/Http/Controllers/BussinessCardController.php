@@ -62,9 +62,9 @@ class BussinessCardController extends Controller
 			'introduce' => $company->introduce,
 			'thumb' => $company->thumb,
 			'wxqr' => $member->wxqr,
-			'view' => LLJLManager::getByCon(['itemusername' => [$member->username]])->count(),
-			'agree' => AgreeManager::getByCon(['item_username' => [$member->username]])->count(),
-			'favorite' => FavoriteManager::getFavoriteNumber($member),
+			'view' => $company->hits,
+			'agree' => $company->agree,
+			'favorite' => $company->favorite,
 			'vip' => VIPUserManager::getUserVIPLevel($member->userid),
 			'avatarUrl' => $member->avatarUrl
 		];
@@ -82,6 +82,11 @@ class BussinessCardController extends Controller
 		$data = $request->all();
 		//检验参数
 		if (checkParam($data, ['user_id'])) {
+			$company=CompanyManager::getById($data['user_id']);
+			if ($company){
+				$company->hits++;
+				$company->save();
+			}
 			$ret = self::getByUserid($data['user_id']);
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
