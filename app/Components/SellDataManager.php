@@ -84,6 +84,9 @@ class SellDataManager
 		if (array_key_exists('content', $data)) {
 			$sellData->content = array_get($data, 'content');
 		}
+		if (array_key_exists('desc', $data)) {
+			$sellData->content = array_get($data, 'desc');
+		}
 		return $sellData;
 	}
 }
