@@ -121,7 +121,7 @@ class BuyController
 		}
 	}
 	
-	public static function searchPost(Request $request)
+	public static function searchPost(Request $request, $api = true)
 	{
 		$data = $request->all();
 		$I = MemberManager::getById($data['userid']);
@@ -146,9 +146,15 @@ class BuyController
 					$buy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $buy->tag)]));
 					$buy = BuyManager::getAgreeAndFavorite($buy, $I);
 				}
-				return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
+				if ($api)
+					return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
+				else
+					return $buys;
 			} else
-				return ApiResponse::makeResponse(true, [], ApiResponse::SUCCESS_CODE);
+				if ($api)
+					return ApiResponse::makeResponse(true, [], ApiResponse::SUCCESS_CODE);
+				else
+					return [];
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}

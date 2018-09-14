@@ -27,11 +27,11 @@ class SellController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$sells = SellManager::getByCon(['status' => [3]], ['itemid', "desc",'vip' , 'desc'], true);
+		$sells = SellManager::getByCon(['status' => [3]], ['itemid', "desc", 'vip', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
-			$sell=SellManager::getAgreeAndFavorite($sell,$user);
+			$sell = SellManager::getAgreeAndFavorite($sell, $user);
 		}
 		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 	}
@@ -112,7 +112,7 @@ class SellController
 				$lljl->save();
 				$sell = SellManager::getData($sell);
 				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags', 'comments']);
-				$sell=SellManager::getAgreeAndFavorite($sell,$user);
+				$sell = SellManager::getAgreeAndFavorite($sell, $user);
 				return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
 			} else
 				return ApiResponse::makeResponse(false, '未找到对应信息', ApiResponse::UNKNOW_ERROR);
@@ -121,10 +121,10 @@ class SellController
 		}
 	}
 	
-	public static function searchPost(Request $request)
+	public static function searchPost(Request $request, $api = true)
 	{
 		$data = $request->all();
-		$I=MemberManager::getById($data['userid']);
+		$I = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['keyword'])) {
 			$ret = null;
@@ -144,13 +144,19 @@ class SellController
 						$sell->businesscard = BussinessCardController::getByUserid($company->userid);
 					}
 					$sell->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $sell->tag)]));
-					$sell=SellManager::getAgreeAndFavorite($sell,$I);
+					$sell = SellManager::getAgreeAndFavorite($sell, $I);
 				}
-				return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
+				if ($api)
+					return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
+				else
+					return $sells;
 			} else
-				return ApiResponse::makeResponse(true, [], ApiResponse::SUCCESS_CODE);
+				if ($api)
+					return ApiResponse::makeResponse(true, [], ApiResponse::SUCCESS_CODE);
+				else
+					return [];
 		} else {
-			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+				return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
 	
@@ -171,7 +177,7 @@ class SellController
 			$sells = SellManager::getByCon($Con, ['vip', "desc"], true);
 			foreach ($sells as $sell) {
 				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
-				$sell=SellManager::getAgreeAndFavorite($sell,$user);
+				$sell = SellManager::getAgreeAndFavorite($sell, $user);
 			}
 			return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		} else {

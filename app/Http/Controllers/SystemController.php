@@ -482,6 +482,12 @@ class SystemController extends Controller
 				$card = BussinessCardController::getByUserid($data['userid']);
 				return view('member.detail', ['data' => $card]);
 			}
+		}elseif (checkParam($data, ['username'])) {
+			$user = MemberManager::getById($data['username']);
+			if ($user) {
+				$card = BussinessCardController::getByUserid($data['userid']);
+				return view('member.detail', ['data' => $card]);
+			}
 		}
 		//参数缺少或用户不存在则返回404
 		abort('404');

@@ -47,19 +47,8 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$users=MemberManager::getByCon(['groupid'=>[6]]);
-		$companies=[];
-		$arr=[];
-		foreach ($users as $user){
-			$company=CompanyManager::getById($user->userid);
-			$ywlbs=CompanyYWLBManager::getCompanyYWLB($user->userid);
-			if($company){
-				$company=CompanyManager::setKeyWords($company,$ywlbs,$user);
-				$company->save();
-				array_push($companies,$company->keyword,$user->truename);
-			}
-		}
-		dd($companies);
+		$fjmys=FJMYManager::getList(true);
+		return ApiResponse::makeResponse(true,$fjmys,ApiResponse::SUCCESS_CODE);
 	}
 	
 	// 创建请求头

@@ -38,14 +38,15 @@ class InfoController extends Controller
 		return ApiResponse::makeResponse(true, $infos, ApiResponse::SUCCESS_CODE);
 	}
 	
-	public static function getInfoByUserid(Request $request){
-		$data=$request->all();
-		$user=MemberManager::getById($data['userid']);
+	public static function getInfoByUserid(Request $request)
+	{
+		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['item_userid'])) {
-			$itemuser=MemberManager::getById($data['item_userid']);
+			$itemuser = MemberManager::getById($data['item_userid']);
 			$page = array_get($request->all(), 'page') ? array_get($data, 'page') : 1;
-			$infos = InfoManager::getByUsernameAndPage($itemuser->username,$page, 5);
+			$infos = InfoManager::getByUsernameAndPage($itemuser->username, $page, 5);
 			foreach ($infos['data'] as $info) {
 				$info->I_agree = AgreeManager::getByCon(
 					['item_mid' => [$info->mid],
@@ -61,6 +62,19 @@ class InfoController extends Controller
 			}
 			
 			return ApiResponse::makeResponse(true, $infos, ApiResponse::SUCCESS_CODE);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function search(Request $request)
+	{
+		$data = $request->all();
+		if (checkParam($data, ['keyword'])) {
+			$sells = SellController::searchPost($request, false);
+			$buys = BuyController::searchPost($request, false);
+			$fjmys = FJMYController::searchPost($request, false);
+			return ApiResponse::makeResponse(true, ['sells' => $sells, 'buys' => $buys, 'fjmys' => $fjmys], ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
