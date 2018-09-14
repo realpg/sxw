@@ -33,11 +33,11 @@ class CommentController extends Controller
 	public function comment(Request $request)
 	{
 		$data = $request->all();
-		$user = MemberManager::getById($data['userid']);
+		$me = MemberManager::getById($data['userid']);
 		if (checkParam($data, ['item_mid', 'item_id', 'content'])) {
 			$comment = CommentManager::createObject();
 			$comment = CommentManager::setComment($comment, $data);
-			$comment = CommentManager::setUserInfo($comment, $user);
+			$comment = CommentManager::setUserInfo($comment, $me);
 			
 			$item = null;
 			//获得被评论的信息
@@ -64,7 +64,7 @@ class CommentController extends Controller
 			$comment->save();
 			$user = MemberManager::getByUsername($comment->username);
 			if ($user)
-				$comment->businesscard = BussinessCardController::getByUserid($user->userid);
+				$comment->businesscard = BussinessCardController::getByUserid($user->userid,$me);
 			return ApiResponse::makeResponse(true, $comment, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
@@ -96,10 +96,10 @@ class CommentController extends Controller
 			}
 			$item = null;
 			//获得被评论的信息
-			if ($data['mid'] == 2) {
+			if ($data['item_mid'] == 2) {
 				$item=CompanyManager::getById($data['tid']);
 			}
-			elseif ($data['mid'] == 5) {
+			elseif ($data['item_mid'] == 5) {
 				//供应
 				$item = SellManager::getById($data['tid']);
 //				$item=5;
@@ -254,7 +254,7 @@ class CommentController extends Controller
 		foreach ($myFavorites as $favorite) {
 			switch ($favorite->mid) {
 				case '2':
-					$item = BussinessCardController::getByUserid($favorite->tid);
+					$item = BussinessCardController::getByUserid($favorite->tid,$user);
 					$favorite->item = $item;
 					break;
 				case '5':

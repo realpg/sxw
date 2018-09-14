@@ -25,6 +25,7 @@ class BussinessCardController extends Controller
 	public static function getList(Request $request)
 	{
 		$data = $request->all();
+		$Me=MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, [])) {
 			$conditions = [];
@@ -35,7 +36,7 @@ class BussinessCardController extends Controller
 			
 			$users = MemberManager::getByCon($conditions, true);
 			foreach ($users as $user) {
-				$user->bussinesscard = BussinessCardController::getByUserid($user->userid);
+				$user->bussinesscard = BussinessCardController::getByUserid($user->userid,$Me);
 			}
 			$ret = $users;
 			
@@ -45,7 +46,7 @@ class BussinessCardController extends Controller
 		}
 	}
 	
-	public static function getByUserid($userid)
+	public static function getByUserid($userid,$_user=null)
 	{
 		$member = MemberManager::getById($userid);
 		$company = CompanyManager::getById($userid);
@@ -68,6 +69,19 @@ class BussinessCardController extends Controller
 			'vip' => VIPUserManager::getUserVIPLevel($member->userid),
 			'avatarUrl' => $member->avatarUrl
 		];
+		if($_user){
+			$bussnesscard['I_agree']=AgreeManager::getByCon(
+				['item_mid' => ['2'],
+					'item_id' => [$member->userid],
+					'username' => [$_user->username]
+				])->first() ? true : false;;
+			$bussnesscard['I_favorite']=FavoriteManager::getByCon(
+				['mid' => ['2'],
+					'tid' => [$member->userid],
+					'userid' => [$_user->userid]
+				]
+			)->first() ? true : false;
+		}
 		return $bussnesscard;
 	}
 	
@@ -80,6 +94,7 @@ class BussinessCardController extends Controller
 	public static function getByUserid_get(Request $request)
 	{
 		$data = $request->all();
+		$me=MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['user_id'])) {
 			$company=CompanyManager::getById($data['user_id']);
@@ -87,7 +102,7 @@ class BussinessCardController extends Controller
 				$company->hits++;
 				$company->save();
 			}
-			$ret = self::getByUserid($data['user_id']);
+			$ret = self::getByUserid($data['user_id'],$me);
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
@@ -99,13 +114,14 @@ class BussinessCardController extends Controller
 	public static function getByYWLB(Request $request)
 	{
 		$data = $request->all();
+		$me=MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['ywlb_id'])) {
 			$userids = CompanyYWLBManager::getByCon(['ywlb_id' => [$data['ywlb_id']]])->pluck('userid');
 			
 			$users = MemberManager::getByCon(['userid' => $userids], true);
 			foreach ($users as $user) {
-				$user->bussinesscard = BussinessCardController::getByUserid($user->userid);
+				$user->bussinesscard = BussinessCardController::getByUserid($user->userid,$me);
 			}
 			$ret = $users;
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
@@ -118,6 +134,7 @@ class BussinessCardController extends Controller
 	public static function search(Request $request)
 	{
 		$data = $request->all();
+		$me=MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['keyword'])) {
 			$keyword = $data['keyword'];
@@ -125,7 +142,7 @@ class BussinessCardController extends Controller
 			$userids = [];
 			if ($searchResults->count() > 0) {
 				foreach ($searchResults as $result) {
-					$result->businesscard=BussinessCardController::getByUserid($result->userid);
+					$result->businesscard=BussinessCardController::getByUserid($result->userid,$me);
 				}
 			}
 			

@@ -79,12 +79,13 @@ class RankingController extends Controller
 	public static function getRanking(Request $request)
 	{
 		$data = $request->all();
+		$me=MemberManager::getById($data['userid']);
 		//检验参数
 		if (checkParam($data, ['type'])) {
 			$ranks = RankingManager::getByCon(['type' => [$data['type']]], ['rank', 'asc']);
 			foreach ($ranks as $rank) {
 				$company = CompanyManager::getById($rank->userid);
-				$rank->businesscard = BussinessCardController::getByUserid($company->userid);
+				$rank->businesscard = BussinessCardController::getByUserid($company->userid,$me);
 			}
 			
 			$ret = array_arrange($ranks);

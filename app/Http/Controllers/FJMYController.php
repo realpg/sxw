@@ -141,7 +141,7 @@ class FJMYController
 					$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
 					if ($user) {
 						$fjmy->company = $company = CompanyManager::getById($user->userid);
-						$fjmy->businesscard = BussinessCardController::getByUserid($company->userid);
+						$fjmy->businesscard = BussinessCardController::getByUserid($company->userid,$I);
 					}
 					$fjmy->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $fjmy->tag)]));
 					$fjmy = FJMYManager::getAgreeAndFavorite($fjmy, $I);

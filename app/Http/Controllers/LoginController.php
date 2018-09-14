@@ -81,7 +81,7 @@ class LoginController extends Controller
 		
 		if ($user) {
 			$user->companyInfo = $company = CompanyManager::getById($user->userid);
-			$user->businesscard = BussinessCardController::getByUserid($company->userid);
+			$user->businesscard = BussinessCardController::getByUserid($company->userid,$user);
 			$user->updating = (UpgradeManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0)
 				|| (Member_updateManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0);
 		}
