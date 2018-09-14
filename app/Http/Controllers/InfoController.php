@@ -74,7 +74,21 @@ class InfoController extends Controller
 			$sells = SellController::searchPost($request, false);
 			$buys = BuyController::searchPost($request, false);
 			$fjmys = FJMYController::searchPost($request, false);
-			return ApiResponse::makeResponse(true, ['sells' => $sells, 'buys' => $buys, 'fjmys' => $fjmys], ApiResponse::SUCCESS_CODE);
+			$arr=[];
+			foreach ($sells as $info){
+				$info->mid=5;
+				array_push($arr,$info);
+			}
+			foreach ($buys as $info){
+				$info->mid=6;
+				array_push($arr,$info);
+			}
+			foreach ($fjmys as $info){
+				$info->mid=88;
+				array_push($arr,$info);
+			}
+			
+			return ApiResponse::makeResponse(true, $arr, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
