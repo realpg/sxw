@@ -13,6 +13,7 @@ use App\Components\SellManager;
 use App\Components\TagManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Maatwebsite\Excel\Facades\Excel;
 
 class FileReaderController extends Controller
@@ -30,11 +31,15 @@ class FileReaderController extends Controller
 		$row = $request->all();
 //		$mid = 5;
 //		$mid=$row['mid'];
-		
-		$file = $request->file('file')->store('/public/' . date('Y-m-d') . '/upload');
+		$file = $request->file('file');
+		$ext = $file->extension();
+		$saveName =time().rand().".".$ext;
+//		$path = $file->store('/public/' . date('Y-m-d') . '/upload');
+		$path = $request->file('file')->storeAs('/public/' . date('Y-m-d') . '/upload',$saveName);
 //		$file_path = $file->getpath();
 //		$file_path = Storage::url($file);//就是很简单的一个步骤
-		$file_path = str_replace("\\", "/", $file);
+		$file_path=URL::asset('public/'. date('Y-m-d') . '/upload/'.$saveName);
+//		$file_path = str_replace("\\", "/", $path);
 		
 		$excel_data = self::ReadExcel($file_path);
 		$length = count($excel_data);
