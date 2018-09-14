@@ -97,11 +97,11 @@ class CommentController extends Controller
 			$item = null;
 			//获得被评论的信息
 			if ($data['item_mid'] == 2) {
-				$item=CompanyManager::getById($data['tid']);
+				$item=CompanyManager::getById($data['item_id']);
 			}
 			elseif ($data['item_mid'] == 5) {
 				//供应
-				$item = SellManager::getById($data['tid']);
+				$item = SellManager::getById($data['item_id']);
 //				$item=5;
 			} elseif ($data['item_mid'] == 6) {
 				//求购
