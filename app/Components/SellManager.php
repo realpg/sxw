@@ -159,6 +159,9 @@ class SellManager
 		if (array_key_exists('introduce', $data)) {
 			$sell->introduce = array_get($data, 'introduce');
 		}
+		if (array_key_exists('desc', $data)) {
+			$sell->introduce = array_get($data, 'desc');
+		}
 		if (array_key_exists('catid', $data)) {
 			$sell->catid = array_get($data, 'catid');
 		}

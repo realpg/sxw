@@ -159,6 +159,9 @@ class BuyManager
 		if (array_key_exists('introduce', $data)) {
 			$buy->introduce = array_get($data, 'introduce');
 		}
+		if (array_key_exists('desc', $data)) {
+			$buy->introduce = array_get($data, 'desc');
+		}
 		if (array_key_exists('catid', $data)) {
 			$buy->catid = array_get($data, 'catid');
 		}

@@ -159,6 +159,9 @@ class FJMYManager
 		if (array_key_exists('introduce', $data)) {
 			$fjmy->introduce = array_get($data, 'introduce');
 		}
+		if (array_key_exists('desc', $data)) {
+			$fjmy->introduce = array_get($data, 'desc');
+		}
 		if (array_key_exists('catid', $data)) {
 			$fjmy->catid = array_get($data, 'catid');
 		}
