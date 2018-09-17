@@ -9,11 +9,13 @@ use App\Components\CommentManager;
 use App\Components\CompanyDataManager;
 use App\Components\CompanyManager;
 use App\Components\CompanyYWLBManager;
+use App\Components\FJMYDataManager;
 use App\Components\FJMYManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
 use App\Components\MobileMessageManager;
 use App\Components\RankingManager;
+use App\Components\SellDataManager;
 use App\Components\SellManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
@@ -47,8 +49,67 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		We7Controller::syncCreditRecordFromWe7();
-		We7Controller::syncCreditToWe7();
+		//每天清理信息
+		//每天生成搜索信息
+		$sells = SellManager::getList();
+		foreach ($sells as $sell) {
+			$user = MemberManager::getByUsername($sell->username);
+			if (!$user) {
+				$sell->delete();
+			} else {
+				if($sell->thumbs==''){
+					$sell->thumbs.=$sell->thumb;
+					$sell->thumbs=$sell->thumbs?($sell->thumbs.','.$sell->thumb1):$sell->thumbs;
+					$sell->thumbs=$sell->thumbs?($sell->thumbs.','.$sell->thumb2):$sell->thumbs;
+					$sell->save();
+				}
+				
+				$searchInfo = SellManager::createSearchInfo($sell);
+				$searchInfo->save();
+				
+				$infodata=SellDataManager::getById($sell->itemid);
+				InfoController::Info_Banword($sell,$infodata);
+			}
+		}
+		$buys = BuyManager::getList();
+		foreach ($buys as $buy) {
+			$user = MemberManager::getByUsername($buy->username);
+			if (!$user) {
+				$buy->delete();
+			} else {
+				if($buy->thumbs==''){
+					$buy->thumbs.=$buy->thumb;
+					$buy->thumbs=$buy->thumbs?($buy->thumbs.','.$buy->thumb1):$buy->thumbs;
+					$buy->thumbs=$buy->thumbs?($buy->thumbs.','.$buy->thumb2):$buy->thumbs;
+					$buy->save();
+				}
+				$searchInfo = BuyManager::createSearchInfo($buy);
+				$searchInfo->save();
+				
+				$infodata=BuyDataManager::getById($buy->itemid);
+				InfoController::Info_Banword($buy,$infodata);
+			}
+		}
+		$fjmys = FJMYManager::getList();
+		foreach ($fjmys as $fjmy) {
+			$user = MemberManager::getByUsername($fjmy->username);
+			if (!$user) {
+				$fjmy->delete();
+			} else {
+				if($fjmy->thumbs==''){
+					$fjmy->thumbs.=$fjmy->thumb;
+					$fjmy->thumbs=$fjmy->thumbs?($fjmy->thumbs.','.$fjmy->thumb1):$fjmy->thumbs;
+					$fjmy->thumbs=$fjmy->thumbs?($fjmy->thumbs.','.$fjmy->thumb2):$fjmy->thumbs;
+					$fjmy->save();
+				}
+				$searchInfo = FJMYManager::createSearchInfo($fjmy);
+				$searchInfo->save();
+				
+				$infodata=FJMYDataManager::getById($fjmy->itemid);
+				InfoController::Info_Banword($fjmy,$infodata);
+			}
+		}
+		
 		return ApiResponse::makeResponse(true,111,ApiResponse::SUCCESS_CODE);
 	}
 	

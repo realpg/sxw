@@ -108,7 +108,7 @@ class ArticleManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
+	public static function getByCon($ConArr, $orderby = ['itemid', 'desc'])
 	{
 		$articles = Article::orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {

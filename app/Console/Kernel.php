@@ -2,11 +2,15 @@
 
 namespace App\Console;
 
+use App\Components\BuyDataManager;
 use App\Components\BuyManager;
+use App\Components\FJMYDataManager;
 use App\Components\FJMYManager;
 use App\Components\MemberManager;
+use App\Components\SellDataManager;
 use App\Components\SellManager;
 use App\Components\XCXLogManager;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\VIPController;
 use App\Http\Controllers\We7Controller;
@@ -73,6 +77,9 @@ class Kernel extends ConsoleKernel
 					
 					$searchInfo = SellManager::createSearchInfo($sell);
 					$searchInfo->save();
+					
+					$infodata=SellDataManager::getById($sell->itemid);
+					InfoController::Info_Banword($sell,$infodata);
 				}
 			}
 			$buys = BuyManager::getList();
@@ -89,6 +96,9 @@ class Kernel extends ConsoleKernel
 					}
 					$searchInfo = BuyManager::createSearchInfo($buy);
 					$searchInfo->save();
+					
+					$infodata=BuyDataManager::getById($buy->itemid);
+					InfoController::Info_Banword($buy,$infodata);
 				}
 			}
 			$fjmys = FJMYManager::getList();
@@ -105,6 +115,9 @@ class Kernel extends ConsoleKernel
 					}
 					$searchInfo = FJMYManager::createSearchInfo($fjmy);
 					$searchInfo->save();
+					
+					$infodata=FJMYDataManager::getById($fjmy->itemid);
+					InfoController::Info_Banword($fjmy,$infodata);
 				}
 			}
 		})->dailyAt('19:00');  //unix时间19点，即北京时间3点

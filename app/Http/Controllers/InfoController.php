@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Components\AgreeManager;
+use App\Components\BanWordManager;
 use App\Components\FavoriteManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
@@ -92,5 +93,12 @@ class InfoController extends Controller
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
+	}
+	
+	public static function Info_Banword($info,$infodata){
+		$info->introduce=BanWordManager::setContent($info->introduce);
+		$infodata->content=BanWordManager::setContent($infodata->content);
+		$info->save();
+		$infodata->save();
 	}
 }
