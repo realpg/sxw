@@ -98,7 +98,7 @@ class InfoController extends Controller
 	public static function Info_Banword($info,$infodata){
 		$info->introduce=BanWordManager::setContent($info->introduce);
 		$infodata->content=BanWordManager::setContent($infodata->content);
-		$info->save();
-		$infodata->save();
+//		$info->save();
+//		$infodata->save();
 	}
 }
