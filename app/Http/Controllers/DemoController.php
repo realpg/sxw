@@ -47,8 +47,9 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$fjmys=FJMYManager::getList(true);
-		return ApiResponse::makeResponse(true,$fjmys,ApiResponse::SUCCESS_CODE);
+		We7Controller::syncCreditRecordFromWe7();
+		We7Controller::syncCreditToWe7();
+		return ApiResponse::makeResponse(true,111,ApiResponse::SUCCESS_CODE);
 	}
 	
 	// 创建请求头
