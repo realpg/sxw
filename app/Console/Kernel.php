@@ -37,11 +37,11 @@ class Kernel extends ConsoleKernel
 			RankingController::createDailyRanking(1);
 		})->everyThirtyMinutes()->hourlyAt(30);
 
-//		$schedule->call(function () {
-//			//每分钟同步积分
-//			We7Controller::syncCreditRecordFromWe7();
-//			We7Controller::syncCreditToWe7();
-//		})->everyMinute();
+		$schedule->call(function () {
+			//每分钟同步积分
+			We7Controller::syncCreditRecordFromWe7();
+			We7Controller::syncCreditToWe7();
+		})->everyMinute();
 		
 		$schedule->call(function () {
 			//每小时生成周排行榜
