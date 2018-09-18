@@ -29,6 +29,7 @@ class FJMYManager
 	{
 		$fjmy = new FJMY();
 		//这里可以对新建记录进行一定的默认设置
+		$fjmy->title = "纺机贸易";
 		$fjmy->catid = 7;//默认值
 		$fjmy->typeid = 0;//默认值
 		$fjmy->n1 = $fjmy->n2 = $fjmy->n3 = '';

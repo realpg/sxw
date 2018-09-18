@@ -29,6 +29,7 @@ class SellManager
 	{
 		$sell = new Sell();
 		//这里可以对新建记录进行一定的默认设置
+		$sell->title = "供应信息";//默认值
 		$sell->catid = 2;//默认值
 		$sell->typeid = 0;//默认值
 		$sell->n1 = $sell->n2 = $sell->n3 = '';

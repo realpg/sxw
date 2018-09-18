@@ -29,6 +29,7 @@ class BuyManager
 	{
 		$buy = new Buy();
 		//这里可以对新建记录进行一定的默认设置
+		$buy->title = "求购信息";//默认值
 		$buy->catid = 5;//默认值
 		$buy->typeid = 0;//默认值
 		$buy->n1 = $buy->n2 = $buy->n3 = '';

@@ -10,6 +10,7 @@ use App\Components\CommentManager;
 use App\Components\CompanyManager;
 use App\Components\FavoriteManager;
 use App\Components\FJMYManager;
+use App\Components\InfoManager;
 use App\Components\MemberManager;
 use App\Components\SellManager;
 use App\Components\TestManager;
@@ -64,7 +65,7 @@ class CommentController extends Controller
 			$comment->save();
 			$user = MemberManager::getByUsername($comment->username);
 			if ($user)
-				$comment->businesscard = BussinessCardController::getByUserid($user->userid,$me);
+				$comment->businesscard = BussinessCardController::getByUserid($user->userid, $me);
 			return ApiResponse::makeResponse(true, $comment, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
@@ -97,9 +98,8 @@ class CommentController extends Controller
 			$item = null;
 			//获得被评论的信息
 			if ($data['item_mid'] == 2) {
-				$item=CompanyManager::getById($data['item_id']);
-			}
-			elseif ($data['item_mid'] == 5) {
+				$item = CompanyManager::getById($data['item_id']);
+			} elseif ($data['item_mid'] == 5) {
 				//供应
 				$item = SellManager::getById($data['item_id']);
 //				$item=5;
@@ -168,9 +168,8 @@ class CommentController extends Controller
 			$item = null;
 			//获得被评论的信息
 			if ($data['mid'] == 2) {
-				$item=CompanyManager::getById($data['tid']);
-			}
-			elseif ($data['mid'] == 5) {
+				$item = CompanyManager::getById($data['tid']);
+			} elseif ($data['mid'] == 5) {
 				//供应
 				$item = SellManager::getById($data['tid']);
 //				$item=5;
@@ -197,8 +196,7 @@ class CommentController extends Controller
 					} else {
 						return ApiResponse::makeResponse(false, "没有关注记录", ApiResponse::UNKNOW_ERROR);
 					}
-				}
-				else if($favorite){
+				} else if ($favorite) {
 					return ApiResponse::makeResponse(false, "请不要重复收藏", ApiResponse::UNKNOW_ERROR);
 				}
 				$favorite = $favorite ? $favorite : FavoriteManager::createObject();
@@ -250,18 +248,18 @@ class CommentController extends Controller
 		if (array_key_exists('mid', $data)) {
 			$con['mid'] = [$data['mid']];
 		}
-		$myFavorites = FavoriteManager::getByCon($con, true,['itemid', 'desc']);
+		$myFavorites = FavoriteManager::getByCon($con, true, ['itemid', 'desc']);
 		foreach ($myFavorites as $favorite) {
 			switch ($favorite->mid) {
 				case '2':
-					$item = BussinessCardController::getByUserid($favorite->tid,$user);
+					$item = BussinessCardController::getByUserid($favorite->tid, $user);
 					$favorite->item = $item;
 					break;
 				case '5':
 					$item = SellManager::getById($favorite->tid);
 					if ($item) {
 						$item = SellManager::getInfo($item, ['content', 'userinfo', 'tags']);
-						$item=SellManager::getAgreeAndFavorite($item,$user);
+						$item = SellManager::getAgreeAndFavorite($item, $user);
 					}
 					$favorite->item = $item;
 					break;
@@ -269,7 +267,7 @@ class CommentController extends Controller
 					$item = BuyManager::getById($favorite->tid);
 					if ($item) {
 						$item = BuyManager::getInfo($item, ['content', 'userinfo', 'tags']);
-						$item=BuyManager::getAgreeAndFavorite($item,$user);
+						$item = BuyManager::getAgreeAndFavorite($item, $user);
 					}
 					$favorite->item = $item;
 					break;
@@ -280,7 +278,7 @@ class CommentController extends Controller
 					$item = FJMYManager::getById($favorite->tid);
 					if ($item) {
 						$item = FJMYManager::getInfo($item, ['content', 'userinfo', 'tags']);
-						$item=FJMYManager::getAgreeAndFavorite($item,$user);
+						$item = FJMYManager::getAgreeAndFavorite($item, $user);
 					}
 					$favorite->item = $item;
 					break;
@@ -316,4 +314,36 @@ class CommentController extends Controller
 		}
 	}
 	
+	public static function CommentToMe(Request $request)
+	{
+		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
+		//检验参数
+		if (true) {
+			$comments = CommentManager::getByReceiver($user);
+			foreach ($comments as $comment) {
+				$comment->item = InfoManager::getById($comment->item_mid, $comment->item_id);
+			}
+			return ApiResponse::makeResponse(true, $comments, ApiResponse::SUCCESS_CODE);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function MyComments(Request $request)
+	{
+		$data = $request->all();
+		$user = MemberManager::getById($data['userid']);
+		//检验参数
+		if (true) {
+			
+			$comments = CommentManager::getBySender($user);
+			foreach ($comments as $comment) {
+				$comment->item = InfoManager::getById($comment->item_mid, $comment->item_id);
+			}
+			return ApiResponse::makeResponse(true, $comments, ApiResponse::SUCCESS_CODE);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
 }

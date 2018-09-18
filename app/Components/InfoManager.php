@@ -91,8 +91,18 @@ class InfoManager
 	 */
 	public static function getById($mid, $id)
 	{
-		
-		$info = Info::where('itemid', '=', $id)->first();
+		$info=null;
+		switch ($mid.''){
+			case '5':
+				$info=SellManager::getById($id);
+				break;
+			case '6':
+				$info=BuyManager::getById($id);
+				break;
+			case '88':
+				$info=FJMYManager::getById($id);
+				break;
+		}
 		return $info;
 	}
 	

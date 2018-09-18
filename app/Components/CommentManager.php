@@ -10,7 +10,10 @@
 
 namespace App\Components;
 
+use App\Models\Buy;
 use App\Models\Comment;
+use App\Models\FJMY;
+use App\Models\Sell;
 use Illuminate\Http\Request;
 
 class CommentManager
@@ -74,7 +77,6 @@ class CommentManager
 		return $comments;
 	}
 	
-	
 	/*
 	 * 设置信息，用于编辑
 	 *
@@ -116,5 +118,24 @@ class CommentManager
 		$comment->item_title=$item->title;
 		$comment->item_username=$item->username;
 		return $comment;
+	}
+	
+	public static function getByReceiver($user){
+		$sell_itemids=Sell::where('username','=',$user->username)->pluck('itemid');
+		$buy_itemids=Buy::where('username','=',$user->username)->pluck('itemid');
+		$fjmy_itemids=FJMY::where('username','=',$user->username)->pluck('itemid');
+		$comments=Comment::where(function ($query)use($sell_itemids){
+			$query->where('item_mid','=','5')->whereIn('item_id',$sell_itemids);
+		})->orWhere(function ($query)use($buy_itemids){
+			$query->where('item_mid','=','6')->whereIn('item_id',$buy_itemids);
+		})->orWhere(function ($query)use($fjmy_itemids){
+			$query->where('item_mid','=','88')->whereIn('item_id',$fjmy_itemids);
+		})->paginate(5);
+		return $comments;
+	}
+	
+	public static function getBySender($user){
+		$comments=Comment::where('username',$user->username)->paginate(5);
+		return $comments;
 	}
 }
