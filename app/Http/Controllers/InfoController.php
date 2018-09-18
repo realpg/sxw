@@ -100,5 +100,6 @@ class InfoController extends Controller
 		$infodata->content=BanWordManager::setContent($infodata->content);
 //		$info->save();
 //		$infodata->save();
+		return ['info'=>$info,'infodata'=>$infodata];
 	}
 }

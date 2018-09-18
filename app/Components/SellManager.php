@@ -223,9 +223,10 @@ class SellManager
 	
 	public static function getInfo($sell, $keys = [])
 	{
+		$sell->introduce = BanWordManager::setContent($sell->introduce);
 		foreach ($keys as $key) {
 			if ($key == 'content') {
-				$sell->content = SellDataManager::getById($sell->itemid)->content;
+				$sell->content = BanWordManager::setContent(SellDataManager::getById($sell->itemid)->content);
 			} else if ($key == 'userinfo') {
 				$sell->user = $user = MemberManager::getByUsername($sell->username);
 				if ($user) {
@@ -250,7 +251,8 @@ class SellManager
 		return $sell;
 	}
 	
-	public static function getAgreeAndFavorite($sell,$user){
+	public static function getAgreeAndFavorite($sell, $user)
+	{
 		$sell->I_agree = AgreeManager::getByCon(
 			['item_mid' => ['5'],
 				'item_id' => [$sell->itemid],

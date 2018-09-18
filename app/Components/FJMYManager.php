@@ -223,9 +223,10 @@ class FJMYManager
 	
 	public static function getInfo($fjmy, $keys = [])
 	{
+		$fjmy->introduce=BanWordManager::setContent($fjmy->introduce);
 		foreach ($keys as $key) {
 			if ($key == 'content') {
-				$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
+				$fjmy->content = BanWordManager::setContent(FJMYDataManager::getById($fjmy->itemid)->content);
 			} else if ($key == 'userinfo') {
 				$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
 				if ($user) {

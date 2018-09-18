@@ -223,9 +223,10 @@ class BuyManager
 	
 	public static function getInfo($buy, $keys = [])
 	{
+		$buy->introduce=BanWordManager::setContent($buy->introduce);
 		foreach ($keys as $key) {
 			if ($key == 'content') {
-				$buy->content = BuyDataManager::getById($buy->itemid)->content;
+				$buy->content = BanWordManager::setContent(BuyDataManager::getById($buy->itemid)->content);
 			} else if ($key == 'userinfo') {
 				$buy->user = $user = MemberManager::getByUsername($buy->username);
 				if ($user) {

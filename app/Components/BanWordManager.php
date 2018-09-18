@@ -98,6 +98,14 @@ class BanWordManager
 	 *
 	 */
 	public static function setContent($content){
+		$pattern ='/[\d]{11}/'; //一个或多个非数字字符串的正则表达式
+		if(preg_match_all($pattern, $content, $matches)){
+			foreach ($matches as $match){
+				foreach ($match as $m)
+				if(strlen($m)>=11)
+					$content=str_replace($match,substr_replace($match, '****', 3, 4),$content);
+			}
+		}
 		$banwords=BanWord::where('deny','1')->get();
 		foreach ($banwords as $banword){
 			$content=str_replace($banword->replacefrom,$banword->replaceto,$content);
