@@ -98,7 +98,7 @@ class BanWordManager
 	 *
 	 */
 	public static function setContent($content){
-		$pattern ='/[\d]{11}/'; //一个或多个非数字字符串的正则表达式
+		$pattern ='/1[\d]{10}/'; //一个或多个非数字字符串的正则表达式
 		if(preg_match_all($pattern, $content, $matches)){
 			foreach ($matches as $match){
 				foreach ($match as $m)
