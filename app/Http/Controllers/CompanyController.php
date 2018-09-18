@@ -30,8 +30,9 @@ class CompanyController extends Controller
 				$user->mobile = $data['mobile'];
 				$user->save();
 				$ret = "手机号码修改成功。";
-			} else
-				$ret = "手机号码修改失败。";
+			} else{
+				return ApiResponse::makeResponse(false, "验证码错误！", ApiResponse::UNKNOW_ERROR);
+			}
 		}
 		if (checkParam($data, ['avatarUrl']))
 			if ($user->avatarUrl != $data['avatarUrl']) {
