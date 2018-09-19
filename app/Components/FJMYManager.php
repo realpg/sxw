@@ -227,7 +227,11 @@ class FJMYManager
 		$fjmy->introduce=BanWordManager::setContent($fjmy->introduce);
 		foreach ($keys as $key) {
 			if ($key == 'content') {
-				$fjmy->content = BanWordManager::setContent(FJMYDataManager::getById($fjmy->itemid)->content);
+				$fjmydata = FJMYDataManager::getById($fjmy->itemid);
+				if ($fjmydata)
+					$fjmy->content = BanWordManager::setContent($fjmydata->content);
+				else
+					$fjmy->content = '';
 			} else if ($key == 'userinfo') {
 				$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
 				if ($user) {

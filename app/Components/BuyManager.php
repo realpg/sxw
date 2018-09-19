@@ -227,7 +227,11 @@ class BuyManager
 		$buy->introduce=BanWordManager::setContent($buy->introduce);
 		foreach ($keys as $key) {
 			if ($key == 'content') {
-				$buy->content = BanWordManager::setContent(BuyDataManager::getById($buy->itemid)->content);
+				$buydata = BuyDataManager::getById($buy->itemid);
+				if ($buydata)
+					$buy->content = BanWordManager::setContent($buydata->content);
+				else
+					$buy->content = '';
 			} else if ($key == 'userinfo') {
 				$buy->user = $user = MemberManager::getByUsername($buy->username);
 				if ($user) {

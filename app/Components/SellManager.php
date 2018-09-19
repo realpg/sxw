@@ -227,7 +227,11 @@ class SellManager
 		$sell->introduce = BanWordManager::setContent($sell->introduce);
 		foreach ($keys as $key) {
 			if ($key == 'content') {
-				$sell->content = BanWordManager::setContent(SellDataManager::getById($sell->itemid)->content);
+				$selldata = SellDataManager::getById($sell->itemid);
+				if ($selldata)
+					$sell->content = BanWordManager::setContent($selldata->content);
+				else
+					$sell->content = '';
 			} else if ($key == 'userinfo') {
 				$sell->user = $user = MemberManager::getByUsername($sell->username);
 				if ($user) {
