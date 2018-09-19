@@ -322,6 +322,14 @@ class CommentController extends Controller
 		if (true) {
 			$comments = CommentManager::getByReceiver($user);
 			foreach ($comments as $comment) {
+				$_user = MemberManager::getByUsername($comment->username);
+				if ($_user)
+					$comment->user_card = BussinessCardController::getByUserid($_user->userid);
+				
+				$replyer=MemberManager::getByUsername($comment->replyer);
+				if($replyer)
+					$comment->replyer_card = BussinessCardController::getByUserid($replyer->userid);
+				
 				$comment->item = InfoManager::getById($comment->item_mid, $comment->item_id);
 			}
 			return ApiResponse::makeResponse(true, $comments, ApiResponse::SUCCESS_CODE);
@@ -339,6 +347,14 @@ class CommentController extends Controller
 			
 			$comments = CommentManager::getBySender($user);
 			foreach ($comments as $comment) {
+				$_user = MemberManager::getByUsername($comment->username);
+				if ($_user)
+					$comment->user_card = BussinessCardController::getByUserid($_user->userid);
+				
+				$replyer=MemberManager::getByUsername($comment->replyer);
+				if($replyer)
+					$comment->replyer_card = BussinessCardController::getByUserid($replyer->userid);
+				
 				$comment->item = InfoManager::getById($comment->item_mid, $comment->item_id);
 			}
 			return ApiResponse::makeResponse(true, $comments, ApiResponse::SUCCESS_CODE);

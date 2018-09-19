@@ -60,8 +60,8 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	
 	Route::post('comment', 'CommentController@comment');//评论
 	Route::post('comment/reply', 'CommentController@reply');//评论回复
-	Route::get('comment/mine', 'CommentController@reply');//我的评论
-	Route::get('comment/tome', 'CommentController@reply');//评论我的
+	Route::get('comment/mine', 'CommentController@MyComments');//我的评论
+	Route::get('comment/tome', 'CommentController@CommentToMe');//评论我的
 	Route::post('agree', 'CommentController@agree');//点赞
 	Route::get('agreeStatus', 'CommentController@agreeStatus');//收藏
 	Route::post('favorite', 'CommentController@favorite');//收藏
