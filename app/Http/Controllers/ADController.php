@@ -36,6 +36,9 @@ class ADController extends Controller
 					case 2:
 						$ad->info = InfoManager::getByCon($ad->item_mid, ['itemid' => [$ad->item_id]])->first();
 						$ad->info->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $ad->info->tag)]));
+						$infouser = MemberManager::getByUsername($ad->info->username);
+						if ($infouser)
+							$ad->info->businesscard = BussinessCardController::getByUserid($infouser->userid);
 						break;
 				}
 			}
@@ -108,7 +111,7 @@ class ADController extends Controller
 					'amount' => $amount,
 					'addtime' => time(),
 					'druation' => $druation * 86400,
-					'totime' => time() + $druation* 86400,
+					'totime' => time() + $druation * 86400,
 				]);
 				$record->save();
 				

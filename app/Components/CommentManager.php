@@ -130,12 +130,12 @@ class CommentManager
 			$query->where('item_mid','=','6')->whereIn('item_id',$buy_itemids);
 		})->orWhere(function ($query)use($fjmy_itemids){
 			$query->where('item_mid','=','88')->whereIn('item_id',$fjmy_itemids);
-		})->paginate(5);
+		})->orderby('itemid', 'desc')->paginate(5);
 		return $comments;
 	}
 	
 	public static function getBySender($user){
-		$comments=Comment::where('username',$user->username)->paginate(5);
+		$comments=Comment::where('username',$user->username)->orderby('itemid', 'desc')->paginate(5);
 		return $comments;
 	}
 }
