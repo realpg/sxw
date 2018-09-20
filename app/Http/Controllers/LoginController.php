@@ -39,7 +39,7 @@ class LoginController extends Controller
 	{
 		$data = $request->all();
 //		return $data;
-		if (!checkParam($data, ['openId'])){
+		if (!checkParam($data, ['openId'])) {
 			return ApiResponse::makeResponse(false, "缺少openid", ApiResponse::UNKNOW_ERROR);
 		}
 		$openId = $data['openId'];
@@ -59,18 +59,20 @@ class LoginController extends Controller
 //		$user->username = 'xcx' . md5($user->user_id);
 				$user->passport = $userInfo->nickName ? $userInfo->nickName : $user->passport;
 				$user->gender = $userInfo->gender ? $userInfo->gender : $user->gender;
-				$user->avatarUrl = $userInfo->avatarUrl ? $userInfo->avatarUrl : $user->avatarUrl;
+				if (!$user->avatarUrl)
+					$user->avatarUrl = $userInfo->avatarUrl ? $userInfo->avatarUrl : $user->avatarUrl;
 				$user->save();
 			} else {
 //		$user->username = 'xcx' . md5($user->user_id);
 				$user->passport = array_key_exists('nickName', $data['userInfo']) ? $data['userInfo']['nickName'] : "新用户";
 				$user->gender = array_key_exists('gender', $data['userInfo']) ? $data['userInfo']['gender'] : $user->gender;
-				$user->avatarUrl = array_key_exists('avatarUrl', $data['userInfo']) ? $data['userInfo']['avatarUrl'] : $user->avatarUrl;
+				if (!$user->avatarUrl)
+					$user->avatarUrl = array_key_exists('avatarUrl', $data['userInfo']) ? $data['userInfo']['avatarUrl'] : $user->avatarUrl;
 				$user->save();
 			}
 		
 		$user = MemberManager::getByopenId($openId);
-		$user->message=MessageManager::getNumberByUserid($user->userid);
+		$user->message = MessageManager::getNumberByUserid($user->userid);
 		$user->save();
 		$user_misc = Member_miscManager::getById($user->userid);
 		$user_misc->save();
@@ -81,7 +83,7 @@ class LoginController extends Controller
 		
 		if ($user) {
 			$user->companyInfo = $company = CompanyManager::getById($user->userid);
-			$user->businesscard = BussinessCardController::getByUserid($company->userid,$user);
+			$user->businesscard = BussinessCardController::getByUserid($company->userid, $user);
 			$user->updating = (UpgradeManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0)
 				|| (Member_updateManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0);
 		}
