@@ -118,7 +118,8 @@ class We7SyncManager
 	
 	public static function lastSyncTime(){
 		$time=We7Sync::where('stream', 2)->max('time');
-		
+		if(!$time)
+			$time=0;
 		return $time;
 	}
 }
