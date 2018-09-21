@@ -168,8 +168,9 @@ class LoginController extends Controller
 		$err = curl_error($con);
 		curl_close($con);
 		
-		$filePath='xcx/storage/'.$filename.'.jpg';
+		$filePath=$filename.'.jpg';
 		file_put_contents($filePath, $info);
+		unlink($filename.'.jpg');
 		$url= qiniu_upload($filePath,'wxqr');  //调用的全局函数
 		return $url;
 //		dd($info);
