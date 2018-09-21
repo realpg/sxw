@@ -18,8 +18,8 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-	private $AppId = "wx3c1f8dfde816c48f";
-	private $AppSecret = '95006aa78e8f4f7c146d0654a2bf0e55';
+	private $AppId = "wx8cd83ffdb4609f53";
+	private $AppSecret = '1495167ac94dd33a0deeb3c9eee07119';
 	
 	//登录页面
 	public function getOpenid(Request $request)
@@ -137,8 +137,9 @@ class LoginController extends Controller
 		return $json;
 	}
 	
-	public function getXCXQR()
+	public function getXCXQR($user)
 	{
+		$filename=$user->username.time();
 		$access_token = $this->getACCESS_TOKEN()->access_token;
 		if (!$access_token)
 			return ApiResponse::makeResponse(false, "获取access_token失败", ApiResponse::UNKNOW_ERROR);
@@ -146,7 +147,7 @@ class LoginController extends Controller
 		$headers = array('Content-type: ' . 'application/json');
 		$body = [
 //			'access_token'=>$access_token,
-			'scene' => 'userid=1',
+			'scene' => 'userid='.$user->userid,
 //			'page' => "pages/index/index",
 		];
 		// 拼接字符串
@@ -163,7 +164,29 @@ class LoginController extends Controller
 		curl_setopt($con, CURLOPT_POSTFIELDS, $fields_string);
 		$info = curl_exec($con);
 		//发送HTTPs请求并获取返回的数据，推荐使用curl
-		$json = json_decode($info);//对json数据解码
-		return $json;
+//		$json = json_decode($info);//对json数据解码
+		$err = curl_error($con);
+		curl_close($con);
+		
+		$filePath='storage/'.$filename.'.jpg';
+		file_put_contents($filePath, $info);
+		$url= qiniu_upload($filePath,'wxqr');  //调用的全局函数
+		return $url;
+//		dd($info);
+	}
+	
+	public function getInviteQR(Request $request){
+		$data = $request->all();
+		//检验参数
+		if (true) {
+			$user=MemberManager::getById($data['userid']);
+			
+			$ret = $this->getXCXQR($user);
+			
+			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
 	}
 }

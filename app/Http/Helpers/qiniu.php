@@ -12,7 +12,7 @@ use Qiniu\Auth;
 use Qiniu\Storage\UploadManager;
 use Qiniu\Storage\BucketManager;
 
-function qiniu_upload($filePath)
+function qiniu_upload($filePath, $floder = null)
 {
 
 
@@ -32,6 +32,9 @@ function qiniu_upload($filePath)
 
 // 上传到七牛后保存的文件名
 	$key = basename($filePath);
+	if ($floder !== null) {
+		$key = basename($floder . '/' . $filePath);
+	}
 
 // 初始化 UploadManager 对象并进行文件的上传。
 	$uploadMgr = new UploadManager();
@@ -46,7 +49,7 @@ function qiniu_upload($filePath)
 	
 	$domains = $bucketMgr->domains($bucket);
 	
-	$url = $domains[0] ? 'http://'.$domains[0][0] .'/'. basename($filePath) : null;
+	$url = $domains[0] ? 'http://' . $domains[0][0] . '/' . $key : null;
 	
 	return $url;
 }
