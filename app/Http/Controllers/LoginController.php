@@ -171,8 +171,7 @@ class LoginController extends Controller
 		$filePath=$filename.'.jpg';
 		file_put_contents($filePath, $info);
 		$url= qiniu_upload($filePath,'wxqr');  //调用的全局函数
-		unlink($filename.'.jpg');
-		//
+//		unlink($filename.'.jpg');
 		return $url;
 //		dd($info);
 	}
