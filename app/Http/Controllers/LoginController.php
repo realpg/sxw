@@ -139,7 +139,7 @@ class LoginController extends Controller
 	
 	public function getXCXQR($user)
 	{
-		$filename=$user->username.time();
+		$filename=$user->username.'_'.time();
 		$access_token = $this->getACCESS_TOKEN()->access_token;
 		if (!$access_token)
 			return ApiResponse::makeResponse(false, "获取access_token失败", ApiResponse::UNKNOW_ERROR);
@@ -168,7 +168,7 @@ class LoginController extends Controller
 		$err = curl_error($con);
 		curl_close($con);
 		
-		$filePath='storage/'.$filename.'.jpg';
+		$filePath='xcx/storage/'.$filename.'.jpg';
 		file_put_contents($filePath, $info);
 		$url= qiniu_upload($filePath,'wxqr');  //调用的全局函数
 		return $url;
