@@ -50,12 +50,8 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$data=$request->all();
-		$str=$data['str'];
-		
-		
-		$str1=BanWordManager::setContent($str);
-		dd( [$str,$str1]);
+		We7Controller::syncCreditRecordFromWe7();
+		We7Controller::syncCreditToWe7();
 		
 		
 //		//每天清理信息

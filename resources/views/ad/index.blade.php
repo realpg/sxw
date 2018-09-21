@@ -27,14 +27,14 @@
                 <th width="60">id</th>
                 <th width="80">描述</th>
                 <th width="60">广告位</th>
-                <th width="60">价格</th>
+                <th width="150">价格</th>
                 <th width="60">展示类别</th>
                 <th width="60">信息类别</th>
                 <th width="120">有效期</th>
                 <th width="60">点击次数</th>
                 <th width="60">启用状态</th>
                 <th width="60">销售状态</th>
-                <th width="120">操作</th>
+                <th width="30">操作</th>
             </tr>
             </thead>
             <tbody>
