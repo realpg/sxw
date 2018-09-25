@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use App\Components\AgreeManager;
 use App\Components\CompanyManager;
 use App\Components\FavoriteManager;
+use App\Components\InfoManager;
 use App\Components\SellDataManager;
 use App\Components\SellManager;
 use App\Components\SellSearchManager;
@@ -19,6 +20,7 @@ use App\Components\LLJLManager;
 use App\Components\MemberManager;
 use App\Components\SystemManager;
 use App\Components\TagManager;
+use App\Components\VIPUserManager;
 use Illuminate\Http\Request;
 
 class SellController
@@ -66,7 +68,13 @@ class SellController
 				$sell = SellManager::createObject();
 				$sell_data = SellDataManager::createObject();
 				
-				if (!CreditController::changeCredit(
+				//vip可以发布信息
+				if (VIPUserManager::getUserVIPLevel($user->userid) != 0) {
+					//VIP不消耗积分
+				} elseif (InfoManager::CountInfosByUsername($user->username) < 5) {
+					//前五次发布不消耗积分
+				} //消耗积分
+				elseif (!CreditController::changeCredit(
 					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('4')->value,
 						'reason' => '发布供应信息消耗积分', 'note' => '消耗积分'])) {
 					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
