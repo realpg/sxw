@@ -29,26 +29,6 @@ class InfoManager
 	 */
 	public static function createObject()
 	{
-		$info = new Info();
-		//这里可以对新建记录进行一定的默认设置
-		$info->catid = 2;//默认值
-		$info->typeid = 0;//默认值
-		$info->n1 = $info->n2 = $info->n3 = '';
-		$info->v1 = $info->v2 = $info->v3 = '';
-		$info->thumbs = '';
-		$info->vip = 0;
-		$info->validated = 0;
-		$info->editdate = $info->adddate = date("Y-m-d");
-		$info->addtime = time();
-		$info->template = '';
-		$infosh = SystemManager::getById('2');
-		if ($infosh->value == 1)
-			$info->status = 2;
-		else
-			$info->status = 3;
-		$info->pack = '';
-		
-		return $info;
 	}
 	
 	public static function setUserInfo($info, $user_id)
@@ -78,8 +58,6 @@ class InfoManager
 	 */
 	public static function getList()
 	{
-		$infos = Info::orderby('itemid', 'desc')->paginate(5);
-		return $infos;
 	}
 	
 	/*
@@ -91,16 +69,16 @@ class InfoManager
 	 */
 	public static function getById($mid, $id)
 	{
-		$info=null;
-		switch ($mid.''){
+		$info = null;
+		switch ($mid . '') {
 			case '5':
-				$info=SellManager::getById($id);
+				$info = SellManager::getById($id);
 				break;
 			case '6':
-				$info=BuyManager::getById($id);
+				$info = BuyManager::getById($id);
 				break;
 			case '88':
-				$info=FJMYManager::getById($id);
+				$info = FJMYManager::getById($id);
 				break;
 		}
 		return $info;
@@ -109,7 +87,6 @@ class InfoManager
 	public static function getData($info)
 	{
 		if ($info) {
-			
 			$info->data = InfoDataManager::getById($info->itemid);
 		}
 		return $info;
@@ -203,7 +180,7 @@ class InfoManager
 			'last_page' => (int)(count($Infos) / $perpage) + 1,
 			'next_page' => $page < ((int)(count($Infos) / $perpage) + 1) ? $page + 1 : null,
 			'per_page' => $perpage,
-			'to' => ($page - 1) * $perpage + 1+count($items),
+			'to' => ($page - 1) * $perpage + 1 + count($items),
 			'total' => count($Infos)
 		];
 		return $ret;
@@ -254,14 +231,21 @@ class InfoManager
 		$ret = [
 			'current_page' => $page,
 			'data' => $items,
-			"from" => ($page - 1) * $perpage +count($items)>0?1:0,
+			"from" => ($page - 1) * $perpage + count($items) > 0 ? 1 : 0,
 			'last_page' => (int)(count($Infos) / $perpage) + 1,
 			'next_page' => $page < ((int)(count($Infos) / $perpage) + 1) ? $page + 1 : null,
 			'per_page' => $perpage,
-			'to' => ($page - 1) * $perpage +count($items),
+			'to' => ($page - 1) * $perpage + count($items),
 			'total' => count($Infos)
 		];
 		return $ret;
 	}
 	
+	public static function CountInfosByUserid($userid)
+	{
+		$sells = Sell::where('userid', $userid)->count();
+		$buys = Buy::where('userid', $userid)->count();
+		$fjmys = FJMY::where('userid', $userid)->count();
+		return $sells + $buys + $fjmys;
+	}
 }

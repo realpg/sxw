@@ -12,6 +12,7 @@ use App\Components\AgreeManager;
 use App\Components\CompanyManager;
 use App\Components\CompanyYWLBManager;
 use App\Components\FavoriteManager;
+use App\Components\InfoManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
 use App\Components\VIPUserManager;
@@ -67,7 +68,8 @@ class BussinessCardController extends Controller
 			'agree' => $company->agree,
 			'favorite' => $company->favorite,
 			'vip' => VIPUserManager::getUserVIPLevel($member->userid),
-			'avatarUrl' => $member->avatarUrl
+			'avatarUrl' => $member->avatarUrl,
+			'infos'=>InfoManager::CountInfosByUserid($member->userid)
 		];
 		if($_user){
 			$bussnesscard['I_agree']=AgreeManager::getByCon(

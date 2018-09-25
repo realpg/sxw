@@ -15,10 +15,12 @@ use App\Components\BuySearchManager;
 use App\Components\CategoryManager;
 use App\Components\CompanyManager;
 use App\Components\FavoriteManager;
+use App\Components\InfoManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
 use App\Components\SystemManager;
 use App\Components\TagManager;
+use App\Components\VIPUserManager;
 use Illuminate\Http\Request;
 
 class BuyController
@@ -66,11 +68,17 @@ class BuyController
 				$buy = BuyManager::createObject();
 				$buy_data = BuyDataManager::createObject();
 				
-				if (!CreditController::changeCredit(
-					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('5')->value,
-						'reason' => '发布求购信息消耗积分', 'note' => '消耗积分'])) {
-					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
-				};
+				//vip可以发布信息
+				if (VIPUserManager::getUserVIPLevel($user->userid) > 0) {
+					//VIP不消耗积分
+				} elseif (InfoManager::CountInfosByUserid($user->userid) < 5) {
+					//前五次发布不消耗积分
+				} else//消耗积分
+					if (!CreditController::changeCredit(
+						['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('5')->value,
+							'reason' => '发布求购信息消耗积分', 'note' => '消耗积分'])) {
+						return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
+					};
 			}
 			if ($buy == null) {
 				return ApiResponse::makeResponse(false, "错误的itemid", ApiResponse::UNKNOW_ERROR);
