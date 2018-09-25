@@ -69,9 +69,9 @@ class BuyController
 				$buy_data = BuyDataManager::createObject();
 				
 				//vip可以发布信息
-				if (VIPUserManager::getUserVIPLevel($user->userid) > 0) {
+				if (VIPUserManager::getUserVIPLevel($user->userid) != 0) {
 					//VIP不消耗积分
-				} elseif (InfoManager::CountInfosByUserid($user->userid) < 5) {
+				} elseif (InfoManager::CountInfosByUsername($user->username) < 5) {
 					//前五次发布不消耗积分
 				} else//消耗积分
 					if (!CreditController::changeCredit(
