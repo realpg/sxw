@@ -97,6 +97,7 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('ad/my','ADController@my');
 	Route::post('ad/change','ADController@change');
 	
+	Route::get('myInvited', 'LoginController@myInvited');
 	Route::post('user/invited', 'LoginController@invited');
 	Route::get('system/getKeyValue', 'SystemController@api_getKeyValue');
 	

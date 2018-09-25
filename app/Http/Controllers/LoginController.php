@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Components\CompanyManager;
+use App\Components\InviteManager;
 use App\Components\Member_miscManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
@@ -102,16 +103,22 @@ class LoginController extends Controller
 			$user = MemberManager::getById($data['userid']);
 			$inviter = MemberManager::getById($data['inviter_userid']);
 			if ((time() - $user->regtime) > 86400) {
-				return ApiResponse::makeResponse(false, "只有注册24小时内的账号可以接受邀请" . (time() - $user->regtime), ApiResponse::UNKNOW_ERROR);
+				return ApiResponse::makeResponse(false, "只有注册24小时内的账号可以接受邀请", ApiResponse::UNKNOW_ERROR);
 			}
 			if (!$inviter) {
 				return ApiResponse::makeResponse(false, "获取邀请者失败", ApiResponse::UNKNOW_ERROR);
 			}
-			if (!CreditController::changeCredit(
-				['userid' => $inviter->userid,
-					'amount' => SystemManager::getById('11')->value,
-					'reason' => '邀请得积分',
-					'note' => 'id:' . $user->userid . "【" . $user->username . "】"])) {
+			$invite_e = InviteManager::getByUserid($user->userid);
+			if ($invite_e) {
+				return ApiResponse::makeResponse(false, "不能重复接受邀请!", ApiResponse::UNKNOW_ERROR);
+			}
+			$invite = InviteManager::setInvite(InviteManager::createObject(), $inviter, $user);
+			$invite->save();
+			if (!$invite || !CreditController::changeCredit(
+					['userid' => $inviter->userid,
+						'amount' => SystemManager::getById('11')->value,
+						'reason' => '邀请得积分',
+						'note' => 'id:' . $user->userid . "【" . $user->username . "】"])) {
 				return ApiResponse::makeResponse(false, "积分变更失败", ApiResponse::UNKNOW_ERROR);
 			} else {
 				MessageController::sendSystemMessage([
@@ -139,7 +146,7 @@ class LoginController extends Controller
 	
 	public function getXCXQR($user)
 	{
-		$filename=$user->username.'_'.time();
+		$filename = $user->username . '_' . time();
 		$access_token = $this->getACCESS_TOKEN()->access_token;
 		if (!$access_token)
 			return ApiResponse::makeResponse(false, "获取access_token失败", ApiResponse::UNKNOW_ERROR);
@@ -147,7 +154,7 @@ class LoginController extends Controller
 		$headers = array('Content-type: ' . 'application/json');
 		$body = [
 //			'access_token'=>$access_token,
-			'scene' => 'userid='.$user->userid,
+			'scene' => 'userid=' . $user->userid,
 //			'page' => "pages/index/index",
 		];
 		// 拼接字符串
@@ -168,19 +175,20 @@ class LoginController extends Controller
 		$err = curl_error($con);
 		curl_close($con);
 		
-		$filePath=$filename.'.jpg';
+		$filePath = $filename . '.jpg';
 		file_put_contents($filePath, $info);
-		$url= qiniu_upload($filePath,'wxqr');  //调用的全局函数
+		$url = qiniu_upload($filePath, 'wxqr');  //调用的全局函数
 //		unlink($filename.'.jpg');
 		return $url;
 //		dd($info);
 	}
 	
-	public function getInviteQR(Request $request){
+	public function getInviteQR(Request $request)
+	{
 		$data = $request->all();
 		//检验参数
 		if (true) {
-			$user=MemberManager::getById($data['userid']);
+			$user = MemberManager::getById($data['userid']);
 			
 			$ret = $this->getXCXQR($user);
 			
@@ -189,5 +197,16 @@ class LoginController extends Controller
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
+	}
+	
+	public function myInvited(Request $request)
+	{
+		$user = MemberManager::getById($request->all()['userid']);
+		$invites = InviteManager::getByCon(['inviter_userid' => [$user->userid]], false, ['addtime', 'asc']);
+		foreach ($invites as $invite) {
+			$invite->user = BussinessCardController::getByUserid($invite->userid);
+		}
+		$ret = $invites; 
+		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
 }
