@@ -73,12 +73,12 @@ class BuyController
 					//VIP不消耗积分
 				} elseif (InfoManager::CountInfosByUsername($user->username) < 5) {
 					//前五次发布不消耗积分
-				} else//消耗积分
-					if (!CreditController::changeCredit(
-						['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('5')->value,
-							'reason' => '发布求购信息消耗积分', 'note' => '消耗积分'])) {
-						return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
-					};
+				} //消耗积分
+				elseif (!CreditController::changeCredit(
+					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('5')->value,
+						'reason' => '发布求购信息消耗积分', 'note' => '消耗积分'])) {
+					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
+				};
 			}
 			if ($buy == null) {
 				return ApiResponse::makeResponse(false, "错误的itemid", ApiResponse::UNKNOW_ERROR);
