@@ -69,7 +69,7 @@ class BussinessCardController extends Controller
 			'favorite' => $company->favorite,
 			'vip' => VIPUserManager::getUserVIPLevel($member->userid),
 			'avatarUrl' => $member->avatarUrl,
-			'infos'=>InfoManager::CountInfosByUserid($member->userid)
+			'infos'=>InfoManager::CountInfosByUsername($member->username)
 		];
 		if($_user){
 			$bussnesscard['I_agree']=AgreeManager::getByCon(

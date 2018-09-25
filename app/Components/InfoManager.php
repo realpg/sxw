@@ -241,11 +241,11 @@ class InfoManager
 		return $ret;
 	}
 	
-	public static function CountInfosByUserid($userid)
+	public static function CountInfosByUsername($username)
 	{
-		$sells = Sell::where('userid', $userid)->count();
-		$buys = Buy::where('userid', $userid)->count();
-		$fjmys = FJMY::where('userid', $userid)->count();
+		$sells = Sell::where('username', $username)->count();
+		$buys = Buy::where('username', $username)->count();
+		$fjmys = FJMY::where('username', $username)->count();
 		return $sells + $buys + $fjmys;
 	}
 }
