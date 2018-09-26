@@ -76,11 +76,18 @@ class QRManager
 //		file_put_contents($file_code_name, $QR);//保存到本地
 		$file_code_name = downloadImage($QR);
 		$ext = pathinfo($avatarUrl, PATHINFO_EXTENSION);
+		
 		if (!$avatarUrl) {
 			//没有头像使用默认二维码
 			Log::info('用户'.$user->userid."头像为空");
 			return $QR;
-		} elseif (!in_array(strtolower($ext), ['png', 'jpg', 'jpeg'])) {
+		} elseif(!$ext){
+			$img_file = file_get_contents($avatarUrl);
+			$img_content= base64_encode($img_file);
+			$file_tou_name = time().".png";
+			$avatarUrl = $file_tou_name;
+			file_put_contents($avatarUrl,base64_decode($img_content));
+		}elseif (!in_array(strtolower($ext), ['png', 'jpg', 'jpeg'])) {
 			//头像非png,jpg.jpeg时使用默认二维码
 			Log::info('用户'.$user->userid."头像格式为".strtolower($ext)."。".$avatarUrl);
 			return $QR;
