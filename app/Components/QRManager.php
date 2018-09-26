@@ -97,7 +97,7 @@ class QRManager
 				$src_img = imagecreatefromjpeg($imgpath);
 				break;
 			case 'png':
-				$src_img = imagecreatefromjpeg($imgpath);
+				$src_img = imagecreatefrompng($imgpath);
 				break;
 		}
 		$wh = getimagesize($imgpath);
