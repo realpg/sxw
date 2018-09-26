@@ -73,7 +73,7 @@ class BussinessCardController extends Controller
 			'infos' => InfoManager::CountInfosByUsername($member->username),
 		];
 		if ($getQR) {
-			$bussnesscard['xcxqr'] = QRManager::getCardQR($member);
+			$bussnesscard['xcxqr'] = QRManager::getCardQRByUserid($member->userid)->qr_url;
 		}
 		if ($_user) {
 			$bussnesscard['I_agree'] = AgreeManager::getByCon(
@@ -108,7 +108,7 @@ class BussinessCardController extends Controller
 				$company->hits++;
 				$company->save();
 			}
-			$ret = self::getByUserid($data['user_id'], $me);
+			$ret = self::getByUserid($data['user_id'], $me,true);
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			

@@ -114,6 +114,7 @@ class LoginController extends Controller
 				return ApiResponse::makeResponse(false, "不能重复接受邀请!", ApiResponse::UNKNOW_ERROR);
 			}
 			$invite = InviteManager::setInvite(InviteManager::createObject(), $inviter, $user);
+			$invite->addtime=time();
 			$invite->save();
 			if (!$invite || !CreditController::changeCredit(
 					['userid' => $inviter->userid,
@@ -155,7 +156,7 @@ class LoginController extends Controller
 		$headers = array('Content-type: ' . 'application/json');
 		$body = [
 //			'access_token'=>$access_token,
-			'scene' => '{userid:' . $user->userid.'}',
+			'scene' => 'userid=' . $user->userid,
 			'page' => $page,
 		];
 		// 拼接字符串
