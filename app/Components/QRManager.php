@@ -49,18 +49,18 @@ class QRManager
 //		$file_code_name = "21" . time() . ".png";
 //		file_put_contents($file_code_name, $QR);//保存到本地
 		$file_code_name = downloadImage($QR);
-		$ext = pathinfo($avatarUrl);
+		$ext = pathinfo($avatarUrl,PATHINFO_EXTENSION);
 		if (!$avatarUrl) {
 			//没有头像使用默认二维码
 			return $QR;
-		} elseif (!in_array(strtolower($ext['extension']), ['png', 'jpg', 'jpeg'])) {
+		} elseif (!in_array(strtolower($ext), ['png', 'jpg', 'jpeg'])) {
 			//头像非png,jpg.jpeg时使用默认二维码
 			return $QR;
 		}
 		//保存原始头像
 		$img_file = file_get_contents($avatarUrl);
 		$img_content = base64_encode($img_file);
-		$file_tou_name = time() . "." . $ext['extension'];
+		$file_tou_name = time() . "." . $ext;
 		$headurl = $file_tou_name;
 		file_put_contents($file_tou_name, base64_decode($img_content));
 		
