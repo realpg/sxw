@@ -14,25 +14,27 @@ use App\Models\QR;
 
 class QRManager
 {
-	public static function getInviteQRByUserid($userid){
-		$qr=QR::where('userid',$userid)->where('type','0')->first();
-		if(!$qr){
+	public static function getInviteQRByUserid($userid)
+	{
+		$qr = QR::where('userid', $userid)->where('type', '0')->first();
+		if (!$qr) {
 			$qr = new QR();
-			$qr->userid=$userid;
-			$qr->type=0;
-			$qr->qr_url=LoginController::getXCXQR(MemberManager::getById($userid));
+			$qr->userid = $userid;
+			$qr->type = 0;
+			$qr->qr_url = LoginController::getXCXQR(MemberManager::getById($userid));
 			$qr->save();
 		}
 		return $qr;
 	}
 	
-	public static function getCardQRByUserid($userid){
-		$qr=QR::where('userid',$userid)->where('type','1')->first();
-		if(!$qr){
+	public static function getCardQRByUserid($userid)
+	{
+		$qr = QR::where('userid', $userid)->where('type', '1')->first();
+		if (!$qr) {
 			$qr = new QR();
-			$qr->userid=$userid;
-			$qr->type=1;
-			$qr->qr_url=self::getCardQR(MemberManager::getById($userid));
+			$qr->userid = $userid;
+			$qr->type = 1;
+			$qr->qr_url = self::getCardQR(MemberManager::getById($userid));
 			$qr->save();
 		}
 		return $qr;
@@ -46,17 +48,19 @@ class QRManager
 		$QR = LoginController::getXCXQR($user, 'pages/store_particulars/store_particulars');
 //		$file_code_name = "21" . time() . ".png";
 //		file_put_contents($file_code_name, $QR);//保存到本地
-		$file_code_name=downloadImage($QR);
-		
-		if(!$avatarUrl){
+		$file_code_name = downloadImage($QR);
+		$ext = pathinfo($avatarUrl);
+		if (!$avatarUrl) {
 			//没有头像使用默认二维码
+			return $QR;
+		} elseif (!in_array(strtolower($ext['extension']), ['png', 'jpg', 'jpeg'])) {
+			//头像非png,jpg.jpeg时使用默认二维码
 			return $QR;
 		}
 		//保存原始头像
 		$img_file = file_get_contents($avatarUrl);
 		$img_content = base64_encode($img_file);
-		$ext = pathinfo($img_file);
-		$file_tou_name = time() . ".".$ext['extension'];
+		$file_tou_name = time() . "." . $ext['extension'];
 		$headurl = $file_tou_name;
 		file_put_contents($file_tou_name, base64_decode($img_content));
 		
@@ -74,8 +78,8 @@ class QRManager
 		imagefill($target_im, 0, 0, $trans_colour);
 		$o_image = imagecreatefrompng($file_name);
 		//获取上文已保存的修改之后头像的内容
-		$o_w=getimagesize($file_name)[0];
-		$o_h=getimagesize($file_name)[1];
+		$o_w = getimagesize($file_name)[0];
+		$o_h = getimagesize($file_name)[1];
 		imagecopyresampled($target_im, $o_image, 0, 0, 0, 0, 192, 192, $o_w, $o_h);
 		$file_head_name = "23" . time() . ".png";
 		$comp_path = $file_head_name;
@@ -99,6 +103,9 @@ class QRManager
 		$src_img = null;
 		switch ($ext['extension']) {
 			case 'jpg':
+				$src_img = imagecreatefromjpeg($imgpath);
+				break;
+			case 'jpeg':
 				$src_img = imagecreatefromjpeg($imgpath);
 				break;
 			case 'png':
