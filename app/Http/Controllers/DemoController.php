@@ -53,7 +53,7 @@ class DemoController extends Controller
 	{
 		$data = $request->all();
 		$arr = [];
-		$users = MemberManager::getByCon(['group_id' => [6]]);
+		$users = MemberManager::getByCon(['groupid' => [6]]);
 		foreach ($users as $user) {
 			array_push($arr,QRManager::refreshCardQRByUserid($user->userid));
 		}
