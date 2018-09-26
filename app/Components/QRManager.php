@@ -48,10 +48,15 @@ class QRManager
 //		file_put_contents($file_code_name, $QR);//保存到本地
 		$file_code_name=downloadImage($QR);
 		
+		if(!$avatarUrl){
+			//没有头像使用默认二维码
+			return $QR;
+		}
 		//保存原始头像
 		$img_file = file_get_contents($avatarUrl);
 		$img_content = base64_encode($img_file);
-		$file_tou_name = time() . ".png";
+		$ext = pathinfo($img_file);
+		$file_tou_name = time() . ".".$ext['extension'];
 		$headurl = $file_tou_name;
 		file_put_contents($file_tou_name, base64_decode($img_content));
 		
