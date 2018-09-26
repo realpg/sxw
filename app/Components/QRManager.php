@@ -30,9 +30,10 @@ class QRManager
 	
 	public static function refreshInviteQRByUserid($userid)
 	{
-		QR::where('userid', $userid)->where('type', '0')->delete();
-		
-		$qr = new QR();
+		$qr =QR::where('userid', $userid)->where('type', '0')->first();
+		if (!$qr) {
+			$qr = new QR();
+		}
 		$qr->userid = $userid;
 		$qr->type = 0;
 		$qr->qr_url = LoginController::getXCXQR(MemberManager::getById($userid));
@@ -56,9 +57,10 @@ class QRManager
 	
 	public static function refreshCardQRByUserid($userid)
 	{
-		QR::where('userid', $userid)->where('type', '1')->delete();
-		
-		$qr = new QR();
+		$qr = QR::where('userid', $userid)->where('type', '1')->first();
+		if (!$qr) {
+			$qr = new QR();
+		}
 		$qr->userid = $userid;
 		$qr->type = 1;
 		$qr->qr_url = self::getCardQR(MemberManager::getById($userid));
@@ -69,7 +71,7 @@ class QRManager
 	public static function getCardQR($user)
 	{
 		$avatarUrl = $user->avatarUrl;
-		
+		$avatarUrl='https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxvY0rp57euFOPz1ZwaIrm8vIicfZdM8Y7w5R5ateMRZlg1sHxVVLo9eqKHPS1ic4oT3dX3fwUpcaA/132';
 		//获得二维码
 		$QR = LoginController::getXCXQR($user, 'pages/store_particulars/store_particulars');
 //		$file_code_name = "21" . time() . ".png";
@@ -79,17 +81,45 @@ class QRManager
 		
 		if (!$avatarUrl) {
 			//没有头像使用默认二维码
-			Log::info('用户'.$user->userid."头像为空");
+			Log::info('用户' . $user->userid . "头像为空");
 			return $QR;
-		} elseif(!$ext){
-			$img_file = file_get_contents($avatarUrl);
-			$img_content= base64_encode($img_file);
-			$file_tou_name = time().".png";
-			$avatarUrl = $file_tou_name;
-			file_put_contents($avatarUrl,base64_decode($img_content));
-		}elseif (!in_array(strtolower($ext), ['png', 'jpg', 'jpeg'])) {
+		} elseif (!$ext) {
+			$header = array('User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:45.0) Gecko/20100101 Firefox/45.0', 'Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3', 'Accept-Encoding: gzip, deflate',);
+			$url = $avatarUrl;
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, $url);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+			curl_setopt($curl, CURLOPT_ENCODING, 'gzip');
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+			$data = curl_exec($curl);
+			$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			curl_close($curl);
+			if ($code == 200) {
+				//把URL格式的图片转成base64_encode格式的！
+				
+				$imgBase64Code = "data:image/jpeg;base64," . base64_encode($data);
+			}else{
+				return $QR;
+			}
+			$img_content = $imgBase64Code;
+			//图片内容
+			// //echo $img_content;exit;
+			if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $img_content, $result)) {
+				$type = $result[2];
+				//得到图片类型png?jpg?gif?
+//				$new_file = time().".";
+				$new_file = time().".{$type}";
+				if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $img_content)))) {
+					Log::info('新文件保存成功：' . $new_file);
+					$ext=$type;
+				}
+			}
+			
+			
+		} elseif (!in_array(strtolower($ext), ['png', 'jpg', 'jpeg'])) {
 			//头像非png,jpg.jpeg时使用默认二维码
-			Log::info('用户'.$user->userid."头像格式为".strtolower($ext)."。".$avatarUrl);
+			Log::info('用户' . $user->userid . "头像格式为" . strtolower($ext) . "。" . $avatarUrl);
 			return $QR;
 		}
 		//保存原始头像
