@@ -189,7 +189,7 @@ class LoginController extends Controller
 		$data = $request->all();
 		//检验参数
 		if (true) {
-			$ret = QRManager::getInviteQRByUserid($data['userid']);
+			$ret = QRManager::getInviteQRByUserid($data['userid'])->qr_url;
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 		} else {
