@@ -15,6 +15,7 @@ use App\Components\FJMYManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
 use App\Components\MobileMessageManager;
+use App\Components\QRManager;
 use App\Components\RankingManager;
 use App\Components\SellDataManager;
 use App\Components\SellManager;
@@ -50,9 +51,8 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		We7Controller::syncCreditRecordFromWe7();
-		We7Controller::syncCreditToWe7();
-		
+		$user=MemberManager::getById(45);
+		return QRManager::getCardQR($user);
 		
 //		//每天清理信息
 //		//每天生成搜索信息

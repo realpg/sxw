@@ -9,6 +9,7 @@ use App\Components\Member_miscManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
 use App\Components\MessageManager;
+use App\Components\QRManager;
 use App\Components\SystemManager;
 use App\Components\TestManager;
 use App\Components\UpgradeManager;
@@ -19,15 +20,15 @@ use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-	private $AppId = "wx8cd83ffdb4609f53";
-	private $AppSecret = '1495167ac94dd33a0deeb3c9eee07119';
+	private static $AppId = "wx8cd83ffdb4609f53";
+	private static $AppSecret = '1495167ac94dd33a0deeb3c9eee07119';
 	
 	//登录页面
 	public function getOpenid(Request $request)
 	{
 		$data = $request->all();
 		$code = $data['code'];//小程序传来的code值
-		$url = 'https://api.weixin.qq.com/sns/jscode2session?appid=' . $this->AppId . '&secret=' . $this->AppSecret . '&js_code=' . $code . '&grant_type=authorization_code';
+		$url = 'https://api.weixin.qq.com/sns/jscode2session?appid=' . self::$AppId . '&secret=' . self::$AppSecret . '&js_code=' . $code . '&grant_type=authorization_code';
 		//yourAppid为开发者appid.appSecret为开发者的appsecret,都可以从微信公众平台获取；
 		$info = file_get_contents($url);
 		//发送HTTPs请求并获取返回的数据，推荐使用curl
@@ -134,9 +135,9 @@ class LoginController extends Controller
 		}
 	}
 	
-	public function getACCESS_TOKEN()
+	public static function getACCESS_TOKEN()
 	{
-		$url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . $this->AppId . '&secret=' . $this->AppSecret;
+		$url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=' . self::$AppId . '&secret=' . self::$AppSecret;
 		//yourAppid为开发者appid.appSecret为开发者的appsecret,都可以从微信公众平台获取；
 		$info = file_get_contents($url);
 		//发送HTTPs请求并获取返回的数据，推荐使用curl
@@ -144,10 +145,10 @@ class LoginController extends Controller
 		return $json;
 	}
 	
-	public function getXCXQR($user)
+	public static function getXCXQR($user, $page = 'pages/index/index')
 	{
 		$filename = $user->username . '_' . time();
-		$access_token = $this->getACCESS_TOKEN()->access_token;
+		$access_token = self::getACCESS_TOKEN()->access_token;
 		if (!$access_token)
 			return ApiResponse::makeResponse(false, "获取access_token失败", ApiResponse::UNKNOW_ERROR);
 		$url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' . $access_token;
@@ -155,7 +156,7 @@ class LoginController extends Controller
 		$body = [
 //			'access_token'=>$access_token,
 			'scene' => 'userid=' . $user->userid,
-//			'page' => "pages/index/index",
+			'page' => $page,
 		];
 		// 拼接字符串
 		$fields_string = json_encode($body);
@@ -188,12 +189,9 @@ class LoginController extends Controller
 		$data = $request->all();
 		//检验参数
 		if (true) {
-			$user = MemberManager::getById($data['userid']);
-			
-			$ret = $this->getXCXQR($user);
+			$ret = QRManager::getInviteQRByUserid($data['userid']);
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
-			
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
@@ -206,7 +204,9 @@ class LoginController extends Controller
 		foreach ($invites as $invite) {
 			$invite->user = BussinessCardController::getByUserid($invite->userid);
 		}
-		$ret = $invites; 
+		$ret = $invites;
 		return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 	}
+	
+	
 }
