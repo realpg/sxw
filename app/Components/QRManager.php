@@ -11,6 +11,7 @@ namespace App\Components;
 
 use App\Http\Controllers\LoginController;
 use App\Models\QR;
+use Illuminate\Support\Facades\Log;
 
 class QRManager
 {
@@ -27,6 +28,19 @@ class QRManager
 		return $qr;
 	}
 	
+	public static function refreshInviteQRByUserid($userid)
+	{
+		QR::where('userid', $userid)->where('type', '0')->delete();
+		
+		$qr = new QR();
+		$qr->userid = $userid;
+		$qr->type = 0;
+		$qr->qr_url = LoginController::getXCXQR(MemberManager::getById($userid));
+		$qr->save();
+		
+		return $qr;
+	}
+	
 	public static function getCardQRByUserid($userid)
 	{
 		$qr = QR::where('userid', $userid)->where('type', '1')->first();
@@ -40,6 +54,18 @@ class QRManager
 		return $qr;
 	}
 	
+	public static function refreshCardQRByUserid($userid)
+	{
+		QR::where('userid', $userid)->where('type', '1')->delete();
+		
+		$qr = new QR();
+		$qr->userid = $userid;
+		$qr->type = 1;
+		$qr->qr_url = self::getCardQR(MemberManager::getById($userid));
+		$qr->save();
+		return $qr;
+	}
+	
 	public static function getCardQR($user)
 	{
 		$avatarUrl = $user->avatarUrl;
@@ -49,12 +75,14 @@ class QRManager
 //		$file_code_name = "21" . time() . ".png";
 //		file_put_contents($file_code_name, $QR);//保存到本地
 		$file_code_name = downloadImage($QR);
-		$ext = pathinfo($avatarUrl,PATHINFO_EXTENSION);
+		$ext = pathinfo($avatarUrl, PATHINFO_EXTENSION);
 		if (!$avatarUrl) {
 			//没有头像使用默认二维码
+			Log::info('用户'.$user->userid."头像为空");
 			return $QR;
 		} elseif (!in_array(strtolower($ext), ['png', 'jpg', 'jpeg'])) {
 			//头像非png,jpg.jpeg时使用默认二维码
+			Log::info('用户'.$user->userid."头像格式为".strtolower($ext));
 			return $QR;
 		}
 		//保存原始头像

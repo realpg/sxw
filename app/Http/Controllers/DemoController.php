@@ -51,8 +51,7 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$user=MemberManager::getById(45);
-		return QRManager::getCardQR($user);
+		return QRManager::refreshCardQRByUserid(40);
 		
 //		//每天清理信息
 //		//每天生成搜索信息

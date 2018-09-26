@@ -109,4 +109,5 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('category/getByMid', 'CategoryController@getByMid');//获得广告信息
 	
 	Route::get('creidt/getRecord', 'CreditController@getRecord');//获得广告信息
+	
 });
