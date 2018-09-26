@@ -55,7 +55,7 @@ class DemoController extends Controller
 		$arr = [];
 		$users = MemberManager::getByCon(['group_id' => [6]]);
 		foreach ($users as $user) {
-			array_push($arr,QRManager::refreshCardQRByUserid($data['userid']));
+			array_push($arr,QRManager::refreshCardQRByUserid($user->userid));
 		}
 		return $arr;
 
