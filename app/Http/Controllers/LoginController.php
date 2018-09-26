@@ -155,7 +155,7 @@ class LoginController extends Controller
 		$headers = array('Content-type: ' . 'application/json');
 		$body = [
 //			'access_token'=>$access_token,
-			'scene' => 'userid=' . $user->userid,
+			'scene' => '{userid:' . $user->userid.'}',
 			'page' => $page,
 		];
 		// 拼接字符串
