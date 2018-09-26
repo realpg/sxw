@@ -71,7 +71,7 @@ class QRManager
 	public static function getCardQR($user)
 	{
 		$avatarUrl = $user->avatarUrl;
-		$avatarUrl='https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxvY0rp57euFOPz1ZwaIrm8vIicfZdM8Y7w5R5ateMRZlg1sHxVVLo9eqKHPS1ic4oT3dX3fwUpcaA/132';
+//		$avatarUrl='https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxvY0rp57euFOPz1ZwaIrm8vIicfZdM8Y7w5R5ateMRZlg1sHxVVLo9eqKHPS1ic4oT3dX3fwUpcaA/132';
 		//获得二维码
 		$QR = LoginController::getXCXQR($user, 'pages/store_particulars/store_particulars');
 //		$file_code_name = "21" . time() . ".png";

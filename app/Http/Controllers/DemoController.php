@@ -51,9 +51,14 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$data=$request->all();
-		return QRManager::refreshCardQRByUserid($data['userid']);
-		
+		$data = $request->all();
+		$arr = [];
+		$users = MemberManager::getByCon(['group_id' => [6]]);
+		foreach ($users as $user) {
+			array_push($arr,QRManager::refreshCardQRByUserid($data['userid']));
+		}
+		return $arr;
+
 //		//每天清理信息
 //		//每天生成搜索信息
 //		$sells = SellManager::getList();
