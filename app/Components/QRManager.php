@@ -75,7 +75,7 @@ class QRManager
 //		$file_code_name = "21" . time() . ".png";
 //		file_put_contents($file_code_name, $QR);//保存到本地
 		$file_code_name = downloadImage($QR);
-		$ext = pathinfo($avatarUrl, PATHINFO_EXTENSION);
+		$ext = pathinfo($avatarUrl, PATHINFO_EXTENSION)||'png';
 		if (!$avatarUrl) {
 			//没有头像使用默认二维码
 			Log::info('用户'.$user->userid."头像为空");
