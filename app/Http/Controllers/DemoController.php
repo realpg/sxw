@@ -51,7 +51,8 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		return QRManager::refreshCardQRByUserid(40);
+		$data=$request->all();
+		return QRManager::refreshCardQRByUserid($data['userid']);
 		
 //		//每天清理信息
 //		//每天生成搜索信息
