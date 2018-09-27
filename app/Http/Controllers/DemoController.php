@@ -51,13 +51,14 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$data = $request->all();
-		$arr = [];
-		$users = MemberManager::getByCon(['groupid' => [6]]);
-		foreach ($users as $user) {
-			array_push($arr, QRManager::refreshCardQRByUserid($user->userid));
-		}
-		return $arr;
+		dd(getimagesize('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxvY0rp57euFOPz1ZwaIrm8vIicfZdM8Y7w5R5ateMRZlg1sHxVVLo9eqKHPS1ic4oT3dX3fwUpcaA/132'));
+//		$data = $request->all();
+//		$arr = [];
+//		$users = MemberManager::getByCon(['groupid' => [6]]);
+//		foreach ($users as $user) {
+//			array_push($arr, QRManager::refreshCardQRByUserid($user->userid));
+//		}
+//		return $arr;
 
 //		//每天清理信息
 //		//每天生成搜索信息
