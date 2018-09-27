@@ -128,7 +128,7 @@ function downloadImg($url)
 		$type = $result[2];
 		//得到图片类型png?jpg?gif?
 //				$new_file = time().".";
-		$path = storage_path('app/public' . date('Y-m-d') . '/download');
+		$path = storage_path('app/public/' . date('Y-m-d') . '/download');
 		if (!file_exists($path)) {
 			mkdir($path, 0777, true);
 		}

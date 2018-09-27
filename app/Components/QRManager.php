@@ -71,7 +71,7 @@ class QRManager
 	public static function getCardQR($user)
 	{
 		//缓存图片路径
-		$path = storage_path('app/public'. date('Y-m-d') . '/download');
+		$path = storage_path('app/public/'. date('Y-m-d') . '/download');
 		if (!file_exists($path)) {
 			mkdir($path, 0777, true);
 		}
@@ -219,7 +219,7 @@ class QRManager
 	static function create_pic_watermark($dest_image, $watermark, $locate)
 	{
 		//图片缓存位置
-		$path = storage_path('app/public'. date('Y-m-d') . '/download');
+		$path = storage_path('app/public/'. date('Y-m-d') . '/download');
 		if (!file_exists($path)) {
 			mkdir($path, 0777, true);
 		}

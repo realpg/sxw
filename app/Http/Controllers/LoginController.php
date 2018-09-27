@@ -177,7 +177,7 @@ class LoginController extends Controller
 		$err = curl_error($con);
 		curl_close($con);
 		
-		$path = storage_path('app/public' . date('Y-m-d') . '/download');
+		$path = storage_path('app/public/' . date('Y-m-d') . '/download');
 		if (!file_exists($path)) {
 			mkdir($path, 0777, true);
 		}
