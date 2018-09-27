@@ -138,6 +138,10 @@ class QRManager
 		
 		//编辑已保存的原头像，保存成圆形（其实不是圆形，改变它的边角为透明）。
 		$imgg = self::yuan_img($headurl);     //yuan_img() 方法在文末会列出
+		if(!$imgg){
+			Log::info('用户' . $user->userid . "头像裁剪出错");
+			return $QR;
+		}
 		$file_name = $path . '/' . "22" . time() . ".png";
 		imagepng($imgg, $file_name);
 		imagedestroy($imgg);
@@ -180,7 +184,7 @@ class QRManager
 				$src_img = imagecreatefromjpeg($imgpath);
 				}catch (Exception $e){
 					Log::info("imagecreatefromjpeg 函数出错:",$e->getMessage());
-					$src_img = imagecreatefrompng($imgpath);
+					return false;
 				}
 				break;
 			case 'png':
@@ -188,7 +192,8 @@ class QRManager
 					$src_img = imagecreatefrompng($imgpath);
 				}catch (Exception $e){
 					Log::info("imagecreatefrompng 函数出错:",$e->getMessage());
-					$src_img = imagecreatefromjpeg($imgpath);
+//					$src_img = imagecreatefromjpeg($imgpath);
+					return false;
 				}
 				break;
 		}
