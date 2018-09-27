@@ -38,46 +38,50 @@ function dpassword($password, $salt)
 	return md5((is_md5($password) ? md5($password) : md5(md5($password))) . $salt);
 }
 
-function randomSalt($len = 8,$chars=null)
+function randomSalt($len = 8, $chars = null)
 {
-	if (is_null($chars)){
+	if (is_null($chars)) {
 		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	}
-	$random_max=strlen($chars)-1;
-	$salt='';
-	for($i=0;$i<$len;$i++){
-		$salt.=$chars[mt_rand(0.,$random_max)];
+	$random_max = strlen($chars) - 1;
+	$salt = '';
+	for ($i = 0; $i < $len; $i++) {
+		$salt .= $chars[mt_rand(0., $random_max)];
 	}
 	return $salt;
 }
 
-function getTokenLifetimeTimestemp(){
+function getTokenLifetimeTimestemp()
+{
 	$now = time();
 	$nextDay = intval(($now / 86400) + 1) * 86400 - 28800;
 	return $nextDay;
 }
 
 //检查参数
-function checkParam($Array,$params=['']){
-	foreach ($params as $param){
-		if(!array_key_exists($param,$Array)){
+function checkParam($Array, $params = [''])
+{
+	foreach ($params as $param) {
+		if (!array_key_exists($param, $Array)) {
 			return false;
-		}elseif(array_get($Array, $param)==null){
+		} elseif (array_get($Array, $param) == null) {
 			return false;
 		}
 	}
 	return true;
 }
 
-function getPRCdate($timestemp,$format="Y-m-d H:i:s"){
-	return date($format,$timestemp+28800);
+function getPRCdate($timestemp, $format = "Y-m-d H:i:s")
+{
+	return date($format, $timestemp + 28800);
 }
 
 //将array整理，index变为0，1，2.....
-function array_arrange($arr){
-	$arr_arrange=[];
-	foreach ($arr as $key=>$value){
-		array_push($arr_arrange,$value);
+function array_arrange($arr)
+{
+	$arr_arrange = [];
+	foreach ($arr as $key => $value) {
+		array_push($arr_arrange, $value);
 	}
 	return $arr_arrange;
 }
@@ -94,10 +98,11 @@ function downloadImage($url, $path = '')
 	$resource = fopen($path . $filename, 'a');
 	fwrite($resource, $file);
 	fclose($resource);
-	return $path .$filename;
+	return $path . $filename;
 }
 
-function downloadImg($url){
+function downloadImg($url)
+{
 	
 	$header = array('User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:45.0) Gecko/20100101 Firefox/45.0', 'Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3', 'Accept-Encoding: gzip, deflate',);
 	$curl = curl_init();
@@ -113,7 +118,7 @@ function downloadImg($url){
 		//把URL格式的图片转成base64_encode格式的！
 		
 		$imgBase64Code = "data:image/jpeg;base64," . base64_encode($data);
-	}else{
+	} else {
 		return null;
 	}
 	$img_content = $imgBase64Code;
@@ -123,14 +128,14 @@ function downloadImg($url){
 		$type = $result[2];
 		//得到图片类型png?jpg?gif?
 //				$new_file = time().".";
-		$path='/storage/' . date('Y-m-d') . '/download';
-		if(!file_exists($path)){
-			mkdir($path,0777,true);
+		$path = storage_path('app/public' . date('Y-m-d') . '/download');
+		if (!file_exists($path)) {
+			mkdir($path, 0777, true);
 		}
-		$new_file = $path.'/'.time().".{$type}";
+		$new_file = $path . '/' . time() . ".{$type}";
 		if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $img_content)))) {
 //			Log::info('新文件保存成功：' . $new_file);
-			$ext=$type;
+			$ext = $type;
 			return $new_file;
 		}
 	}

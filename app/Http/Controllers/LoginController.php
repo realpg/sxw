@@ -114,7 +114,7 @@ class LoginController extends Controller
 				return ApiResponse::makeResponse(false, "不能重复接受邀请!", ApiResponse::UNKNOW_ERROR);
 			}
 			$invite = InviteManager::setInvite(InviteManager::createObject(), $inviter, $user);
-			$invite->addtime=time();
+			$invite->addtime = time();
 			$invite->save();
 			if (!$invite || !CreditController::changeCredit(
 					['userid' => $inviter->userid,
@@ -177,12 +177,12 @@ class LoginController extends Controller
 		$err = curl_error($con);
 		curl_close($con);
 		
-		$path='/storage/' . date('Y-m-d') . '/download';
-		if(!file_exists($path)){
-			mkdir($path,0777,true);
+		$path = storage_path('app/public' . date('Y-m-d') . '/download');
+		if (!file_exists($path)) {
+			mkdir($path, 0777, true);
 		}
 		
-		$filePath = $path.'/'.$filename . '.jpg';
+		$filePath = $path . '/' . $filename . '.jpg';
 		file_put_contents($filePath, $info);
 		$url = qiniu_upload($filePath, 'wxqr');  //调用的全局函数
 //		unlink($filename.'.jpg');
@@ -196,7 +196,7 @@ class LoginController extends Controller
 		//检验参数
 		if (true) {
 			$url = QRManager::getInviteQRByUserid($data['userid'])->qr_url;
-			$filepath=downloadImg($url);
+			$filepath = downloadImg($url);
 			return response()->download($filepath);
 //			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 		} else {
