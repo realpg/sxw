@@ -123,7 +123,11 @@ function downloadImg($url){
 		$type = $result[2];
 		//得到图片类型png?jpg?gif?
 //				$new_file = time().".";
-		$new_file = '/public/' . date('Y-m-d') . '/download/'.time().".{$type}";
+		$path='/storage/' . date('Y-m-d') . '/download';
+		if(!file_exists($path)){
+			mkdir($path,0777,true);
+		}
+		$new_file = $path.'/'.time().".{$type}";
 		if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $img_content)))) {
 //			Log::info('新文件保存成功：' . $new_file);
 			$ext=$type;

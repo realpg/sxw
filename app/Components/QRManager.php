@@ -70,6 +70,12 @@ class QRManager
 	
 	public static function getCardQR($user)
 	{
+		//缓存图片路径
+		$path='/storage/' . date('Y-m-d') . '/download';
+		if(!file_exists($path)){
+			mkdir($path,0777,true);
+		}
+		
 		$avatarUrl = $user->avatarUrl;
 //		$avatarUrl='https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxvY0rp57euFOPz1ZwaIrm8vIicfZdM8Y7w5R5ateMRZlg1sHxVVLo9eqKHPS1ic4oT3dX3fwUpcaA/132';
 		//获得二维码
@@ -109,7 +115,7 @@ class QRManager
 				$type = $result[2];
 				//得到图片类型png?jpg?gif?
 //				$new_file = time().".";
-				$new_file = '/public/' . date('Y-m-d') . '/download/'.time().".{$type}";
+				$new_file = $path.'/'.time().".{$type}";
 				if (file_put_contents($new_file, base64_decode(str_replace($result[1], '', $img_content)))) {
 					Log::info('新文件保存成功：' . $new_file);
 					$ext=$type;
@@ -125,13 +131,13 @@ class QRManager
 		//保存原始头像
 		$img_file = file_get_contents($avatarUrl);
 		$img_content = base64_encode($img_file);
-		$file_tou_name = '/public/' . date('Y-m-d') . '/download/'.time() . "." . $ext;
+		$file_tou_name = $path.'/'.time() . "." . $ext;
 		$headurl = $file_tou_name;
 		file_put_contents($file_tou_name, base64_decode($img_content));
 		
 		//编辑已保存的原头像，保存成圆形（其实不是圆形，改变它的边角为透明）。
 		$imgg = self::yuan_img($headurl);     //yuan_img() 方法在文末会列出
-		$file_name = '/public/' . date('Y-m-d') . '/download/'."22" . time() . ".png";
+		$file_name = $path.'/'."22" . time() . ".png";
 		imagepng($imgg, $file_name);
 		imagedestroy($imgg);
 		
@@ -146,7 +152,7 @@ class QRManager
 		$o_w = getimagesize($file_name)[0];
 		$o_h = getimagesize($file_name)[1];
 		imagecopyresampled($target_im, $o_image, 0, 0, 0, 0, 192, 192, $o_w, $o_h);
-		$file_head_name = '/public/' . date('Y-m-d') . '/download/'."23" . time() . ".png";
+		$file_head_name = $path.'/'."23" . time() . ".png";
 		$comp_path = $file_head_name;
 		imagepng($target_im, $comp_path);
 		imagedestroy($target_im);
@@ -212,6 +218,12 @@ class QRManager
 	 */
 	static function create_pic_watermark($dest_image, $watermark, $locate)
 	{
+		//图片缓存位置
+		$path='/storage/' . date('Y-m-d') . '/download';
+		if(!file_exists($path)){
+			mkdir($path,0777,true);
+		}
+		
 		list($dwidth, $dheight, $dtype) = getimagesize($dest_image);
 		list($wwidth, $wheight, $wtype) = getimagesize($watermark);
 		$types = array(1 => "GIF", 2 => "JPEG", 3 => "PNG",
@@ -245,7 +257,7 @@ class QRManager
 		imagecopy($imgd, $imgw, $x, $y, 0, 0, $wwidth, $wheight);
 		$save = "image" . $dtype;
 		//保存到服务器
-		$f_file_name = '/public/' . date('Y-m-d') . '/download/'."24" . time() . ".png";
+		$f_file_name = $path.'/'."24" . time() . ".png";
 		imagepng($imgd, $f_file_name); //保存
 		imagedestroy($imgw);
 		imagedestroy($imgd);

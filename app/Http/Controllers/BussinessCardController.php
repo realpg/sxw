@@ -21,6 +21,7 @@ use App\Components\YWLBManager;
 use App\Models\Favorite;
 use Faker\Provider\da_DK\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BussinessCardController extends Controller
 {
@@ -166,6 +167,7 @@ class BussinessCardController extends Controller
 		if (true) {
 			$url = QRManager::getCardQRByUserid($data['_userid'])->qr_url;
 			$filepath=downloadImg($url);
+			Log::info("保存图片路径:".$filepath);
 			return response()->download($filepath);
 //			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 		} else {
