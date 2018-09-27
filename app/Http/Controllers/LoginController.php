@@ -190,9 +190,10 @@ class LoginController extends Controller
 		$data = $request->all();
 		//检验参数
 		if (true) {
-			$ret = QRManager::getInviteQRByUserid($data['userid'])->qr_url;
-			
-			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+			$url = QRManager::getInviteQRByUserid($data['userid'])->qr_url;
+			$filepath=downloadImg($url);
+			return response()->download($filepath);
+//			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
