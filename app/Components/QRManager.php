@@ -12,6 +12,7 @@ namespace App\Components;
 use App\Http\Controllers\LoginController;
 use App\Models\QR;
 use Illuminate\Support\Facades\Log;
+use Mockery\Exception;
 
 class QRManager
 {
@@ -174,13 +175,21 @@ class QRManager
 		$src_img = null;
 		switch ($ext['extension']) {
 			case 'jpg':
-				$src_img = imagecreatefromjpeg($imgpath);
-				break;
 			case 'jpeg':
+				try{
 				$src_img = imagecreatefromjpeg($imgpath);
+				}catch (Exception $e){
+					Log::info("imagecreatefromjpeg 函数出错:",$e->getMessage());
+					$src_img = imagecreatefrompng($imgpath);
+				}
 				break;
 			case 'png':
-				$src_img = imagecreatefrompng($imgpath);
+				try{
+					$src_img = imagecreatefrompng($imgpath);
+				}catch (Exception $e){
+					Log::info("imagecreatefrompng 函数出错:",$e->getMessage());
+					$src_img = imagecreatefromjpeg($imgpath);
+				}
 				break;
 		}
 		$wh = getimagesize($imgpath);
