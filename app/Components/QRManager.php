@@ -72,12 +72,13 @@ class QRManager
 	public static function getCardQR($user)
 	{
 		//缓存图片路径
-		$path = storage_path('app/public/'. date('Y-m-d') . '/download');
+		$path = storage_path('app/public/' . date('Y-m-d') . '/download');
 		if (!file_exists($path)) {
 			mkdir($path, 0777, true);
 		}
 		
 		$avatarUrl = $user->avatarUrl;
+		$img_data = getimagesize($avatarUrl);
 //		$avatarUrl='https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxvY0rp57euFOPz1ZwaIrm8vIicfZdM8Y7w5R5ateMRZlg1sHxVVLo9eqKHPS1ic4oT3dX3fwUpcaA/132';
 		//获得二维码
 		$QR = LoginController::getXCXQR($user, 'pages/store_particulars/store_particulars');
@@ -104,8 +105,12 @@ class QRManager
 			curl_close($curl);
 			if ($code == 200) {
 				//把URL格式的图片转成base64_encode格式的！
-				
-				$imgBase64Code = "data:image/png;base64," . base64_encode($data);
+				if ($img_data['mine'] == 'image/png')
+					$imgBase64Code = "data:image/png;base64," . base64_encode($data);
+				elseif ($img_data['mine'] == 'image/jepg'||$img_data['mine'] == 'image/jpg')
+					$imgBase64Code = "data:image/jepg;base64," . base64_encode($data);
+				else
+					return $QR;
 			} else {
 				return $QR;
 			}
@@ -138,7 +143,7 @@ class QRManager
 		
 		//编辑已保存的原头像，保存成圆形（其实不是圆形，改变它的边角为透明）。
 		$imgg = self::yuan_img($headurl);     //yuan_img() 方法在文末会列出
-		if(!$imgg){
+		if (!$imgg) {
 			Log::info('用户' . $user->userid . "头像裁剪出错");
 			return $QR;
 		}
@@ -180,18 +185,18 @@ class QRManager
 		switch ($ext['extension']) {
 			case 'jpg':
 			case 'jpeg':
-				try{
-				$src_img = imagecreatefromjpeg($imgpath);
-				}catch (Exception $e){
-					Log::info("imagecreatefromjpeg 函数出错:",$e->getMessage());
+				try {
+					$src_img = imagecreatefromjpeg($imgpath);
+				} catch (Exception $e) {
+					Log::info("imagecreatefromjpeg 函数出错:", $e->getMessage());
 					return false;
 				}
 				break;
 			case 'png':
-				try{
+				try {
 					$src_img = imagecreatefrompng($imgpath);
-				}catch (Exception $e){
-					Log::info("imagecreatefrompng 函数出错:",$e->getMessage());
+				} catch (Exception $e) {
+					Log::info("imagecreatefrompng 函数出错:", $e->getMessage());
 //					$src_img = imagecreatefromjpeg($imgpath);
 					return false;
 				}
@@ -233,7 +238,7 @@ class QRManager
 	static function create_pic_watermark($dest_image, $watermark, $locate)
 	{
 		//图片缓存位置
-		$path = storage_path('app/public/'. date('Y-m-d') . '/download');
+		$path = storage_path('app/public/' . date('Y-m-d') . '/download');
 		if (!file_exists($path)) {
 			mkdir($path, 0777, true);
 		}
