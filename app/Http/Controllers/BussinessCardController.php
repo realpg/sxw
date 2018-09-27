@@ -164,7 +164,22 @@ class BussinessCardController extends Controller
 		$data = $request->all();
 		//检验参数
 		if (true) {
-			$url = QRManager::getCardQRByUserid($data['userid'])->qr_url;
+			$url = QRManager::getCardQRByUserid($data['_userid'])->qr_url;
+			$filepath=downloadImg($url);
+			return response()->download($filepath);
+//			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function RefreshMyQR(Request $request)
+	{
+		$data = $request->all();
+		
+		//检验参数
+		if (true) {
+			$url = QRManager::refreshCardQRByUserid($data['userid'])->qr_url;
 			$filepath=downloadImg($url);
 			return response()->download($filepath);
 //			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
