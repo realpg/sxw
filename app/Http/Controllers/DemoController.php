@@ -133,8 +133,10 @@ class DemoController extends Controller
 	public
 	function log()
 	{
-		$logs = XCXLog::orderBy('id', 'desc')->paginate('50');
-		return view('log.index', ['datas' => $logs]);
+		$filepath=storage_path('logs/laravel.log');
+		return response()->download($filepath);
+//		$logs = XCXLog::orderBy('id', 'desc')->paginate('50');
+//		return view('log.index', ['datas' => $logs]);
 	}
 	
 	public
