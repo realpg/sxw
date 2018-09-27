@@ -83,7 +83,7 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('businesscard/getYWLB', 'BussinessCardController@getYWLB');//业务类别
 	Route::get('businesscard/getByUserid', 'BussinessCardController@getByUserid_get');//业务类别
 	Route::get('businesscard/getQRByUserid', 'BussinessCardController@getQRByUserid');//名片二维码
-	Route::get('businesscard/RefreshMyQR', 'BussinessCardController@RefreshMyQR');//名片二维码
+//	Route::get('businesscard/RefreshMyQR', 'BussinessCardController@RefreshMyQR');//名片二维码
 	Route::get('ranking', 'RankingController@getRanking');//排行榜
 	
 	Route::get('article/getList', 'ArticleController@getList');//全部资讯

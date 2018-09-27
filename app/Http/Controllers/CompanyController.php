@@ -8,6 +8,7 @@ use App\Components\CompanyManager;
 use App\Components\CompanyYWLBManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
+use App\Components\QRManager;
 use App\Components\UpgradeManager;
 use App\Components\VertifyManager;
 use App\Components\YWLBManager;
@@ -39,6 +40,8 @@ class CompanyController extends Controller
 				
 				$user->avatarUrl = $data['avatarUrl'];
 				$user->save();
+				//更新名片二维码
+				QRManager::refreshCardQRByUserid($user->userid);
 				if ($ret)
 					$ret .= ",";
 				$ret .= "修改头像成功";
