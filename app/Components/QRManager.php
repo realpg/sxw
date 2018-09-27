@@ -104,7 +104,7 @@ class QRManager
 			if ($code == 200) {
 				//把URL格式的图片转成base64_encode格式的！
 				
-				$imgBase64Code = "data:image/jpeg;base64," . base64_encode($data);
+				$imgBase64Code = "data:image/png;base64," . base64_encode($data);
 			} else {
 				return $QR;
 			}
