@@ -78,13 +78,13 @@ class QRManager
 		}
 		
 		$avatarUrl = $user->avatarUrl;
-		
+
 //		$avatarUrl='https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxvY0rp57euFOPz1ZwaIrm8vIicfZdM8Y7w5R5ateMRZlg1sHxVVLo9eqKHPS1ic4oT3dX3fwUpcaA/132';
 		//获得二维码
 		$QR = LoginController::getXCXQR($user, 'pages/store_particulars/store_particulars');
 //		$file_code_name = "21" . time() . ".png";
 //		file_put_contents($file_code_name, $QR);//保存到本地
-		$file_code_name = downloadImage($QR,$path.'/');
+		$file_code_name = downloadImage($QR, $path . '/');
 		$ext = pathinfo($avatarUrl, PATHINFO_EXTENSION);
 		
 		if (!$avatarUrl) {
@@ -108,11 +108,14 @@ class QRManager
 				//把URL格式的图片转成base64_encode格式的！
 				if ($img_data['mime'] == 'image/png')
 					$imgBase64Code = "data:image/png;base64," . base64_encode($data);
-				elseif ($img_data['mime'] == 'image/jepg'||$img_data['mime'] == 'image/jpg')
+				elseif ($img_data['mime'] == 'image/jepg' || $img_data['mime'] == 'image/jpg')
 					$imgBase64Code = "data:image/jepg;base64," . base64_encode($data);
-				else
+				else {
+					Log::info('用户' . $user->userid . "头像格式" . $img_data['mime']);
 					return $QR;
+				}
 			} else {
+				Log::info('用户' . $user->userid . "头像请求失败" . json_encode($data));
 				return $QR;
 			}
 			$img_content = $imgBase64Code;
