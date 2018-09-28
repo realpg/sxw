@@ -108,8 +108,8 @@ class QRManager
 				//把URL格式的图片转成base64_encode格式的！
 				if ($img_data['mime'] == 'image/png')
 					$imgBase64Code = "data:image/png;base64," . base64_encode($data);
-				elseif ($img_data['mime'] == 'image/jepg' || $img_data['mime'] == 'image/jpg')
-					$imgBase64Code = "data:image/jepg;base64," . base64_encode($data);
+				elseif ($img_data['mime'] == 'image/jpeg' || $img_data['mime'] == 'image/jpg')
+					$imgBase64Code = "data:image/jpeg;base64," . base64_encode($data);
 				else {
 					Log::info('用户' . $user->userid . "头像格式" . $img_data['mime']);
 					return $QR;
