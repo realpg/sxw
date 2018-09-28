@@ -78,13 +78,13 @@ class QRManager
 		}
 		
 		$avatarUrl = $user->avatarUrl;
-		$img_data = getimagesize($avatarUrl);
+		
 //		$avatarUrl='https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxvY0rp57euFOPz1ZwaIrm8vIicfZdM8Y7w5R5ateMRZlg1sHxVVLo9eqKHPS1ic4oT3dX3fwUpcaA/132';
 		//获得二维码
 		$QR = LoginController::getXCXQR($user, 'pages/store_particulars/store_particulars');
 //		$file_code_name = "21" . time() . ".png";
 //		file_put_contents($file_code_name, $QR);//保存到本地
-		$file_code_name = downloadImage($QR);
+		$file_code_name = downloadImage($QR,$path.'/');
 		$ext = pathinfo($avatarUrl, PATHINFO_EXTENSION);
 		
 		if (!$avatarUrl) {
@@ -92,6 +92,7 @@ class QRManager
 			Log::info('用户' . $user->userid . "头像为空");
 			return $QR;
 		} elseif (!$ext) {
+			$img_data = getimagesize($avatarUrl);
 			$header = array('User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:45.0) Gecko/20100101 Firefox/45.0', 'Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3', 'Accept-Encoding: gzip, deflate',);
 			$url = $avatarUrl;
 			$curl = curl_init();
@@ -171,6 +172,10 @@ class QRManager
 		//传入保存后的二维码地址
 //		return [$file_code_name, $comp_path];
 		$url = self::create_pic_watermark($file_code_name, $comp_path, "center");  //方法文末列出
+		unlink($file_code_name);
+		unlink($file_tou_name);
+		unlink($file_name);
+		unlink($file_head_name);
 		return $url;
 //		$arr = array('ret' => 1, 'msg' => 'success', 'data' => array('url' => $url),
 //			//处理完的新小程序码 保存在服务器，传回地址给小程序端即可

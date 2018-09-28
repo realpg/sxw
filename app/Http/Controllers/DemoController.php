@@ -51,14 +51,16 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		dd(getimagesize('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxvY0rp57euFOPz1ZwaIrm8vIicfZdM8Y7w5R5ateMRZlg1sHxVVLo9eqKHPS1ic4oT3dX3fwUpcaA/132'));
-//		$data = $request->all();
-//		$arr = [];
-//		$users = MemberManager::getByCon(['groupid' => [6]]);
-//		foreach ($users as $user) {
-//			array_push($arr, QRManager::refreshCardQRByUserid($user->userid));
-//		}
-//		return $arr;
+//		dd(getimagesize('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJO5fFcD8F2R7MVETYPT4r7ibQ85zdcxTu0LXrYRLvzcPgmedYO4eOD5Tu4YvoXZJwqov3CDwb54Jw/132'));
+		$data = $request->all();
+		$start=date('Ymd H:i:s');
+		$arr = [];
+		$users = MemberManager::getByCon(['groupid' => [6]],true);
+		foreach ($users as $user) {
+			array_push($arr, QRManager::refreshCardQRByUserid($user->userid));
+		}
+		$end=date('Ymd H:i:s');
+		return [$start.' -- '.$end,$arr,$users];
 
 //		//每天清理信息
 //		//每天生成搜索信息

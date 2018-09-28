@@ -178,14 +178,19 @@ class LoginController extends Controller
 		curl_close($con);
 		
 		$path = storage_path('app/public/' . date('Y-m-d') . '/download');
+		
+		
+		$filePath = $path . '\\' . $filename . '.jpg';
+		$i = 0;
+//		do
+//			str_replace('/', '\\', $filePath, $i);
+//		while ($i >= 0);
 		if (!file_exists($path)) {
 			mkdir($path, 0777, true);
 		}
-		
-		$filePath = $path . '/' . $filename . '.jpg';
 		file_put_contents($filePath, $info);
 		$url = qiniu_upload($filePath, 'wxqr');  //调用的全局函数
-//		unlink($filename.'.jpg');
+//		unlink($filePath);
 		return $url;
 //		dd($info);
 	}
