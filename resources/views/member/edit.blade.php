@@ -42,8 +42,8 @@
 <article class="page-container">
     <form class="form form-horizontal" id="form-article-add" method="post">
         {{csrf_field()}}
-        <div class="row cl hidden">
-            <label class="form-label col-xs-4 col-sm-2">id：</label>
+        <div class="row cl ">
+            <label class="form-label col-xs-4 col-sm-2">用户id：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="text" class="input-text" value="{{array_get($data,'userid')}}" placeholder=""
                        id="userid" name="userid">

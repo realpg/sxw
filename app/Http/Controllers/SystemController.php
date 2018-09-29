@@ -509,6 +509,12 @@ class SystemController extends Controller
 				$card = BussinessCardController::getByUserid($data['userid']);
 				$card['user']=$user;
 			}
+		}elseif (checkParam($data, ['username'])) {
+			$user = MemberManager::getByUsername($data['username']);
+			if ($user) {
+				$card = BussinessCardController::getByUserid($user->userid);
+				$card['user']=$user;
+			}
 		}
 		
 		
