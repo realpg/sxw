@@ -72,6 +72,8 @@ class We7Controller extends Controller
 				$record->record = We7SyncManager::getByCon(['we7_itemid' => [$record->id]]);
 				continue;
 				
+			} elseif ((int)$record->num == 0) {
+				continue;
 			} else {
 				$sync = We7SyncManager::createObject();
 				$sync = We7SyncManager::syncFromWe7($sync, $record);
@@ -95,7 +97,7 @@ class We7Controller extends Controller
 				continue;
 			}
 			
-			if ((int)$we7member->credit1 - $user->credit != 0) {//同步积分)
+			if ((int)($user->credit - $we7member->credit1) != 0) {//同步积分)
 				$we7member->credit1 = $user->credit;//同步积分
 				
 				$we7record = We7CreditRecordManager::createObject();//创建积分记录
