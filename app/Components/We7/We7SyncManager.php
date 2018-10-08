@@ -112,9 +112,9 @@ class We7SyncManager
 			return false;
 		}
 		
-		$financeCredit = FinanceCredit::where('userid',$financeCredit->userid)
-			->where('note',$financeCredit->note)
-			->first();
+//		$financeCredit = FinanceCredit::where('userid',$financeCredit->userid)
+//			->where('note',$financeCredit->note)
+//			->first();
 		$sync->we7_itemid = $we7record->id;
 		$sync->dt_itemid = $financeCredit->itemid;
 		$sync->stream = 2;
