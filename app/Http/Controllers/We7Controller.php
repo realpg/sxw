@@ -95,21 +95,23 @@ class We7Controller extends Controller
 				continue;
 			}
 			
-			$we7member->credit1 = $user->credit;//同步积分
-			
-			$we7record = We7CreditRecordManager::createObject();//创建积分记录
-			$we7record->num = $user->credit - $we7member->credit1;
-			$we7record->save();
-			
-			//创建同步记录
-			$sync = We7SyncManager::createObject();
-			$sync->we7_itemid = $we7record->id;
-			$sync->dt_itemid = '';
-			$sync->stream = 1;
-			$sync->time = time();
-			$sync->save();
-			
-			$we7member->save();
+			if ($we7member->credit1 != $user->credit) {//同步积分)
+				$we7member->credit1 = $user->credit;//同步积分
+				
+				$we7record = We7CreditRecordManager::createObject();//创建积分记录
+				$we7record->num = $user->credit - $we7member->credit1;
+				$we7record->save();
+				
+				//创建同步记录
+				$sync = We7SyncManager::createObject();
+				$sync->we7_itemid = $we7record->id;
+				$sync->dt_itemid = '';
+				$sync->stream = 1;
+				$sync->time = time();
+				$sync->save();
+				
+				$we7member->save();
+			}
 			array_push($ARR, [$user, $we7member, $we7record, $sync]);
 		}
 		return $ARR;
