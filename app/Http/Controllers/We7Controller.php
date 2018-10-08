@@ -27,6 +27,7 @@ use App\Models\We7\We7User;
 use App\Models\XCXLog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RankingController;
+use Illuminate\Support\Facades\Log;
 
 class We7Controller extends Controller
 {
@@ -98,6 +99,8 @@ class We7Controller extends Controller
 			}
 			
 			if ((int)($user->credit - $we7member->credit1) != 0) {//同步积分)
+				Log::info('改变积分【' . $user->userid . '】:'
+					. (int)($user->credit - $we7member->credit1));
 				$we7member->credit1 = $user->credit;//同步积分
 				
 				$we7record = We7CreditRecordManager::createObject();//创建积分记录
