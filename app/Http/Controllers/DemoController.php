@@ -28,6 +28,8 @@ use App\Models\Comment;
 use App\Models\Member;
 use App\Models\System;
 use App\Models\Test;
+use App\Models\We7\We7CreditRecord;
+use App\Models\We7\We7Sync;
 use App\Models\XCXLog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\RankingController;
@@ -51,12 +53,15 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$user=MemberManager::getById(29);
-		$password='Aa123456';
-		$salt=$user->passsalt;
-		$user->password=md5((preg_match("/^[a-f0-9]{32}$/", $password) ? md5($password) : md5(md5($password))).$salt);
-		$user->save();
-		return $user;
+		$credits=We7CreditRecord::all();
+		foreach ($credits as $credit){
+			$credit->delete();
+		}
+		$syncs=We7Sync::all();
+		foreach ($syncs as $sync){
+			$sync->delete();
+		}
+		return "1111";
 //		dd(getimagesize('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJO5fFcD8F2R7MVETYPT4r7ibQ85zdcxTu0LXrYRLvzcPgmedYO4eOD5Tu4YvoXZJwqov3CDwb54Jw/132'));
 //		$data = $request->all();
 //		$start=date('Ymd H:i:s');

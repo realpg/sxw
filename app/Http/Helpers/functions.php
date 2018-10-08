@@ -73,7 +73,8 @@ function checkParam($Array, $params = [''])
 
 function getPRCdate($timestemp, $format = "Y-m-d H:i:s")
 {
-	return date($format, $timestemp + 28800);
+	date_default_timezone_set('Asia/Shanghai');
+	return date($format, $timestemp);
 }
 
 //将array整理，index变为0，1，2.....
@@ -142,6 +143,7 @@ function downloadImg($url)
 	return null;
 }
 
-function makePassword($password,$salt){
-	return md5((preg_match("/^[a-f0-9]{32}$/", $password) ? md5($password) : md5(md5($password))).$salt);
+function makePassword($password, $salt)
+{
+	return md5((preg_match("/^[a-f0-9]{32}$/", $password) ? md5($password) : md5(md5($password))) . $salt);
 }

@@ -10,7 +10,9 @@
 
 namespace App\Components\We7;
 
+use App\Components\CompanyManager;
 use App\Http\Controllers\CreditController;
+use App\Models\FinanceCredit;
 use App\Models\We7\We7Sync;
 
 class We7SyncManager
@@ -97,8 +99,8 @@ class We7SyncManager
 	
 	public static function syncFromWe7($sync, $we7record)
 	{
-		$dtUser=We7UserManager::getDTUserByWe7uid($we7record->uid);
-		if(!$dtUser){
+		$dtUser = We7UserManager::getDTUserByWe7uid($we7record->uid);
+		if (!$dtUser) {
 			return false;
 		}
 		$financeCredit = CreditController::changeCredit([
@@ -106,9 +108,13 @@ class We7SyncManager
 			'amount' => (int)$we7record->num,
 			'reason' => $we7record->remark,
 			'note' => '来自微擎同步,同步时间' . date("Y/m/d h:i:sa")]);
-		if(!$financeCredit){
+		if (!$financeCredit) {
 			return false;
 		}
+		
+		$financeCredit = FinanceCredit::where('userid',$financeCredit->userid)
+			->where('note',$financeCredit->note)
+			->first();
 		$sync->we7_itemid = $we7record->id;
 		$sync->dt_itemid = $financeCredit->itemid;
 		$sync->stream = 2;
@@ -116,10 +122,11 @@ class We7SyncManager
 		return $sync;
 	}
 	
-	public static function lastSyncTime(){
-		$time=We7Sync::where('stream', 2)->max('time');
-		if(!$time)
-			$time=0;
+	public static function lastSyncTime()
+	{
+		$time = We7Sync::where('stream', 2)->max('time');
+		if (!$time)
+			$time = 0;
 		return $time;
 	}
 }

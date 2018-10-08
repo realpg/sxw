@@ -68,11 +68,16 @@ class SellController
 				$sell = SellManager::createObject();
 				$sell_data = SellDataManager::createObject();
 				
+				$free_1 = SystemManager::getById(8);
+				$free_2 = SystemManager::getById(9);
 				//vip可以发布信息
 				if (VIPUserManager::getUserVIPLevel($user->userid) != 0) {
 					//VIP不消耗积分
-				} elseif (InfoManager::CountInfosByUsername($user->username) < 5) {
-					//前五次发布不消耗积分
+				} elseif (InfoManager::CountInfosByUsername($user->username) < $free_1) {
+					//每位用户前n次发布不消耗积分
+				}
+				elseif (InfoManager::CountInfosByUsername($user->username, true) < $free_2) {
+					//每日前n次发布不消耗积分
 				} //消耗积分
 				elseif (!CreditController::changeCredit(
 					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('4')->value,
@@ -164,7 +169,7 @@ class SellController
 				else
 					return [];
 		} else {
-				return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 		}
 	}
 	
