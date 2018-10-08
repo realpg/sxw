@@ -95,7 +95,7 @@ class We7Controller extends Controller
 				continue;
 			}
 			
-			if ($we7member->credit1 != $user->credit) {//同步积分)
+			if ($we7member->credit1 - $user->credit!=0) {//同步积分)
 				$we7member->credit1 = $user->credit;//同步积分
 				
 				$we7record = We7CreditRecordManager::createObject();//创建积分记录
