@@ -116,8 +116,10 @@ class We7Controller extends Controller
 				$sync->save();
 				
 				$we7member->save();
+				
+				array_push($ARR, [$user, $we7member, $we7record, $sync]);
 			}
-			array_push($ARR, [$user, $we7member, $we7record, $sync]);
+			
 		}
 		return $ARR;
 	}
