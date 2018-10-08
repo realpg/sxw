@@ -78,7 +78,7 @@ class SellManager
 	 */
 	public static function getList($paginate = false)
 	{
-		$sells = Sell::orderby('itemid', 'desc');
+		$sells = Sell::orderby('listorder', 'desc');
 		if ($paginate)
 			$sells = $sells->paginate(5);
 		else
@@ -115,7 +115,7 @@ class SellManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['itemid', 'desc'], $paginate = true)
+	public static function getByCon($ConArr, $orderby = ['listorder', 'asc'], $paginate = true)
 	{
 		$sells = Sell::orderby($orderby[0], $orderby[1]);
 		$count = count($orderby);

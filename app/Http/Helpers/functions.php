@@ -141,3 +141,7 @@ function downloadImg($url)
 	}
 	return null;
 }
+
+function makePassword($password,$salt){
+	return md5((preg_match("/^[a-f0-9]{32}$/", $password) ? md5($password) : md5(md5($password))).$salt);
+}

@@ -29,7 +29,7 @@ class FJMYController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$fjmys = FJMYManager::getByCon(['status' => [3]], ['itemid', "desc", 'vip', 'desc'], true);
+		$fjmys = FJMYManager::getByCon(['status' => [3]], ['listorder', "asc", 'vip', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $fjmys, ApiResponse::SUCCESS_CODE);
 		foreach ($fjmys as $fjmy) {
 			$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);
@@ -143,7 +143,7 @@ class FJMYController
 				foreach ($searchResults as $result) {
 					array_push($result_itemids, $result->itemid);
 				}
-				$fjmys = FJMYManager::getByCon(['status' => [3], 'itemid' => $result_itemids], ['vip', 'desc'], true);
+				$fjmys = FJMYManager::getByCon(['status' => [3], 'itemid' => $result_itemids], ['listorder', 'asc'], true);
 				foreach ($fjmys as $fjmy) {
 					$fjmy->content = FJMYDataManager::getById($fjmy->itemid)->content;
 					$fjmy->user = $user = MemberManager::getByUsername($fjmy->username);
@@ -182,7 +182,7 @@ class FJMYController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			$fjmys = FJMYManager::getByCon($Con, ['vip', 'desc'], true);
+			$fjmys = FJMYManager::getByCon($Con, ['listorder', 'asc'], true);
 			foreach ($fjmys as $fjmy) {
 				$fjmy = FJMYManager::getInfo($fjmy, ['content', 'userinfo', 'tags']);
 				$fjmy = FJMYManager::getAgreeAndFavorite($fjmy, $user);

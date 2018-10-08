@@ -29,7 +29,7 @@ class SellController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$sells = SellManager::getByCon(['status' => [3]], ['itemid', "desc", 'vip', 'desc'], true);
+		$sells = SellManager::getByCon(['status' => [3]], ['listorder', "asc", 'vip', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
@@ -143,7 +143,7 @@ class SellController
 				foreach ($searchResults as $result) {
 					array_push($result_itemids, $result->itemid);
 				}
-				$sells = SellManager::getByCon(['status' => [3], 'itemid' => $result_itemids], ['vip', 'desc'], true);
+				$sells = SellManager::getByCon(['status' => [3], 'itemid' => $result_itemids], ['listorder', 'asc'], true);
 				foreach ($sells as $sell) {
 					$sell->content = SellDataManager::getById($sell->itemid)->content;
 					$sell->user = $user = MemberManager::getByUsername($sell->username);
@@ -182,7 +182,7 @@ class SellController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			$sells = SellManager::getByCon($Con, ['vip', "desc"], true);
+			$sells = SellManager::getByCon($Con, ['listorder', "asc"], true);
 			foreach ($sells as $sell) {
 				$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
 				$sell = SellManager::getAgreeAndFavorite($sell, $user);

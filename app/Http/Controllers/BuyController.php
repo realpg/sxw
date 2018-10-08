@@ -29,7 +29,7 @@ class BuyController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$buys = BuyManager::getByCon(['status' => [3]], ['itemid', "desc", 'vip', 'desc'], true);
+		$buys = BuyManager::getByCon(['status' => [3]], ['listorder', "asc", 'vip', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $buys, ApiResponse::SUCCESS_CODE);
 		foreach ($buys as $buy) {
 			$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
@@ -143,7 +143,7 @@ class BuyController
 				foreach ($searchResults as $result) {
 					array_push($result_itemids, $result->itemid);
 				}
-				$buys = BuyManager::getByCon(['status' => [3], 'itemid' => $result_itemids], ['vip', 'desc'], true);
+				$buys = BuyManager::getByCon(['status' => [3], 'itemid' => $result_itemids], ['listorder', 'asc'], true);
 				foreach ($buys as $buy) {
 					$buy->content = BuyDataManager::getById($buy->itemid)->content;
 					$buy->user = $user = MemberManager::getByUsername($buy->username);
@@ -182,7 +182,7 @@ class BuyController
 			foreach ($conditions->key as $num => $key) {
 				$Con[$key] = explode(',', $conditions->value[$num]);
 			}
-			$buys = BuyManager::getByCon($Con, ['vip', 'desc'], true);
+			$buys = BuyManager::getByCon($Con, ['listorder', 'asc'], true);
 			foreach ($buys as $buy) {
 				$buy = BuyManager::getInfo($buy, ['content', 'userinfo', 'tags']);
 				$buy = BuyManager::getAgreeAndFavorite($buy, $user);

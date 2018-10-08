@@ -78,7 +78,7 @@ class BuyManager
 	 */
 	public static function getList($paginate = false)
 	{
-		$buys = Buy::orderby('itemid', 'desc');
+		$buys = Buy::orderby('listorder', 'desc');
 		if ($paginate)
 			$buys = $buys->paginate(5);
 		else
@@ -115,7 +115,7 @@ class BuyManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'], $paginate = false)
+	public static function getByCon($ConArr, $orderby = ['listorder', 'asc'], $paginate = false)
 	{
 		$buys = Buy::orderby($orderby[0], $orderby[1]);
 		$count = count($orderby);

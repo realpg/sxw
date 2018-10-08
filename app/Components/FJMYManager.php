@@ -78,7 +78,7 @@ class FJMYManager
 	 */
 	public static function getList($paginate = false)
 	{
-		$fjmys = FJMY::orderby('itemid', 'desc');
+		$fjmys = FJMY::orderby('listorder', 'desc');
 		if ($paginate)
 			$fjmys = $fjmys->paginate(5);
 		else
@@ -115,7 +115,7 @@ class FJMYManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'], $paginate = false)
+	public static function getByCon($ConArr, $orderby = ['listorder', 'asc'], $paginate = false)
 	{
 		$fjmys = FJMY::orderby($orderby[0], $orderby[1]);
 		$count = count($orderby);

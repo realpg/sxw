@@ -51,16 +51,22 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
+		$user=MemberManager::getById(29);
+		$password='Aa123456';
+		$salt=$user->passsalt;
+		$user->password=md5((preg_match("/^[a-f0-9]{32}$/", $password) ? md5($password) : md5(md5($password))).$salt);
+		$user->save();
+		return $user;
 //		dd(getimagesize('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJO5fFcD8F2R7MVETYPT4r7ibQ85zdcxTu0LXrYRLvzcPgmedYO4eOD5Tu4YvoXZJwqov3CDwb54Jw/132'));
-		$data = $request->all();
-		$start=date('Ymd H:i:s');
-		$arr = [];
-		$users = MemberManager::getByCon(['groupid' => [6]],true);
-		foreach ($users as $user) {
-			array_push($arr, QRManager::refreshCardQRByUserid($user->userid));
-		}
-		$end=date('Ymd H:i:s');
-		return [$start.' -- '.$end,$arr,$users];
+//		$data = $request->all();
+//		$start=date('Ymd H:i:s');
+//		$arr = [];
+//		$users = MemberManager::getByCon(['groupid' => [6]],true);
+//		foreach ($users as $user) {
+//			array_push($arr, QRManager::refreshCardQRByUserid($user->userid));
+//		}
+//		$end=date('Ymd H:i:s');
+//		return [$start.' -- '.$end,$arr,$users];
 
 //		//每天清理信息
 //		//每天生成搜索信息

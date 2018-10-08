@@ -99,7 +99,7 @@ class InfoManager
 	 *
 	 * 2018-04-19
 	 */
-	public static function getByCon($mid, $ConArr, $orderby = ['itemid', 'asc'])
+	public static function getByCon($mid, $ConArr, $orderby = ['listorder', 'asc'])
 	{
 		switch ($mid) {
 			case 5:
@@ -134,17 +134,17 @@ class InfoManager
 	public static function getByPage($page = 1, $perpage = 15)
 	{
 		$Infos = [];
-		$sells = Sell::where('status', '=', '3')->orderby('itemid', 'desc')->pluck('addtime', 'itemid');
+		$sells = Sell::where('status', '=', '3')->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
 		foreach ($sells as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 5, 'itemid' => $itemid]);
 		}
 		
-		$buys = Buy::where('status', '=', '3')->orderby('itemid', 'desc')->pluck('addtime', 'itemid');
+		$buys = Buy::where('status', '=', '3')->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
 		foreach ($buys as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 6, 'itemid' => $itemid]);
 		}
 		
-		$fjmys = FJMY::where('status', '=', '3')->orderby('itemid', 'desc')->pluck('addtime', 'itemid');
+		$fjmys = FJMY::where('status', '=', '3')->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
 		foreach ($fjmys as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 88, 'itemid' => $itemid]);
 		}
@@ -189,17 +189,17 @@ class InfoManager
 	public static function getByUsernameAndPage($username, $page = 1, $perpage = 15)
 	{
 		$Infos = [];
-		$sells = Sell::where('status', '=', '3')->where('username', '=', $username)->orderby('itemid', 'desc')->pluck('addtime', 'itemid');
+		$sells = Sell::where('status', '=', '3')->where('username', '=', $username)->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
 		foreach ($sells as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 5, 'itemid' => $itemid]);
 		}
 		
-		$buys = Buy::where('status', '=', '3')->where('username', '=', $username)->orderby('itemid', 'desc')->pluck('addtime', 'itemid');
+		$buys = Buy::where('status', '=', '3')->where('username', '=', $username)->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
 		foreach ($buys as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 6, 'itemid' => $itemid]);
 		}
 		
-		$fjmys = FJMY::where('status', '=', '3')->where('username', '=', $username)->orderby('itemid', 'desc')->pluck('addtime', 'itemid');
+		$fjmys = FJMY::where('status', '=', '3')->where('username', '=', $username)->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
 		foreach ($fjmys as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 88, 'itemid' => $itemid]);
 		}
