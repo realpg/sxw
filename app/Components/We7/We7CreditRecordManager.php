@@ -30,7 +30,7 @@ class We7CreditRecordManager
 		$record->clerk_id='0';
 		$record->store_id='0';
 		$record->clerk_type='1';
-		$record->createtime='1';
+		$record->createtime=time();
 		$record->remark='DT同步积分';
 		return $record;
 	}
