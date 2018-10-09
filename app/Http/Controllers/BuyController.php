@@ -68,8 +68,8 @@ class BuyController
 				$buy = BuyManager::createObject();
 				$buy_data = BuyDataManager::createObject();
 				
-				$free_1 = SystemManager::getById(8);
-				$free_2 = SystemManager::getById(9);
+				$free_1 = SystemManager::getById(8)->value;
+				$free_2 = SystemManager::getById(9)->value;
 				//vip可以发布信息
 				if (VIPUserManager::getUserVIPLevel($user->userid) != 0) {
 					//VIP不消耗积分
