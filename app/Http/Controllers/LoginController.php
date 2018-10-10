@@ -103,8 +103,11 @@ class LoginController extends Controller
 			$ret = "请求成功";
 			$user = MemberManager::getById($data['userid']);
 			$inviter = MemberManager::getById($data['inviter_userid']);
-			if ((time() - $user->regtime) > 86400) {
-				return ApiResponse::makeResponse(false, "只有注册24小时内的账号可以接受邀请", ApiResponse::UNKNOW_ERROR);
+			if ($user->groupid != 5) {
+				return ApiResponse::makeResponse(false, "只有新用户可以接受邀请", ApiResponse::UNKNOW_ERROR);
+			}
+			if (UpgradeManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0) {
+				return ApiResponse::makeResponse(false, "只有新用户可以接受邀请", ApiResponse::UNKNOW_ERROR);
 			}
 			if (!$inviter) {
 				return ApiResponse::makeResponse(false, "获取邀请者失败", ApiResponse::UNKNOW_ERROR);
