@@ -43,8 +43,8 @@ class Kernel extends ConsoleKernel
 
 		$schedule->call(function () {
 			//每分钟同步积分
-			We7Controller::syncCreditRecordFromWe7();
-			We7Controller::syncCreditToWe7();
+//			We7Controller::syncCreditRecordFromWe7();
+//			We7Controller::syncCreditToWe7();
 		})->everyMinute();
 		
 		$schedule->call(function () {
