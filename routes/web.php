@@ -13,6 +13,8 @@
 
 Route::get('log', 'DemoController@log');
 Route::get('test', 'DemoController@test');
+Route::get('test1', 'DemoController@test1');
+Route::get('test2', 'DemoController@test2');
 
 Route::group(['middleware' => ['checkAdmin']], function () {
 	Route::get('systemKeyValues', 'SystemController@systemKeyValues_get');//设置系统关键变量
