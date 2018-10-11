@@ -101,9 +101,14 @@ class We7Controller extends Controller
 				continue;
 			}
 			
+			$num=(int)abs($user->credit - $we7member->credit1);
+			
+			if($num==0){
+				continue;
+			}
 			if ((int)abs($user->credit - $we7member->credit1) >= 1) {//同步积分)
-				Log::info('改变积分【' . $user->userid . '】:'
-					. (int)($user->credit - $we7member->credit1));
+//				Log::info('改变积分【' . $user->userid . '】:'
+//					. (int)($user->credit - $we7member->credit1));
 				$we7member->credit1 = $user->credit;//同步积分
 				
 				$we7record = We7CreditRecordManager::createObject();//创建积分记录
