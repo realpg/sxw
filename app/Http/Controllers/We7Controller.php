@@ -98,7 +98,7 @@ class We7Controller extends Controller
 				continue;
 			}
 			
-			if ((int)($user->credit - $we7member->credit1) != 0) {//同步积分)
+			if ((int)abs($user->credit - $we7member->credit1) >= 1) {//同步积分)
 				Log::info('改变积分【' . $user->userid . '】:'
 					. (int)($user->credit - $we7member->credit1));
 				$we7member->credit1 = $user->credit;//同步积分

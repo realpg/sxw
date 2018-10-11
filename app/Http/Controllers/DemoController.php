@@ -53,15 +53,8 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		$credits=We7CreditRecord::all();
-		foreach ($credits as $credit){
-			$credit->delete();
-		}
-		$syncs=We7Sync::all();
-		foreach ($syncs as $sync){
-			$sync->delete();
-		}
-		return "1111";
+		We7Controller::syncCreditRecordFromWe7();
+		We7Controller::syncCreditToWe7();
 //		dd(getimagesize('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJO5fFcD8F2R7MVETYPT4r7ibQ85zdcxTu0LXrYRLvzcPgmedYO4eOD5Tu4YvoXZJwqov3CDwb54Jw/132'));
 //		$data = $request->all();
 //		$start=date('Ymd H:i:s');
