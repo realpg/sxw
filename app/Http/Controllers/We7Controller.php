@@ -76,7 +76,7 @@ class We7Controller extends Controller
 				$record->record = We7SyncManager::getByCon(['we7_itemid' => [$record->id]]);
 				continue;
 				
-			} elseif ((int)$record->num == 0) {
+			} elseif ((int)$record->num == '0') {
 				continue;
 			} else {
 				$sync = We7SyncManager::createObject();
@@ -98,37 +98,38 @@ class We7Controller extends Controller
 		foreach ($xcx_users as $user) {
 			$we7member = We7MemberManager::getByOpenid($user->wx_openId);
 			if (!$we7member) {
-				continue;
-			}
-			
-			$num = (int)abs($user->credit - $we7member->credit1);
-			
-			if ($num == '0') {
-				continue;
-			}
-			if ((int)abs($user->credit - $we7member->credit1) >= 1) {//同步积分)
+				
+			} else {
+				
+				$num = (int)abs($user->credit - $we7member->credit1);
+				
+				if ($num == '0') {
+				
+				} else {
+					if ((int)abs($user->credit - $we7member->credit1) >= 1) {//同步积分)
 //				Log::info('改变积分【' . $user->userid . '】:'
 //					. (int)($user->credit - $we7member->credit1));
-				$we7member->credit1 = $user->credit;//同步积分
-				
-				$we7record = We7CreditRecordManager::createObject();//创建积分记录
-				$we7record->remark .= $we7member->credit1 . '=>' . $user->credit . ":" . $num;
-				$we7record->num = $user->credit - $we7member->credit1;
-				$we7record->save();
-				
-				//创建同步记录
-				$sync = We7SyncManager::createObject();
-				$sync->we7_itemid = $we7record->id;
-				$sync->dt_itemid = '';
-				$sync->stream = 1;
-				$sync->time = time();
-				$sync->save();
-				
-				$we7member->save();
-				
-				array_push($ARR, [$user, $we7member, $we7record, $sync]);
+						$we7member->credit1 = $user->credit;//同步积分
+						
+						$we7record = We7CreditRecordManager::createObject();//创建积分记录
+						$we7record->remark .= $we7member->credit1 . '=>' . $user->credit . ":" . $num;
+						$we7record->num = $user->credit - $we7member->credit1;
+						$we7record->save();
+						
+						//创建同步记录
+						$sync = We7SyncManager::createObject();
+						$sync->we7_itemid = $we7record->id;
+						$sync->dt_itemid = '';
+						$sync->stream = 1;
+						$sync->time = time();
+						$sync->save();
+						
+						$we7member->save();
+						
+						array_push($ARR, [$user, $we7member, $we7record, $sync]);
+					}
+				}
 			}
-			
 		}
 		return $ARR;
 	}
