@@ -112,6 +112,8 @@ class We7Controller extends Controller
 						
 						
 						$we7record = We7CreditRecordManager::createObject();//创建积分记录
+						$we7record->uid = $we7member->uid;
+						$we7record->uniacid = $we7member->uniacid;
 						$we7record->remark .= $we7member->credit1 . '=>' . $user->credit . ":" . $num;
 						$we7record->num = $user->credit - $we7member->credit1;
 						$we7record->save();
