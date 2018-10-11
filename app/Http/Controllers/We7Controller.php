@@ -42,6 +42,9 @@ class We7Controller extends Controller
 				$records = $data['records'];
 			
 			foreach ($records as $record) {
+				if (abs($record->num) < 1)
+					continue;
+				
 				$user = MemberManager::getByCon(['wx_openId' => [$record->openId]], ['userid', 'asc'])->first();
 				if (!$user) {
 					$record->result = false;
