@@ -31,41 +31,41 @@ use Illuminate\Support\Facades\Log;
 
 class We7Controller extends Controller
 {
-	public static function revision_credit(Request $request)
-	{
-		$data = $request->all();
-		//检验参数
-		if (checkParam($data, ['records'])) {
-			if (gettype($data['records']) == 'string')
-				$records = json_decode($data['records']);
-			else
-				$records = $data['records'];
-			
-			foreach ($records as $record) {
-				if (abs($record->num) < 1)
-					continue;
-				
-				$user = MemberManager::getByCon(['wx_openId' => [$record->openId]], ['userid', 'asc'])->first();
-				if (!$user) {
-					$record->result = false;
-					continue;
-				}
-				$record->result = CreditController::changeCredit([
-					'userid' => $user->userid,
-					'amount' => $record->amount,
-					'reason' => '微擎:' . $record->reason,
-					'note' => '微擎改动时间：【' . $record->addtime . "】"
-				]);
-//				array_push($ret, $user);
-			}
-			$ret = $records;
-			
-			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
-			
-		} else {
-			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
-		}
-	}
+//	public static function revision_credit(Request $request)
+//	{
+//		$data = $request->all();
+//		//检验参数
+//		if (checkParam($data, ['records'])) {
+//			if (gettype($data['records']) == 'string')
+//				$records = json_decode($data['records']);
+//			else
+//				$records = $data['records'];
+//
+//			foreach ($records as $record) {
+//				if (abs($record->num) < 1)
+//					continue;
+//
+//				$user = MemberManager::getByCon(['wx_openId' => [$record->openId]], ['userid', 'asc'])->first();
+//				if (!$user) {
+//					$record->result = false;
+//					continue;
+//				}
+//				$record->result = CreditController::changeCredit([
+//					'userid' => $user->userid,
+//					'amount' => $record->amount,
+//					'reason' => '微擎:' . $record->reason,
+//					'note' => '微擎改动时间：【' . $record->addtime . "】"
+//				]);
+////				array_push($ret, $user);
+//			}
+//			$ret = $records;
+//
+//			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+//
+//		} else {
+//			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+//		}
+//	}
 	
 	public static function syncCreditRecordFromWe7()
 	{
@@ -132,5 +132,6 @@ class We7Controller extends Controller
 		}
 		return $ARR;
 	}
+	
 	
 }

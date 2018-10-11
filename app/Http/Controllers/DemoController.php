@@ -50,6 +50,13 @@ class DemoController extends Controller
 		return view('demo/home');
 	}
 	
+	public static function test1(){
+		return We7Controller::syncCreditRecordFromWe7();
+	}
+	
+	public static function test2(){
+		return We7Controller::syncCreditToWe7();
+	}
 	
 	public function test(Request $request)
 	{
