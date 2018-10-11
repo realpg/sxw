@@ -107,6 +107,7 @@ class We7Controller extends Controller
 				$we7member->credit1 = $user->credit;//同步积分
 				
 				$we7record = We7CreditRecordManager::createObject();//创建积分记录
+				$we7record->remark .= $we7member->credit1 . '=>' . $user->credit . ":" . (int)abs($user->credit - $we7member->credit1);
 				$we7record->num = $user->credit - $we7member->credit1;
 				$we7record->save();
 				
