@@ -88,11 +88,17 @@ class CommentController extends Controller
 		//检验参数
 		if (checkParam($data, ['item_mid', 'item_id'])) {
 			$ret = "请求成功";
-			if (AgreeManager::getByCon(
+			$agree1=AgreeManager::getByCon(
 				['item_mid' => [$data['item_mid']],
 					'item_id' => [$data['item_id']],
 					'username' => [$user->username]
-				])->first()) {
+				])->first();
+			if ($agree1) {
+				if(checkParam($data, ['cancle'])){
+					$agree1->delete();
+					return ApiResponse::makeResponse(true, "您取消了点赞", ApiResponse::SUCCESS_CODE);
+				}
+				
 				return ApiResponse::makeResponse(false, "您已经点过赞了", ApiResponse::MISSING_PARAM);
 			}
 			$item = null;

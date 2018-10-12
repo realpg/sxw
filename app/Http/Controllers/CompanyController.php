@@ -9,6 +9,7 @@ use App\Components\CompanyYWLBManager;
 use App\Components\Member_updateManager;
 use App\Components\MemberManager;
 use App\Components\QRManager;
+use App\Components\SystemManager;
 use App\Components\UpgradeManager;
 use App\Components\VertifyManager;
 use App\Components\YWLBManager;
@@ -31,7 +32,7 @@ class CompanyController extends Controller
 				$user->mobile = $data['mobile'];
 				$user->save();
 				$ret = "手机号码修改成功。";
-			} else{
+			} else {
 				return ApiResponse::makeResponse(false, "验证码错误！", ApiResponse::UNKNOW_ERROR);
 			}
 		}
@@ -94,7 +95,7 @@ class CompanyController extends Controller
 			$upgrade->groupid = 6;
 			$ywlbs = explode(',', $data['ywlb_ids']);
 			CompanyManager::setYWLB($company, $ywlbs, 3);
-			$company=CompanyManager::setKeyWords($company, $ywlbs,$user);
+			$company = CompanyManager::setKeyWords($company, $ywlbs, $user);
 			
 			$user->save();
 			$company->save();
@@ -129,6 +130,26 @@ class CompanyController extends Controller
 			
 			if ($ret)
 				$ret .= ".";
+			if (SystemManager::getById(16)->value == '0') {
+				$userid = $update->userid;
+				$member = MemberManager::getById($userid);
+				$company = CompanyManager::getById($userid);
+				Member_updateManager::setMember($member, $update)->save();
+				Member_updateManager::setCompany($company, $update)->save();
+				$update->status = 3;
+				$update->save();
+				
+				$ywlbs = explode(',', $update->ywlb_ids);
+				CompanyManager::setYWLB($company, $ywlbs);
+				$company = CompanyManager::setKeyWords($company, $ywlbs, $member);
+				$company->save();
+				
+				MessageController::sendSystemMessage([
+					'title' => "个人信息审核结果通知",
+					'content' => "尊敬的会员：<br/>您的个人信息升级审核已通过！<br/>感谢您的支持！",
+					'touser' => $member->username
+				]);
+			}
 			$ret .= "修改信息申请已提交，请等待审核";
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			

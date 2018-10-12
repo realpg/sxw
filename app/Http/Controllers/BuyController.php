@@ -104,6 +104,14 @@ class BuyController
 			}
 			$searchInfo->save();
 			
+			$buysh = SystemManager::getById('2');
+			if ($buysh->value == 0)//自动过审
+				MessageController::sendSystemMessage([
+					'title' => "您发布的[求购]信息(ID:".$buy->itemid.")已经通过审核",
+					'content' => "尊敬的会员：<br/>您发布的[求购]<a href=\"http://dt.chinayarn.com/buy/\" target=\"_blank\">求购信息</a>(ID:".$buy->itemid.")已经通过审核！<br/>如果您对此操作有异议，请及时与网站联系。",
+					'touser' => $user->username
+				]);
+			
 			return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
