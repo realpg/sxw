@@ -91,7 +91,7 @@ class LoginController extends Controller
 				|| (Member_updateManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0);
 			//今日签到
 			$user->clockin_today = false;
-			$clockins = ClockinManager::getByDate($data['userid'], date("Y-m-d"));
+			$clockins = ClockinManager::getByDate($user->userid, date("Y-m-d"));
 			if ($clockins->count() > 0) {
 				$user->clockin_today = true;
 			}
