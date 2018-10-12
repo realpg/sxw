@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Components\ClockinManager;
 use App\Components\CompanyManager;
 use App\Components\InviteManager;
 use App\Components\Member_miscManager;
@@ -88,7 +89,15 @@ class LoginController extends Controller
 			$user->businesscard = BussinessCardController::getByUserid($company->userid, $user);
 			$user->updating = (UpgradeManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0)
 				|| (Member_updateManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0);
+			//今日签到
+			$user->clockin_today = false;
+			$clockins = ClockinManager::getByDate($data['userid'], date("Y-m-d"));
+			if ($clockins->count() > 0) {
+				$user->clockin_today = true;
+			}
 		}
+		
+		
 		$ret = $user;
 		$ret->_token = $_token;
 //		$ret=$user;
