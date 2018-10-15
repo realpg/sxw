@@ -64,6 +64,15 @@ class FJMYController
 			if (array_key_exists('itemid', $data)) {
 				$fjmy = FJMYManager::getById($data['itemid']);
 				$fjmy_data = FJMYDataManager::getById($data['itemid']);
+				
+				if (VIPUserManager::getUserVIPLevel($user->userid) != 0) {
+					//VIP不消耗积分
+				}
+				elseif (!CreditController::changeCredit(
+					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('16')->value,
+						'reason' => '修改纺机贸易信息消耗积分', 'note' => '消耗积分'])) {
+					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
+				};
 			} else {
 				$fjmy = FJMYManager::createObject();
 				$fjmy_data = FJMYDataManager::createObject();
@@ -81,7 +90,7 @@ class FJMYController
 				} //消耗积分
 				elseif (!CreditController::changeCredit(
 					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('5')->value,
-						'reason' => '发布求购信息消耗积分', 'note' => '消耗积分'])) {
+						'reason' => '发布纺机贸易信息消耗积分', 'note' => '消耗积分'])) {
 					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
 				};
 			}

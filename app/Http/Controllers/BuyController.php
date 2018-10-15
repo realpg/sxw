@@ -64,6 +64,14 @@ class BuyController
 			if (array_key_exists('itemid', $data)) {
 				$buy = BuyManager::getById($data['itemid']);
 				$buy_data = BuyDataManager::getById($data['itemid']);
+				if (VIPUserManager::getUserVIPLevel($user->userid) != 0) {
+					//VIP不消耗积分
+				}
+				elseif (!CreditController::changeCredit(
+					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('15')->value,
+						'reason' => '修改求购信息消耗积分', 'note' => '消耗积分'])) {
+					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
+				};
 			} else {
 				$buy = BuyManager::createObject();
 				$buy_data = BuyDataManager::createObject();

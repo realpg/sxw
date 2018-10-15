@@ -63,6 +63,15 @@ class SellController
 			if (array_key_exists('itemid', $data)) {
 				$sell = SellManager::getById($data['itemid']);
 				$sell_data = SellDataManager::getById($data['itemid']);
+				
+				if (VIPUserManager::getUserVIPLevel($user->userid) != 0) {
+					//VIP不消耗积分
+				}
+				elseif (!CreditController::changeCredit(
+					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('14')->value,
+						'reason' => '修改供应信息消耗积分', 'note' => '消耗积分'])) {
+					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
+				};
 			} else {
 				$sell = SellManager::createObject();
 				$sell_data = SellDataManager::createObject();

@@ -130,7 +130,7 @@ class CompanyController extends Controller
 			
 			if ($ret)
 				$ret .= ".";
-			if (SystemManager::getById(16)->value == '0') {
+			if (SystemManager::getById(12)->value == '0') {
 				$userid = $update->userid;
 				$member = MemberManager::getById($userid);
 				$company = CompanyManager::getById($userid);
