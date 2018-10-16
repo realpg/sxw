@@ -213,7 +213,7 @@ class LoginController extends Controller
 		if (checkParam($data, ['mid', 'itemid'])) {
 			$user = MemberManager::getById($data['userid']);
 			$page = 'pages/particulars/particulars';
-			$filename = $user->username . '_' . time();
+			$filename = $data['mid'].'_'.$data['itemid'].'_' . '_' . time();
 			$access_token = self::getACCESS_TOKEN()->access_token;
 			if (!$access_token)
 				return ApiResponse::makeResponse(false, "获取access_token失败", ApiResponse::UNKNOW_ERROR);
