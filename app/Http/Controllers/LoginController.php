@@ -242,10 +242,10 @@ class LoginController extends Controller
 			$err = curl_error($con);
 			curl_close($con);
 			
-			$path = storage_path('app/public/' . date('Y-m-d') . '/download');
+			$path = storage_path('app/public/' . date('Y-m-d') . '/download/');
 			
 			
-			$filePath = $path . '\\' . $filename . '.jpg';
+			$filePath = $path . '' . $filename . '.jpg';
 			$i = 0;
 //		do
 //			str_replace('/', '\\', $filePath, $i);
