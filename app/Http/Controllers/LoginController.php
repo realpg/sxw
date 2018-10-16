@@ -207,6 +207,60 @@ class LoginController extends Controller
 //		dd($info);
 	}
 	
+	public static function getXCXInfoQR(Request $request)
+	{
+		$data = $request->all();
+		if (checkParam($data, ['mid', 'itemid'])) {
+			$user = MemberManager::getById($data['userid']);
+			$page = 'pages/particulars/particulars';
+			$filename = $user->username . '_' . time();
+			$access_token = self::getACCESS_TOKEN()->access_token;
+			if (!$access_token)
+				return ApiResponse::makeResponse(false, "获取access_token失败", ApiResponse::UNKNOW_ERROR);
+			$url = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' . $access_token;
+			$headers = array('Content-type: ' . 'application/json');
+			$body = [
+//			'access_token'=>$access_token,
+				'scene' => 'mid=' . $data['mid'] . 'itemid=' . $data['itemid'],
+				'page' => $page,
+			];
+			// 拼接字符串
+			$fields_string = json_encode($body);
+			
+			$con = curl_init();
+			curl_setopt($con, CURLOPT_URL, $url);
+//		curl_setopt($con, CURLOPT_SSL_VERIFYHOST, FALSE);
+//		curl_setopt($con, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($con, CURLOPT_HEADER, 0);
+			curl_setopt($con, CURLOPT_POST, 1);
+			curl_setopt($con, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($con, CURLOPT_HTTPHEADER, $headers);
+			curl_setopt($con, CURLOPT_POSTFIELDS, $fields_string);
+			$info = curl_exec($con);
+			//发送HTTPs请求并获取返回的数据，推荐使用curl
+//		$json = json_decode($info);//对json数据解码
+			$err = curl_error($con);
+			curl_close($con);
+			
+			$path = storage_path('app/public/' . date('Y-m-d') . '/download');
+			
+			
+			$filePath = $path . '\\' . $filename . '.jpg';
+			$i = 0;
+//		do
+//			str_replace('/', '\\', $filePath, $i);
+//		while ($i >= 0);
+			if (!file_exists($path)) {
+				mkdir($path, 0777, true);
+			}
+			file_put_contents($filePath, $info);
+//			$url = qiniu_upload($filePath, 'wxqr');  //调用的全局函数
+			return response()->download($filePath);
+		} else {
+			abort(404);
+		}
+	}
+	
 	public function getInviteQR(Request $request)
 	{
 		$data = $request->all();

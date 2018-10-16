@@ -36,6 +36,8 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('info/getList','InfoController@getList' );//首页获取  已录入
 	Route::get('info/getByUserid','InfoController@getInfoByUserid' );//根据userid获取
 	Route::post('info/search','InfoController@search' );//首页获取
+	Route::any('info/getQR','LoginController@getXCXInfoQR' );//首页获取
+	
 	
 	//供应
 	Route::get('sell/getList', 'SellController@getList');//获取所有供应信息  已录入

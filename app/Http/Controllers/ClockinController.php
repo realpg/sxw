@@ -18,6 +18,10 @@ class ClockinController extends Controller
 		//检验参数
 		if (checkParam($data, [])) {
 			$ret = "签到成功";
+			$user=MemberManager::getById($data['userid']);
+			if ($user->groupid==5) {
+				return ApiResponse::makeResponse(false, "完善信息后才能签到", ApiResponse::UNKNOW_ERROR);
+			}
 			$clockins = ClockinManager::getByDate($data['userid'], date("Y-m-d"));
 			if ($clockins->count() > 0) {
 				return ApiResponse::makeResponse(false, "今日已签到", ApiResponse::UNKNOW_ERROR);
