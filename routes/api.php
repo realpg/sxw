@@ -88,6 +88,7 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('businesscard/getYWLB', 'BussinessCardController@getYWLB');//业务类别  已录入
 	Route::get('businesscard/getByUserid', 'BussinessCardController@getByUserid_get');//根据用户id获取名片信息  已录入
 	Route::get('businesscard/getQRByUserid', 'BussinessCardController@getQRByUserid');//名片二维码
+	Route::get('businesscard/getAvatarByUserid', 'BussinessCardController@getAvatarByUserid');//用户头像
 //	Route::get('businesscard/RefreshMyQR', 'BussinessCardController@RefreshMyQR');//名片二维码
 	
 	Route::get('ranking', 'RankingController@getRanking');//排行榜  已录入

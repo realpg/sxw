@@ -109,7 +109,7 @@ class BussinessCardController extends Controller
 				$company->hits++;
 				$company->save();
 			}
-			$ret = self::getByUserid($data['user_id'], $me,true);
+			$ret = self::getByUserid($data['user_id'], $me, true);
 			
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
@@ -164,10 +164,25 @@ class BussinessCardController extends Controller
 	{
 		$data = $request->all();
 		//检验参数
-		if (true) {
+		if (checkParam($data, ['_userid'])) {
 			$url = QRManager::getCardQRByUserid($data['_userid'])->qr_url;
-			$filepath=downloadImg($url);
-			Log::info("保存图片路径:".$filepath);
+			$filepath = downloadImg($url);
+			Log::info("保存" . $data['_userid'] . "二维码路径:" . $filepath);
+			return response()->download($filepath);
+//			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
+		} else {
+			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+		}
+	}
+	
+	public static function getAvatarByUserid(Request $request)
+	{
+		$data = $request->all();
+		//检验参数
+		if (checkParam($data, ['_userid'])) {
+			$url = MemberManager::getById($data['_userid'])->avatarUrl;
+			$filepath = downloadImg($url);
+			Log::info("保存" . $data['_userid'] . "头像路径:" . $filepath);
 			return response()->download($filepath);
 //			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 		} else {
@@ -182,7 +197,7 @@ class BussinessCardController extends Controller
 		//检验参数
 		if (true) {
 			$url = QRManager::refreshCardQRByUserid($data['userid'])->qr_url;
-			$filepath=downloadImg($url);
+			$filepath = downloadImg($url);
 			return response()->download($filepath);
 //			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 		} else {
