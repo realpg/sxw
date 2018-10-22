@@ -88,19 +88,6 @@ class CommentController extends Controller
 		//检验参数
 		if (checkParam($data, ['item_mid', 'item_id'])) {
 			$ret = "请求成功";
-			$agree1=AgreeManager::getByCon(
-				['item_mid' => [$data['item_mid']],
-					'item_id' => [$data['item_id']],
-					'username' => [$user->username]
-				])->first();
-			if ($agree1) {
-				if(checkParam($data, ['cancle'])){
-					$agree1->delete();
-					return ApiResponse::makeResponse(true, "您取消了点赞", ApiResponse::SUCCESS_CODE);
-				}
-				
-				return ApiResponse::makeResponse(false, "您已经点过赞了", ApiResponse::MISSING_PARAM);
-			}
 			$item = null;
 			//获得被评论的信息
 			if ($data['item_mid'] == 2) {
@@ -118,6 +105,21 @@ class CommentController extends Controller
 			} elseif ($data['item_mid'] == 88) {
 				//求购
 				$item = FJMYManager::getById($data['item_id']);
+			}
+			$agree1 = AgreeManager::getByCon(
+				['item_mid' => [$data['item_mid']],
+					'item_id' => [$data['item_id']],
+					'username' => [$user->username]
+				])->first();
+			if ($agree1) {
+				if ($item && checkParam($data, ['cancle'])) {
+					$agree1->delete();
+					$item->agree--;
+					$item->save();
+					return ApiResponse::makeResponse(true, "您取消了点赞", ApiResponse::SUCCESS_CODE);
+				}
+				
+				return ApiResponse::makeResponse(false, "您已经点过赞了", ApiResponse::MISSING_PARAM);
 			}
 			if ($item) {
 				$agree = AgreeManager::createObject();
@@ -332,8 +334,8 @@ class CommentController extends Controller
 				if ($_user)
 					$comment->user_card = BussinessCardController::getByUserid($_user->userid);
 				
-				$replyer=MemberManager::getByUsername($comment->replyer);
-				if($replyer)
+				$replyer = MemberManager::getByUsername($comment->replyer);
+				if ($replyer)
 					$comment->replyer_card = BussinessCardController::getByUserid($replyer->userid);
 				
 				$comment->item = InfoManager::getById($comment->item_mid, $comment->item_id);
@@ -357,8 +359,8 @@ class CommentController extends Controller
 				if ($_user)
 					$comment->user_card = BussinessCardController::getByUserid($_user->userid);
 				
-				$replyer=MemberManager::getByUsername($comment->replyer);
-				if($replyer)
+				$replyer = MemberManager::getByUsername($comment->replyer);
+				if ($replyer)
 					$comment->replyer_card = BussinessCardController::getByUserid($replyer->userid);
 				
 				$comment->item = InfoManager::getById($comment->item_mid, $comment->item_id);
