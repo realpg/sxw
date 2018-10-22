@@ -101,6 +101,30 @@ class CompanyController extends Controller
 			$company->save();
 			$upgrade->save();
 			
+			if (SystemManager::getById(12)->value == '0') {
+				$upgrade->edittime = time();
+				$upgrade->editor = "admin";
+				$upgrade->status = 3;
+				$upgrade->message = $upgrade->reason = $upgrade->note = '';
+				$company->groupid=$user->groupid=$upgrade->groupid;
+				$company->vip=$company->vipt=0;
+				
+				$subject = '您的资料审核已通过';
+				$body = '尊敬的会员：<br/>您的资料审核已通过！<br/>';
+				$body .= '操作原因：<br/>自动通过审核<br/>';
+				$body .= '感谢您的支持！';
+				
+				MessageController::sendSystemMessage([
+					'title' => $subject,
+					'content' => $body,
+					'touser' => $user->username
+				]);
+				
+				$user->save();//msql
+				$company->save();//csql
+				$upgrade->save();//gsql
+			}
+			
 			if ($ret)
 				$ret .= "。";
 			$ret .= "修改信息申请已提交，请等待审核";
