@@ -145,8 +145,8 @@ class CompanyController extends Controller
 			return ApiResponse::makeResponse(false, $ret . "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
 		}
 		
-		$data['introduce'] = array_get($data, 'introduce') or '';
-		$data['thumb'] = array_get($data, 'thumb') or '';
+		$data['introduce'] = array_get($data, 'introduce') or ' ';
+		$data['thumb'] = array_get($data, 'thumb') or ' ';
 		
 		//检验参数
 		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business'])) {
