@@ -10,6 +10,7 @@ namespace App\Components;
 
 
 use App\Models\Vertify;
+use LaraMall\AlidySms\Facades\Sms;
 
 class VertifyManager
 {
@@ -36,12 +37,13 @@ class VertifyManager
 		return false;
 	}
 	
-	public static function sendVerification($vertify)
+	//旧版，已弃用
+	public static function sendVerification0($vertify)
 	{
 		$phonenum = $vertify->phonenum;
 		$content = "您的验证码为：" . $vertify->code . "，30分钟内有效，请尽快输入。";
 		$ret = MobileMessageManager::sendMessage($phonenum, $content);
-		if (strpos($ret,"success")==0) {
+		if (strpos($ret, "success") == 0) {
 			$vertify->status = 3;//发送成功
 			$vertify->err = $ret;
 			$vertify->save();
@@ -53,6 +55,21 @@ class VertifyManager
 			return false;
 		}
 		
+	}
+	
+	public static function sendVerification($vertify)
+	{
+		$phone = $vertify->phonenum;
+		$signName="中国纱线网";
+		$templateCode = "SMS_111785778";
+		$content = $vertify->code;
+		
+		return Sms::put('phone', $phone)//接受短信的手机号码
+		->put('signName',$signName)  //短信签名
+		->put('templateCode', $templateCode)// 短信模板编号
+//		->put('field', $field)//短信模板中的变量字段
+		->put('content', $content)//短信中变量的内容 （也就是验证码)
+		->send(); //发送短信;
 	}
 	
 	/*
