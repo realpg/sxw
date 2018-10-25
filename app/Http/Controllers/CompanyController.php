@@ -66,7 +66,7 @@ class CompanyController extends Controller
 				if ($ret)
 					$ret .= ",";
 //				$ret .= "信息未修改";
-				return ApiResponse::makeResponse(true, ['nochange'=>true,'ret'=>$ret], ApiResponse::UNKNOW_ERROR);
+				return ApiResponse::makeResponse(true, ['nochange' => true, 'ret' => $ret], ApiResponse::UNKNOW_ERROR);
 			} else
 				return self::update($request, $ret);
 		} else {
@@ -106,8 +106,8 @@ class CompanyController extends Controller
 				$upgrade->editor = "admin";
 				$upgrade->status = 3;
 				$upgrade->message = $upgrade->reason = $upgrade->note = '';
-				$company->groupid=$user->groupid=$upgrade->groupid;
-				$company->vip=$company->vipt=0;
+				$company->groupid = $user->groupid = $upgrade->groupid;
+				$company->vip = $company->vipt = 0;
 				
 				$subject = '您的资料审核已通过';
 				$body = '尊敬的会员：<br/>您的资料审核已通过！<br/>';
@@ -144,8 +144,12 @@ class CompanyController extends Controller
 		if (Member_updateManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0) {
 			return ApiResponse::makeResponse(false, $ret . "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
 		}
+		
+		$data['introduce'] = array_get($data, 'introduce') or '';
+		$data['thumb'] = array_get($data, 'thumb') or '';
+		
 		//检验参数
-		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business', 'introduce'])) {
+		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business'])) {
 			
 			$update = Member_updateManager::createObject();
 			$update = Member_updateManager::setMember_update($update, $data, $user);
