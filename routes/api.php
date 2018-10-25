@@ -80,7 +80,7 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::get('member/message', 'MessageController@getMessage');//我的消息  已录入
 	Route::get('member/message/getById', 'MessageController@getById');
 	
-	Route::post('member/sendVertifyCode', 'MessageController@sendVertifyCode');//发送验证码  已录入
+	Route::post('member/sendVertifyCode', 'MessageController@sendVertifyCode')->middleware('throttle:1');//发送验证码 限制一分钟请求一次 已录入
 	
 	Route::get('businesscard', 'BussinessCardController@getList');//名片列表  已录入
 	Route::post('businesscard/search', 'BussinessCardController@search');//名片列表
