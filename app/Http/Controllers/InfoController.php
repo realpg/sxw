@@ -72,21 +72,27 @@ class InfoController extends Controller
 	{
 		$data = $request->all();
 		if (checkParam($data, ['keyword'])) {
+			$cards = BussinessCardController::search($request, false);
 			$sells = SellController::searchPost($request, false);
 			$buys = BuyController::searchPost($request, false);
 			$fjmys = FJMYController::searchPost($request, false);
-			$arr=[];
-			foreach ($sells as $info){
-				$info->mid=5;
-				array_push($arr,$info);
+			
+			$arr = [];
+			foreach ($cards as $info) {
+				$info->mid = 2;
+				array_push($arr, $info);
 			}
-			foreach ($buys as $info){
-				$info->mid=6;
-				array_push($arr,$info);
+			foreach ($sells as $info) {
+				$info->mid = 5;
+				array_push($arr, $info);
 			}
-			foreach ($fjmys as $info){
-				$info->mid=88;
-				array_push($arr,$info);
+			foreach ($buys as $info) {
+				$info->mid = 6;
+				array_push($arr, $info);
+			}
+			foreach ($fjmys as $info) {
+				$info->mid = 88;
+				array_push($arr, $info);
 			}
 			
 			return ApiResponse::makeResponse(true, $arr, ApiResponse::SUCCESS_CODE);
@@ -95,11 +101,12 @@ class InfoController extends Controller
 		}
 	}
 	
-	public static function Info_Banword($info,$infodata){
-		$info->introduce=BanWordManager::setContent($info->introduce);
-		$infodata->content=BanWordManager::setContent($infodata->content);
+	public static function Info_Banword($info, $infodata)
+	{
+		$info->introduce = BanWordManager::setContent($info->introduce);
+		$infodata->content = BanWordManager::setContent($infodata->content);
 //		$info->save();
 //		$infodata->save();
-		return ['info'=>$info,'infodata'=>$infodata];
+		return ['info' => $info, 'infodata' => $infodata];
 	}
 }

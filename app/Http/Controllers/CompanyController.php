@@ -65,8 +65,8 @@ class CompanyController extends Controller
 			) {
 				if ($ret)
 					$ret .= ",";
-				$ret .= "信息未修改";
-				return ApiResponse::makeResponse(false, $ret, ApiResponse::UNKNOW_ERROR);
+//				$ret .= "信息未修改";
+				return ApiResponse::makeResponse(true, ['nochange'=>true,'ret'=>$ret], ApiResponse::UNKNOW_ERROR);
 			} else
 				return self::update($request, $ret);
 		} else {

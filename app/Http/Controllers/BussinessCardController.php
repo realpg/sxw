@@ -138,7 +138,7 @@ class BussinessCardController extends Controller
 		}
 	}
 	
-	public static function search(Request $request)
+	public static function search(Request $request,$api=true)
 	{
 		$data = $request->all();
 		$me = MemberManager::getById($data['userid']);
@@ -152,11 +152,15 @@ class BussinessCardController extends Controller
 					$result->businesscard = BussinessCardController::getByUserid($result->userid, $me);
 				}
 			}
-			
+			if ($api)
 			return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
-			
+			else
+				return $searchResults;
 		} else {
+			if ($api)
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+			else
+				return [];
 		}
 	}
 	
