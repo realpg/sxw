@@ -153,28 +153,28 @@ class FileReaderController extends Controller
 					
 					$item = $buy;
 					break;
-				case '88':
-					$fjmy = FJMYManager::createObject();
-					$fjmy_data = FJMYDataManager::createObject();
-					
-					$fjmy = FJMYManager::setUserInfo($fjmy, $row['userid']);
-					$fjmy = FJMYManager::setFJMY($fjmy, $row);
-					$fjmy->username = $user->username;
-					$fjmy->status = '3';//默认生效
-					$fjmy->save();
-					
-					$fjmy_data = FJMYDataManager::setFJMYData($fjmy_data, $row);
-					$fjmy_data->itemid = $fjmy->itemid;
-					$fjmy_data->save();
-					
-					$searchInfo = FJMYManager::createSearchInfo($fjmy);
-					if (array_key_exists('keywords', $row)) {
-						$searchInfo->content .= $row['keywords'];
-					}
-					$searchInfo->save();
-					
-					$item = $fjmy;
-					break;
+//				case '88':
+//					$fjmy = FJMYManager::createObject();
+//					$fjmy_data = FJMYDataManager::createObject();
+//
+//					$fjmy = FJMYManager::setUserInfo($fjmy, $row['userid']);
+//					$fjmy = FJMYManager::setFJMY($fjmy, $row);
+//					$fjmy->username = $user->username;
+//					$fjmy->status = '3';//默认生效
+//					$fjmy->save();
+//
+//					$fjmy_data = FJMYDataManager::setFJMYData($fjmy_data, $row);
+//					$fjmy_data->itemid = $fjmy->itemid;
+//					$fjmy_data->save();
+//
+//					$searchInfo = FJMYManager::createSearchInfo($fjmy);
+//					if (array_key_exists('keywords', $row)) {
+//						$searchInfo->content .= $row['keywords'];
+//					}
+//					$searchInfo->save();
+//
+//					$item = $fjmy;
+//					break;
 			}
 			
 			if (!$item) {

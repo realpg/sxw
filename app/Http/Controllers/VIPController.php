@@ -90,11 +90,11 @@ class VIPController
 			$info->vip = $vip;
 			$info->save();
 		}
-		$infos = FJMYManager::getByCon(['username' => [$username]]);
-		foreach ($infos as $info) {
-			$info->vip = $vip;
-			$info->save();
-		}
+//		$infos = FJMYManager::getByCon(['username' => [$username]]);
+//		foreach ($infos as $info) {
+//			$info->vip = $vip;
+//			$info->save();
+//		}
 	}
 	
 	public static function timeto(Request $request)

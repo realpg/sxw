@@ -55,12 +55,12 @@ Route::group(['middleware' => ['checkXCXToken']], function () {
 	Route::post('buy/edit', 'BuyController@editPost');//编辑POST  已录入
 	Route::post('buy/search', 'BuyController@searchPost');//查询POST  已录入
 	
-	Route::get('fjmy/getList', 'FJMYController@getList');//根据id获取纺机贸易内容
-	Route::get('fjmy/getById', 'FJMYController@getById');//根据id获取纺机贸易内容
-	Route::get('fjmy/getByCondition', 'FJMYController@getByCon');//根据条件获取纺机贸易内容
-	Route::get('fjmy/edit', 'FJMYController@edit');//获得编辑所需信息
-	Route::post('fjmy/edit', 'FJMYController@editPost');//编辑POST
-	Route::post('fjmy/search', 'FJMYController@searchPost');//查询POST
+//	Route::get('fjmy/getList', 'FJMYController@getList');//根据id获取纺机贸易内容
+//	Route::get('fjmy/getById', 'FJMYController@getById');//根据id获取纺机贸易内容
+//	Route::get('fjmy/getByCondition', 'FJMYController@getByCon');//根据条件获取纺机贸易内容
+//	Route::get('fjmy/edit', 'FJMYController@edit');//获得编辑所需信息
+//	Route::post('fjmy/edit', 'FJMYController@editPost');//编辑POST
+//	Route::post('fjmy/search', 'FJMYController@searchPost');//查询POST
 	
 	Route::post('comment', 'CommentController@comment');//评论  已录入
 	Route::post('comment/reply', 'CommentController@reply');//评论回复  已录入

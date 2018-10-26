@@ -75,7 +75,7 @@ class InfoController extends Controller
 			$cards = BussinessCardController::search($request, false);
 			$sells = SellController::searchPost($request, false);
 			$buys = BuyController::searchPost($request, false);
-			$fjmys = FJMYController::searchPost($request, false);
+//			$fjmys = FJMYController::searchPost($request, false);
 			
 			$arr = [];
 			foreach ($cards as $info) {
@@ -90,10 +90,10 @@ class InfoController extends Controller
 				$info->mid = 6;
 				array_push($arr, $info);
 			}
-			foreach ($fjmys as $info) {
-				$info->mid = 88;
-				array_push($arr, $info);
-			}
+//			foreach ($fjmys as $info) {
+//				$info->mid = 88;
+//				array_push($arr, $info);
+//			}
 			
 			return ApiResponse::makeResponse(true, $arr, ApiResponse::SUCCESS_CODE);
 		} else {

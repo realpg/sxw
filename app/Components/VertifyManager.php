@@ -60,16 +60,20 @@ class VertifyManager
 	public static function sendVerification($vertify)
 	{
 		$phone = $vertify->phonenum;
-		$signName="中国纱线网";
+		$signName = "中国纱线网";
 		$templateCode = "SMS_111785778";
 		$content = $vertify->code;
 		
-		return Sms::put('phone', $phone)//接受短信的手机号码
-		->put('signName',$signName)  //短信签名
+		$result = Sms::put('phone', $phone)//接受短信的手机号码
+		->put('signName', $signName)//短信签名
 		->put('templateCode', $templateCode)// 短信模板编号
 //		->put('field', $field)//短信模板中的变量字段
 		->put('content', $content)//短信中变量的内容 （也就是验证码)
 		->send(); //发送短信;
+		
+		$vertify->status = $result ? 3 : 0;
+		$vertify->save();
+		return $result;
 	}
 	
 	/*

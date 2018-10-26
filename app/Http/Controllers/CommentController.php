@@ -9,7 +9,7 @@ use App\Components\BuyManager;
 use App\Components\CommentManager;
 use App\Components\CompanyManager;
 use App\Components\FavoriteManager;
-use App\Components\FJMYManager;
+//use App\Components\FJMYManager;
 use App\Components\InfoManager;
 use App\Components\MemberManager;
 use App\Components\SellManager;
@@ -52,9 +52,9 @@ class CommentController extends Controller
 			} elseif ($data['item_mid'] == 21) {
 				//资讯
 				$item = ArticleManager::getById($data['item_id']);
-			} elseif ($data['item_mid'] == 88) {
-				//求购
-				$item = FJMYManager::getById($data['item_id']);
+//			} elseif ($data['item_mid'] == 88) {
+//				//求购
+//				$item = FJMYManager::getById($data['item_id']);
 			}
 			if ($item) {
 				$comment = CommentManager::setItemInfo($comment, $item);
@@ -102,9 +102,9 @@ class CommentController extends Controller
 			} elseif ($data['item_mid'] == 21) {
 				//资讯
 				$item = ArticleManager::getById($data['item_id']);
-			} elseif ($data['item_mid'] == 88) {
-				//求购
-				$item = FJMYManager::getById($data['item_id']);
+//			} elseif ($data['item_mid'] == 88) {
+//				//求购
+//				$item = FJMYManager::getById($data['item_id']);
 			}
 			$agree1 = AgreeManager::getByCon(
 				['item_mid' => [$data['item_mid']],
@@ -187,9 +187,9 @@ class CommentController extends Controller
 			} elseif ($data['mid'] == 21) {
 				//资讯
 				$item = ArticleManager::getById($data['tid']);
-			} elseif ($data['mid'] == 88) {
-				//求购
-				$item = FJMYManager::getById($data['tid']);
+//			} elseif ($data['mid'] == 88) {
+//				//求购
+//				$item = FJMYManager::getById($data['tid']);
 			}
 			
 			if ($item) {
@@ -282,14 +282,14 @@ class CommentController extends Controller
 				case '21':
 					$favorite->item = ArticleManager::getById($favorite->tid);
 					break;
-				case '88':
-					$item = FJMYManager::getById($favorite->tid);
-					if ($item) {
-						$item = FJMYManager::getInfo($item, ['content', 'userinfo', 'tags']);
-						$item = FJMYManager::getAgreeAndFavorite($item, $user);
-					}
-					$favorite->item = $item;
-					break;
+//				case '88':
+//					$item = FJMYManager::getById($favorite->tid);
+//					if ($item) {
+//						$item = FJMYManager::getInfo($item, ['content', 'userinfo', 'tags']);
+//						$item = FJMYManager::getAgreeAndFavorite($item, $user);
+//					}
+//					$favorite->item = $item;
+//					break;
 				default:
 					break;
 			}
