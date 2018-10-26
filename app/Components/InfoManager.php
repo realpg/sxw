@@ -11,7 +11,7 @@
 namespace App\Components;
 
 use App\Models\Buy;
-use App\Models\FJMY;
+//use App\Models\FJMY;
 use App\Models\Info;
 use App\Models\Info_data;
 use App\Models\Info_search;
@@ -77,9 +77,9 @@ class InfoManager
 			case '6':
 				$info = BuyManager::getById($id);
 				break;
-			case '88':
-				$info = FJMYManager::getById($id);
-				break;
+//			case '88':
+//				$info = FJMYManager::getById($id);
+//				break;
 		}
 		return $info;
 	}
@@ -108,9 +108,9 @@ class InfoManager
 			case 6:
 				$infos = Buy::orderby($orderby['0'], $orderby['1']);
 				break;
-			case 88:
-				$infos = FJMY::orderby($orderby['0'], $orderby['1']);
-				break;
+//			case 88:
+//				$infos = FJMY::orderby($orderby['0'], $orderby['1']);
+//				break;
 		};
 		
 		
@@ -144,10 +144,10 @@ class InfoManager
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 6, 'itemid' => $itemid]);
 		}
 		
-		$fjmys = FJMY::where('status', '=', '3')->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
-		foreach ($fjmys as $itemid => $addtime) {
-			array_push($Infos, ['addtime' => $addtime, 'mid' => 88, 'itemid' => $itemid]);
-		}
+//		$fjmys = FJMY::where('status', '=', '3')->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
+//		foreach ($fjmys as $itemid => $addtime) {
+//			array_push($Infos, ['addtime' => $addtime, 'mid' => 88, 'itemid' => $itemid]);
+//		}
 		usort($Infos, function ($a, $b) {
 			if ($a['addtime'] == $b['addtime']) return 0;
 			return ($a['addtime'] > $b['addtime']) ? -1 : 1;
@@ -165,10 +165,10 @@ class InfoManager
 					$item = BuyManager::getInfo($item, ['content', 'userinfo', 'tags']);
 					$item->mid = 6;
 					break;
-				case '88':
-					$item = FJMYManager::getInfo($item, ['content', 'userinfo', 'tags']);
-					$item->mid = 88;
-					break;
+//				case '88':
+//					$item = FJMYManager::getInfo($item, ['content', 'userinfo', 'tags']);
+//					$item->mid = 88;
+//					break;
 			}
 			array_push($items, $item);
 		}
@@ -199,10 +199,10 @@ class InfoManager
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 6, 'itemid' => $itemid]);
 		}
 		
-		$fjmys = FJMY::where('status', '=', '3')->where('username', '=', $username)->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
-		foreach ($fjmys as $itemid => $addtime) {
-			array_push($Infos, ['addtime' => $addtime, 'mid' => 88, 'itemid' => $itemid]);
-		}
+//		$fjmys = FJMY::where('status', '=', '3')->where('username', '=', $username)->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
+//		foreach ($fjmys as $itemid => $addtime) {
+//			array_push($Infos, ['addtime' => $addtime, 'mid' => 88, 'itemid' => $itemid]);
+//		}
 		usort($Infos, function ($a, $b) {
 			if ($a['addtime'] == $b['addtime']) return 0;
 			return ($a['addtime'] > $b['addtime']) ? -1 : 1;
@@ -220,10 +220,10 @@ class InfoManager
 					$item = BuyManager::getInfo($item, ['content', 'userinfo', 'tags']);
 					$item->mid = 6;
 					break;
-				case '88':
-					$item = FJMYManager::getInfo($item, ['content', 'userinfo', 'tags']);
-					$item->mid = 88;
-					break;
+//				case '88':
+//					$item = FJMYManager::getInfo($item, ['content', 'userinfo', 'tags']);
+//					$item->mid = 88;
+//					break;
 			}
 			array_push($items, $item);
 		}
@@ -247,12 +247,14 @@ class InfoManager
 			$time0=$today = strtotime(date("Y-m-d"),time());
 			$sells = Sell::where('username', $username)->where("addtime",">=",$time0)->count();
 			$buys = Buy::where('username', $username)->where("addtime",">=",$time0)->count();
-			$fjmys = FJMY::where('username', $username)->where("addtime",">=",$time0)->count();
+//			$fjmys = FJMY::where('username', $username)->where("addtime",">=",$time0)->count();
 		} else {
 			$sells = Sell::where('username', $username)->count();
 			$buys = Buy::where('username', $username)->count();
-			$fjmys = FJMY::where('username', $username)->count();
+//			$fjmys = FJMY::where('username', $username)->count();
 		}
-		return $sells + $buys + $fjmys;
+		return $sells + $buys
+//			+ $fjmys
+			;
 	}
 }

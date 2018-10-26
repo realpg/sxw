@@ -271,4 +271,18 @@ class SellManager
 		)->first() ? true : false;
 		return $sell;
 	}
+	public static function CountInfosByUsername($username, $today = false)
+	{
+		if ($today) {
+			$time0=$today = strtotime(date("Y-m-d"),time());
+			$sells = Sell::where('username', $username)->where("addtime",">=",$time0)->count();
+//			$buys = Buy::where('username', $username)->where("addtime",">=",$time0)->count();
+//			$fjmys = FJMY::where('username', $username)->where("addtime",">=",$time0)->count();
+		} else {
+			$sells = Sell::where('username', $username)->count();
+//			$buys = Buy::where('username', $username)->count();
+//			$fjmys = FJMY::where('username', $username)->count();
+		}
+		return $sells;
+	}
 }

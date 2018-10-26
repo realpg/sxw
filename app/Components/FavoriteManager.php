@@ -109,10 +109,10 @@ class FavoriteManager
 		$favorites=0;
 		$sell_ids=SellManager::getByCon(['userid'=>$user->userid])->pluck('itemid');
 		$buy_ids=BuyManager::getByCon(['userid'=>$user->userid])->pluck('itemid');
-		$fjmy_ids=FJMYManager::getByCon(['userid'=>$user->userid])->pluck('itemid');
+//		$fjmy_ids=FJMYManager::getByCon(['userid'=>$user->userid])->pluck('itemid');
 		$favorites+=FavoriteManager::getByCon(['mid'=>'5','tid'=>$sell_ids])->count();
 		$favorites+=FavoriteManager::getByCon(['mid'=>'6','tid'=>$buy_ids])->count();
-		$favorites+=FavoriteManager::getByCon(['mid'=>'88','tid'=>$fjmy_ids])->count();
+//		$favorites+=FavoriteManager::getByCon(['mid'=>'88','tid'=>$fjmy_ids])->count();
 		return $favorites;
 	}
 }

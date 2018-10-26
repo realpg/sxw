@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Components\AgreeManager;
+use App\Components\BuyManager;
 use App\Components\CompanyManager;
 use App\Components\CompanyYWLBManager;
 use App\Components\FavoriteManager;
@@ -16,6 +17,7 @@ use App\Components\InfoManager;
 use App\Components\LLJLManager;
 use App\Components\MemberManager;
 use App\Components\QRManager;
+use App\Components\SellManager;
 use App\Components\VIPUserManager;
 use App\Components\YWLBManager;
 use App\Models\Favorite;
@@ -76,6 +78,8 @@ class BussinessCardController extends Controller
 			'vip' => VIPUserManager::getUserVIPLevel($member->userid),
 			'avatarUrl' => $member->avatarUrl,
 			'infos' => InfoManager::CountInfosByUsername($member->username),
+			'buys' => BuyManager::CountInfosByUsername($member->username),
+			'sells' => SellManager::CountInfosByUsername($member->username),
 		];
 		if ($getQR) {
 			$bussnesscard['xcxqr'] = QRManager::getCardQRByUserid($member->userid)->qr_url;
