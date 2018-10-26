@@ -52,7 +52,11 @@ class BussinessCardController extends Controller
 	public static function getByUserid($userid, $_user = null, $getQR = false)
 	{
 		$member = MemberManager::getById($userid);
+		if (!$member)
+			return null;
 		$company = CompanyManager::getById($userid);
+		if (!$company)
+			return null;
 		$bussnesscard = [
 			'userid' => $member->userid,
 			'truename' => $member->truename,
@@ -138,7 +142,7 @@ class BussinessCardController extends Controller
 		}
 	}
 	
-	public static function search(Request $request,$api=true)
+	public static function search(Request $request, $api = true)
 	{
 		$data = $request->all();
 		$me = MemberManager::getById($data['userid']);
@@ -153,12 +157,12 @@ class BussinessCardController extends Controller
 				}
 			}
 			if ($api)
-			return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
+				return ApiResponse::makeResponse(true, $searchResults, ApiResponse::SUCCESS_CODE);
 			else
 				return $searchResults;
 		} else {
 			if ($api)
-			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
+				return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);
 			else
 				return [];
 		}
