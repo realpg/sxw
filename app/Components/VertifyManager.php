@@ -37,25 +37,7 @@ class VertifyManager
 		return false;
 	}
 	
-	//旧版，已弃用
-	public static function sendVerification0($vertify)
-	{
-		$phonenum = $vertify->phonenum;
-		$content = "您的验证码为：" . $vertify->code . "，30分钟内有效，请尽快输入。";
-		$ret = MobileMessageManager::sendMessage($phonenum, $content);
-		if (strpos($ret, "success") == 0) {
-			$vertify->status = 3;//发送成功
-			$vertify->err = $ret;
-			$vertify->save();
-			return true;
-		} else {
-			$vertify->status = 2;//失效
-			$vertify->err = $ret;
-			$vertify->save();
-			return false;
-		}
-		
-	}
+	
 	
 	public static function sendVerification($vertify)
 	{
