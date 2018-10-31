@@ -16,6 +16,7 @@ use App\Http\Controllers\VIPController;
 use App\Http\Controllers\We7Controller;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -39,6 +40,7 @@ class Kernel extends ConsoleKernel
 		$schedule->call(function () {
 			//每30分钟生成日榜
 			RankingController::createDailyRanking(1);
+			Log::info('生成日榜：'.now());
 		})->everyThirtyMinutes()->hourlyAt(30);
 		
 		$schedule->call(function () {
@@ -49,16 +51,18 @@ class Kernel extends ConsoleKernel
 			else
 				We7Controller::syncCreditToWe7();
 		})->everyMinute();
-		
+		Log::info('同步积分：'.now());
 		$schedule->call(function () {
 			//每小时生成周排行榜
 			RankingController::createDailyRanking(2);
+			Log::info('生成周榜：'.now());
 		})->hourlyAt(15);
 		
 		$schedule->call(function () {
 			//每天生成月榜
 			RankingController::createDailyRanking(3);
 			RankingController::clear();
+			Log::info('生成月榜：'.now());
 		})->dailyAt('19:00');  //unix时间19点，即北京时间3点
 		
 		
@@ -104,30 +108,32 @@ class Kernel extends ConsoleKernel
 					InfoController::Info_Banword($buy, $infodata);
 				}
 			}
-			$fjmys = FJMYManager::getList();
-			foreach ($fjmys as $fjmy) {
-				$user = MemberManager::getByUsername($fjmy->username);
-				if (!$user) {
-					$fjmy->delete();
-				} else {
-					if ($fjmy->thumbs == '') {
-						$fjmy->thumbs .= $fjmy->thumb;
-						$fjmy->thumbs = $fjmy->thumbs ? ($fjmy->thumbs . ',' . $fjmy->thumb1) : $fjmy->thumbs;
-						$fjmy->thumbs = $fjmy->thumbs ? ($fjmy->thumbs . ',' . $fjmy->thumb2) : $fjmy->thumbs;
-						$fjmy->save();
-					}
-					$searchInfo = FJMYManager::createSearchInfo($fjmy);
-					$searchInfo->save();
-					
-					$infodata = FJMYDataManager::getById($fjmy->itemid);
-					InfoController::Info_Banword($fjmy, $infodata);
-				}
-			}
+//			$fjmys = FJMYManager::getList();
+//			foreach ($fjmys as $fjmy) {
+//				$user = MemberManager::getByUsername($fjmy->username);
+//				if (!$user) {
+//					$fjmy->delete();
+//				} else {
+//					if ($fjmy->thumbs == '') {
+//						$fjmy->thumbs .= $fjmy->thumb;
+//						$fjmy->thumbs = $fjmy->thumbs ? ($fjmy->thumbs . ',' . $fjmy->thumb1) : $fjmy->thumbs;
+//						$fjmy->thumbs = $fjmy->thumbs ? ($fjmy->thumbs . ',' . $fjmy->thumb2) : $fjmy->thumbs;
+//						$fjmy->save();
+//					}
+//					$searchInfo = FJMYManager::createSearchInfo($fjmy);
+//					$searchInfo->save();
+//
+//					$infodata = FJMYDataManager::getById($fjmy->itemid);
+//					InfoController::Info_Banword($fjmy, $infodata);
+//				}
+//			}
+			Log::info('生成搜索信息：'.now());
 		})->dailyAt('19:00');  //unix时间19点，即北京时间3点
 		
 		$schedule->call(function () {
 			//每天校验VIP信息
 			VIPController::check();
+			Log::info('校验VIP信息：'.now());
 		})->dailyAt('17:00');  //unix时间17点，即北京时间1点
 
 //		$schedule->call(function () {
