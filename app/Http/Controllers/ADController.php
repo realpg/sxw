@@ -34,7 +34,13 @@ class ADController extends Controller
 						$ad->businesscard = BussinessCardController::getByUserid($company->userid);
 						break;
 					case 2:
-						$ad->info = InfoManager::getByCon($ad->item_mid, ['itemid' => [$ad->item_id]])->first();
+						$info=InfoManager::getByCon($ad->item_mid, ['itemid' => [$ad->item_id]])->first();
+						if(!$info){
+							$ad->status=0;
+							$ad->save();
+							return self::getByPid($request);
+						}
+						$ad->info = $info;
 						$ad->info->tags = array_arrange(TagManager::getByCon(['tagid' => explode(',', $ad->info->tag)]));
 						$infouser = MemberManager::getByUsername($ad->info->username);
 						if ($infouser)
