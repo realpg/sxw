@@ -16,6 +16,6 @@ class Ranking extends Model
     use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //慢病管理数据库名
     protected $table = 'destoon_ranking';
-    public $timestamps = true;
+    public $timestamps = true;//
     protected $dates = ['deleted_at'];  //软删除
 }

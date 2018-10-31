@@ -13,10 +13,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Sell_search extends Model
 {
-//    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //慢病管理数据库名
     protected $table = 'destoon_sell_search_5';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
-//    protected $dates = ['deleted_at'];  //软删除
 }

@@ -13,10 +13,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tag extends Model
 {
-//    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
     protected $table = 'destoon_tag';
     public $timestamps = false;
 	protected $primaryKey = 'tagid';
-//    protected $dates = ['deleted_at'];  //软删除
 }

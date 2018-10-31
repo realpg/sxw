@@ -111,6 +111,8 @@ class InfoManager
 //			case 88:
 //				$infos = FJMY::orderby($orderby['0'], $orderby['1']);
 //				break;
+			default:
+				$infos = [];
 		};
 		
 		
@@ -143,7 +145,7 @@ class InfoManager
 		foreach ($buys as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 6, 'itemid' => $itemid]);
 		}
-		
+
 //		$fjmys = FJMY::where('status', '=', '3')->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
 //		foreach ($fjmys as $itemid => $addtime) {
 //			array_push($Infos, ['addtime' => $addtime, 'mid' => 88, 'itemid' => $itemid]);
@@ -198,7 +200,7 @@ class InfoManager
 		foreach ($buys as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 6, 'itemid' => $itemid]);
 		}
-		
+
 //		$fjmys = FJMY::where('status', '=', '3')->where('username', '=', $username)->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
 //		foreach ($fjmys as $itemid => $addtime) {
 //			array_push($Infos, ['addtime' => $addtime, 'mid' => 88, 'itemid' => $itemid]);
@@ -244,17 +246,16 @@ class InfoManager
 	public static function CountInfosByUsername($username, $today = false)
 	{
 		if ($today) {
-			$time0=$today = strtotime(date("Y-m-d"),time());
-			$sells = Sell::where('username', $username)->where("addtime",">=",$time0)->count();
-			$buys = Buy::where('username', $username)->where("addtime",">=",$time0)->count();
+			$time0 = $today = strtotime(date("Y-m-d"), time());
+			$sells = Sell::where('username', $username)->where("addtime", ">=", $time0)->count();
+			$buys = Buy::where('username', $username)->where("addtime", ">=", $time0)->count();
 //			$fjmys = FJMY::where('username', $username)->where("addtime",">=",$time0)->count();
 		} else {
 			$sells = Sell::where('username', $username)->count();
 			$buys = Buy::where('username', $username)->count();
 //			$fjmys = FJMY::where('username', $username)->count();
 		}
-		return $sells + $buys
-//			+ $fjmys
+		return $sells + $buys//			+ $fjmys
 			;
 	}
 }
