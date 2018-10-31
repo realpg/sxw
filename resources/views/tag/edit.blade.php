@@ -51,7 +51,7 @@
 			<select class="select" name="moduleid" size="1">
 				<option value="5" {{$data->moduleid==5?'selected':''}}>供应</option>
 				<option value="6" {{$data->moduleid==6?'selected':''}}>求购</option>
-				<option value="88" {{$data->moduleid==88?'selected':''}}>纺机贸易</option>
+				{{--<option value="88" {{$data->moduleid==88?'selected':''}}>纺机贸易</option>--}}
                 {{--<option value="3">栏目编辑</option>--}}
 			</select>
 			</span></div>

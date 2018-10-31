@@ -9,7 +9,7 @@
 			<option value="0">全部模块</option>
             <option value="5">供应</option>
 			<option value="6">求购</option>
-			<option value="88">纺机贸易</option>
+			{{--<option value="88">纺机贸易</option>--}}
 		</select>
 
 		</span>
@@ -62,8 +62,8 @@
                             <span class="label label-primary radius">供应</span>
                         @elseif($data->moduleid==6)
                             <span class="label label-success radius">求购</span>
-                        @elseif($data->moduleid==88)
-                            <span class="label label-warning radius">纺机贸易</span>
+                        {{--@elseif($data->moduleid==88)--}}
+                            {{--<span class="label label-warning radius">纺机贸易</span>--}}
                         @else
                             <span class="label label-default radius">未知</span>
                         @endif

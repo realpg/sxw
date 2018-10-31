@@ -161,7 +161,7 @@
 			<select class="select" name="item_mid" size="1">
 				<option value="5" {{$data->item_mid==5?'selected':''}}>供应</option>
 				<option value="6" {{$data->item_mid==6?'selected':''}}>求购</option>
-				<option value="88" {{$data->item_mid==88?'selected':''}}>纺机贸易</option>
+				{{--<option value="88" {{$data->item_mid==88?'selected':''}}>纺机贸易</option>--}}
                 {{--<option value="3">栏目编辑</option>--}}
 			</select>
 			</span></div>

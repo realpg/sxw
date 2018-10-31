@@ -36,7 +36,7 @@
                     <span class="r"><select id="mid" class="select" size="1" name="mid" style="width: 150px">
                         <option value="5">供应信息</option>
                         <option value="5">求购信息</option>
-                        <option value="88">纺机贸易</option>
+                        {{--<option value="88">纺机贸易</option>--}}
                     </select></span>
                 </span>
 
