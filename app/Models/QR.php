@@ -15,7 +15,7 @@ class QR extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_xcx_qr';
+    protected $table = 'destoon_xcx_qr';
 //    public $timestamps = false;
 	protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];  //软删除

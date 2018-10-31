@@ -15,7 +15,7 @@ class Member extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_member';
+    protected $table = 'destoon_member';
     public $timestamps = false;
 	protected $primaryKey = 'userid';
 //    protected $dates = ['deleted_at'];  //软删除

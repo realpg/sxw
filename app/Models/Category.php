@@ -15,7 +15,7 @@ class Category extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_category';
+    protected $table = 'destoon_category';
     public $timestamps = false;
 	protected $primaryKey = 'catid';
 //    protected $dates = ['deleted_at'];  //软删除

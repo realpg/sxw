@@ -15,7 +15,7 @@ class Vertify extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_vertify';
+    protected $table = 'destoon_vertify';
     public $timestamps = false;
 	protected $primaryKey = 'id';
 //    protected $dates = ['deleted_at'];  //软删除

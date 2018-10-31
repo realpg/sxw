@@ -15,7 +15,7 @@ class FinanceCredit extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_finance_credit';
+    protected $table = 'destoon_finance_credit';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
 //    protected $dates = ['deleted_at'];  //软删除

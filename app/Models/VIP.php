@@ -15,7 +15,7 @@ class VIP extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_xcx_vip';
+    protected $table = 'destoon_xcx_vip';
     public $timestamps = false;
 	protected $primaryKey = 'id';
 //    protected $dates = ['deleted_at'];  //软删除

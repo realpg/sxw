@@ -15,7 +15,7 @@ class Article extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_article_21';
+    protected $table = 'destoon_article_21';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
 //    protected $dates = ['deleted_at'];  //软删除

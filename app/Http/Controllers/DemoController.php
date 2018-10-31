@@ -60,6 +60,7 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
+		return MemberManager::getList();
 //		We7Controller::syncCreditRecordFromWe7();
 //		We7Controller::syncCreditToWe7();
 //		dd(getimagesize('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJO5fFcD8F2R7MVETYPT4r7ibQ85zdcxTu0LXrYRLvzcPgmedYO4eOD5Tu4YvoXZJwqov3CDwb54Jw/132'));

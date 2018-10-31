@@ -15,7 +15,7 @@ class Buy extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_buy_6';
+    protected $table = 'destoon_buy_6';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
 //    protected $dates = ['deleted_at'];  //软删除

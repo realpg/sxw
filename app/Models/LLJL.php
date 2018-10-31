@@ -15,7 +15,7 @@ class LLJL extends Model
 {
 //    use SoftDeletes;    //使用软删除
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 't_xcx_lljl';
+    protected $table = 'destoon_xcx_lljl';
     public $timestamps = false;
 	protected $primaryKey = 'id';
 //    protected $dates = ['deleted_at'];  //软删除
