@@ -112,7 +112,7 @@ class InfoManager
 //				$infos = FJMY::orderby($orderby['0'], $orderby['1']);
 //				break;
 			default:
-				$infos = [];
+				return collect();
 		};
 		
 		
