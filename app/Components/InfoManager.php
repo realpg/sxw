@@ -136,12 +136,12 @@ class InfoManager
 	public static function getByPage($page = 1, $perpage = 15)
 	{
 		$Infos = [];
-		$sells = Sell::where('status', '=', '3')->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
+		$sells = Sell::where('status', '=', '3')->orderby('listorder', 'asc')->orderby('vip', 'desc')->orderby('itemid', 'desc')->pluck('addtime', 'itemid');
 		foreach ($sells as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 5, 'itemid' => $itemid]);
 		}
 		
-		$buys = Buy::where('status', '=', '3')->orderby('listorder', 'asc')->pluck('addtime', 'itemid');
+		$buys = Buy::where('status', '=', '3')->orderby('listorder', 'asc')->orderby('vip', 'desc')->orderby('itemid', 'desc')->pluck('addtime', 'itemid');
 		foreach ($buys as $itemid => $addtime) {
 			array_push($Infos, ['addtime' => $addtime, 'mid' => 6, 'itemid' => $itemid]);
 		}

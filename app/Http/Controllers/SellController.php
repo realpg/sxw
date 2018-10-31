@@ -29,7 +29,7 @@ class SellController
 	{
 		$data = $request->all();
 		$user = MemberManager::getById($data['userid']);
-		$sells = SellManager::getByCon(['status' => [3]], ['listorder', "asc", 'vip', 'desc'], true);
+		$sells = SellManager::getByCon(['status' => [3]], ['listorder', "asc", 'vip', 'desc', 'itemid', 'desc'], true);
 //		return ApiResponse::makeResponse(true, $sells, ApiResponse::SUCCESS_CODE);
 		foreach ($sells as $sell) {
 			$sell = SellManager::getInfo($sell, ['content', 'userinfo', 'tags']);
@@ -66,8 +66,7 @@ class SellController
 				
 				if (VIPUserManager::getUserVIPLevel($user->userid) != 0) {
 					//VIP不消耗积分
-				}
-				elseif (!CreditController::changeCredit(
+				} elseif (!CreditController::changeCredit(
 					['userid' => $data['userid'], 'amount' => -1 * SystemManager::getById('14')->value,
 						'reason' => '修改供应信息消耗积分', 'note' => '消耗积分'])) {
 					return ApiResponse::makeResponse(false, "积分不足", ApiResponse::UNKNOW_ERROR);
@@ -83,8 +82,7 @@ class SellController
 					//VIP不消耗积分
 				} elseif (InfoManager::CountInfosByUsername($user->username) < $free_1) {
 					//每位用户前n次发布不消耗积分
-				}
-				elseif (InfoManager::CountInfosByUsername($user->username, true) < $free_2) {
+				} elseif (InfoManager::CountInfosByUsername($user->username, true) < $free_2) {
 					//每日前n次发布不消耗积分
 				} //消耗积分
 				elseif (!CreditController::changeCredit(
@@ -115,8 +113,8 @@ class SellController
 			$sellsh = SystemManager::getById('1');
 			if ($sellsh->value == 0)//自动过审
 				MessageController::sendSystemMessage([
-					'title' => "您发布的[供应]信息(ID:".$sell->itemid.")已经通过审核",
-					'content' => "尊敬的会员：<br/>您发布的[供应]<a href=\"http://dt.chinayarn.com/buy/\" target=\"_blank\">供应信息</a>(ID:".$sell->itemid.")已经通过审核！<br/>如果您对此操作有异议，请及时与网站联系。",
+					'title' => "您发布的[供应]信息(ID:" . $sell->itemid . ")已经通过审核",
+					'content' => "尊敬的会员：<br/>您发布的[供应]<a href=\"http://dt.chinayarn.com/buy/\" target=\"_blank\">供应信息</a>(ID:" . $sell->itemid . ")已经通过审核！<br/>如果您对此操作有异议，请及时与网站联系。",
 					'touser' => $user->username
 				]);
 			
