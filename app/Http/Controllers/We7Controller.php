@@ -79,6 +79,7 @@ class We7Controller extends Controller
 			} elseif ((int)$record->num == '0') {
 				continue;
 			} else {
+				Log::info("微擎同步至DT".now());
 				$sync = We7SyncManager::createObject();
 				$sync = We7SyncManager::syncFromWe7($sync, $record);
 				if ($sync) {
