@@ -98,7 +98,7 @@ class We7Controller extends Controller
 		foreach ($xcx_users as $user) {
 			$we7member = We7MemberManager::getByOpenid($user->wx_openId);
 			if (!$we7member) {
-			
+				continue;
 			} else {
 				
 				$num = (int)abs($user->credit - $we7member->credit1);
@@ -110,6 +110,7 @@ class We7Controller extends Controller
 //				Log::info('改变积分【' . $user->userid . '】:'
 //					. (int)($user->credit - $we7member->credit1));
 						
+						Log::info("改变积分:" . $user->userid . "；金额" . $num . "；we7user" . $we7member->uid);
 						
 						$we7record = We7CreditRecordManager::createObject();//创建积分记录
 						$we7record->uid = $we7member->uid;
@@ -134,7 +135,7 @@ class We7Controller extends Controller
 				}
 			}
 		}
-		return $ARR;
+		Log::info($ARR);
 	}
 	
 	

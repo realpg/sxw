@@ -50,8 +50,9 @@ class Kernel extends ConsoleKernel
 				We7Controller::syncCreditRecordFromWe7();
 			else
 				We7Controller::syncCreditToWe7();
+			Log::info('同步积分：'.now());
 		})->everyMinute();
-		Log::info('同步积分：'.now());
+		
 		$schedule->call(function () {
 			//每小时生成周排行榜
 			RankingController::createDailyRanking(2);
