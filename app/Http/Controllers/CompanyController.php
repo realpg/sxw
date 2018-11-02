@@ -14,6 +14,7 @@ use App\Components\UpgradeManager;
 use App\Components\VertifyManager;
 use App\Components\YWLBManager;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 class CompanyController extends Controller
@@ -160,6 +161,7 @@ class CompanyController extends Controller
 				$ret .= ".";
 			if (SystemManager::getById(12)->value == '0') {
 				$userid = $update->userid;
+				Log::info('自动审核'.$userid);
 				$member = MemberManager::getById($userid);
 				$company = CompanyManager::getById($userid);
 				Member_updateManager::setMember($member, $update)->save();
@@ -167,11 +169,11 @@ class CompanyController extends Controller
 				$update->status = 3;
 				$update->save();
 				
-				$company = CompanyManager::getById($userid);
+				$company_new = CompanyManager::getById($userid);
 				$ywlbs = explode(',', $update->ywlb_ids);
-				CompanyManager::setYWLB($company, $ywlbs);
-				$company = CompanyManager::setKeyWords($company, $ywlbs, $member);
-				$company->save();
+				CompanyManager::setYWLB($company_new, $ywlbs);
+				$company_new = CompanyManager::setKeyWords($company_new, $ywlbs, $member);
+				$company_new->save();
 				
 				MessageController::sendSystemMessage([
 					'title' => "个人信息审核结果通知",
