@@ -65,8 +65,7 @@ class CompanyYWLBManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['userid', 'asc'])
 	{
 		
-		$companyYWLBs = CompanyYWLB::orderby($orderby['0'], $orderby['1']);
-		
+		$companyYWLBs = CompanyYWLB::query()->orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
 			$companyYWLBs = $companyYWLBs->whereIn($key, $value);
 		}
