@@ -167,6 +167,7 @@ class CompanyController extends Controller
 				$update->status = 3;
 				$update->save();
 				
+				$company = CompanyManager::getById($userid);
 				$ywlbs = explode(',', $update->ywlb_ids);
 				CompanyManager::setYWLB($company, $ywlbs);
 				$company = CompanyManager::setKeyWords($company, $ywlbs, $member);
@@ -177,8 +178,9 @@ class CompanyController extends Controller
 					'content' => "尊敬的会员：<br/>您的个人信息升级审核已通过！<br/>感谢您的支持！",
 					'touser' => $member->username
 				]);
-			}
-			$ret .= "修改信息申请已提交，请等待审核";
+				$ret .= "修改信息申请已自动通过审核";
+			} else
+				$ret .= "修改信息申请已提交，请等待审核";
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
 		} else {

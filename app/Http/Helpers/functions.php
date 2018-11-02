@@ -54,7 +54,7 @@ function randomSalt($len = 8, $chars = null)
 function getTokenLifetimeTimestemp()
 {
 	$now = time();
-	$nextDay = intval(($now / 86400) + 1) * 86400 - 28800;
+	$nextDay = $now + 86400;
 	return $nextDay;
 }
 
