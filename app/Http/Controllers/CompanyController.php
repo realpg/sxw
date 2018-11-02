@@ -168,12 +168,14 @@ class CompanyController extends Controller
 				Member_updateManager::setCompany($company, $update)->save();
 				$update->status = 3;
 				$update->save();
+				Log::info('自动审核-公司1'.json_encode($company));
 				
 				$company_new = CompanyManager::getById($userid);
 				$ywlbs = explode(',', $update->ywlb_ids);
 				CompanyManager::setYWLB($company_new, $ywlbs);
 				$company_new = CompanyManager::setKeyWords($company_new, $ywlbs, $member);
 				$company_new->save();
+				Log::info('自动审核-公司2'.json_encode($company_new));
 				
 				MessageController::sendSystemMessage([
 					'title' => "个人信息审核结果通知",
