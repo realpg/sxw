@@ -70,15 +70,14 @@ class InviteManager
 	{
 		
 		$invites = Invite::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$invites = $invites->get();
 		foreach ($ConArr as $key => $value) {
 			$invites = $invites->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$invites = $invites->paginate(5);
 		}
-		if (!$paginate)
-			$invites = $invites->get();
 		return $invites;
 	}
 	

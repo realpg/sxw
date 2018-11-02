@@ -66,15 +66,14 @@ class TagManager
 	{
 		
 		$tags = Tag::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$tags = $tags->get();
 		foreach ($ConArr as $key => $value) {
 			$tags = $tags->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$tags = $tags->paginate(5);
 		}
-		if (!$paginate)
-			$tags = $tags->get();
 		return $tags;
 	}
 	

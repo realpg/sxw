@@ -67,15 +67,14 @@ class RankingManager
 	{
 		
 		$rankings = Ranking::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$rankings = $rankings->get();
 		foreach ($ConArr as $key => $value) {
 			$rankings = $rankings->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$rankings = $rankings->paginate(5);
 		}
-		if (!$paginate)
-			$rankings = $rankings->get();
 		return $rankings;
 	}
 	

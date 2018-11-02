@@ -73,15 +73,14 @@ class Member_miscManager
 	{
 		
 		$member_miscs = Member_misc::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$member_miscs = $member_miscs->get();
 		foreach ($ConArr as $key => $value) {
 			$member_miscs = $member_miscs->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$member_miscs = $member_miscs->paginate(5);
 		}
-		if (!$paginate)
-			$member_miscs = $member_miscs->get();
 		return $member_miscs;
 	}
 	

@@ -67,15 +67,14 @@ class VIPUserManager
 	{
 		
 		$vipUsers = VIPUser::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$vipUsers = $vipUsers->get();
 		foreach ($ConArr as $key => $value) {
 			$vipUsers = $vipUsers->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$vipUsers = $vipUsers->paginate(5);
 		}
-		if (!$paginate)
-			$vipUsers = $vipUsers->get();
 		return $vipUsers;
 	}
 	

@@ -83,15 +83,14 @@ class CompanyManager
 	{
 		
 		$companys = Company::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$companys = $companys->get();
 		foreach ($ConArr as $key => $value) {
 			$companys = $companys->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$companys = $companys->paginate(5);
 		}
-		if (!$paginate)
-			$companys = $companys->get();
 		return $companys;
 	}
 	

@@ -71,15 +71,14 @@ class UpgradeManager
 	{
 		
 		$upgrades = Upgrade::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$upgrades = $upgrades->get();
 		foreach ($ConArr as $key => $value) {
 			$upgrades = $upgrades->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$upgrades = $upgrades->paginate(5);
 		}
-		if (!$paginate)
-			$upgrades = $upgrades->get();
 		return $upgrades;
 	}
 	

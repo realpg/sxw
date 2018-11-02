@@ -91,15 +91,14 @@ class MemberManager
 	public static function getByCon($ConArr, $paginate = false, $orderby = ['userid', 'asc'])
 	{
 		$members = Member::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$members = $members->get();
 		foreach ($ConArr as $key => $value) {
 			$members = $members->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$members = $members->paginate(5);
 		}
-		if (!$paginate)
-			$members = $members->get();
 		return $members;
 	}
 	

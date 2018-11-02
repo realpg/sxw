@@ -66,7 +66,8 @@ class FinanceCreditManager
 	{
 		
 		$financeCredits = FinanceCredit::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$financeCredits = $financeCredits->get();
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'start_time') {
 				$financeCredits = $financeCredits->where('addtime', '>', $value);
@@ -76,8 +77,6 @@ class FinanceCreditManager
 		if ($paginate) {
 			$financeCredits = $financeCredits->paginate(10);
 		}
-		if (!$paginate)
-			$financeCredits = $financeCredits->get();
 		return $financeCredits;
 	}
 	

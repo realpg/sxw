@@ -66,15 +66,14 @@ class YWLBManager
 	{
 		
 		$ywlbs = YWLB::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$ywlbs = $ywlbs->get();
 		foreach ($ConArr as $key => $value) {
 			$ywlbs = $ywlbs->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$ywlbs = $ywlbs->paginate(5);
 		}
-		if (!$paginate)
-			$ywlbs = $ywlbs->get();
 		return $ywlbs;
 	}
 	

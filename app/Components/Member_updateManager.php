@@ -71,15 +71,14 @@ class Member_updateManager
 	{
 		
 		$member_updates = Member_update::orderby($orderby['0'], $orderby['1']);
-		
+		if (!$paginate)
+			$member_updates = $member_updates->get();
 		foreach ($ConArr as $key => $value) {
 			$member_updates = $member_updates->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$member_updates = $member_updates->paginate(5);
 		}
-		if (!$paginate)
-			$member_updates = $member_updates->get();
 		return $member_updates;
 	}
 	
