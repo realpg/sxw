@@ -66,14 +66,15 @@ class VIPManager
 	{
 		
 		$vips = VIP::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$vips = $vips->get();
+		
 		foreach ($ConArr as $key => $value) {
 			$vips = $vips->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$vips = $vips->paginate(5);
 		}
+		if (!$paginate)
+			$vips = $vips->get();
 		return $vips;
 	}
 	

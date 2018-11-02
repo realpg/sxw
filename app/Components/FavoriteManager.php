@@ -72,14 +72,15 @@ class FavoriteManager
 	{
 		
 		$favorites = Favorite::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$favorites = $favorites->get();
+		
 		foreach ($ConArr as $key => $value) {
 			$favorites = $favorites->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$favorites = $favorites->paginate(5);
 		}
+		if (!$paginate)
+			$favorites = $favorites->get();
 		return $favorites;
 	}
 	

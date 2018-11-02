@@ -67,14 +67,15 @@ class ClockinManager
 	{
 		
 		$clockins = Clockin::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$clockins = $clockins->get();
+		
 		foreach ($ConArr as $key => $value) {
 			$clockins = $clockins->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$clockins = $clockins->paginate(5);
 		}
+		if (!$paginate)
+			$clockins = $clockins->get();
 		return $clockins;
 	}
 	

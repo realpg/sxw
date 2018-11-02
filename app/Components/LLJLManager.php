@@ -73,8 +73,7 @@ class LLJLManager
 	{
 		
 		$lljls = LLJL::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$lljls = $lljls->get();
+		
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'timefrom') {
 				$lljls = $lljls->where('time', '>=', $value);
@@ -87,6 +86,8 @@ class LLJLManager
 		if ($paginate) {
 			$lljls = $lljls->paginate();
 		}
+		if (!$paginate)
+			$lljls = $lljls->get();
 		return $lljls;
 	}
 	

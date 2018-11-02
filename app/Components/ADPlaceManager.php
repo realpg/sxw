@@ -66,14 +66,15 @@ class ADPlaceManager
 	{
 		
 		$ad_places = ADPlace::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$ad_places = $ad_places->get();
+		
 		foreach ($ConArr as $key => $value) {
 			$ad_places = $ad_places->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$ad_places = $ad_places->paginate(5);
 		}
+		if (!$paginate)
+			$ad_places = $ad_places->get();
 		return $ad_places;
 	}
 	

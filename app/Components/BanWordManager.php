@@ -66,14 +66,14 @@ class BanWordManager
 	{
 		
 		$banwords = BanWord::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$banwords = $banwords->get();
 		foreach ($ConArr as $key => $value) {
 			$banwords = $banwords->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$banwords = $banwords->paginate(5);
 		}
+		if (!$paginate)
+			$banwords = $banwords->get();
 		return $banwords;
 	}
 	

@@ -69,14 +69,15 @@ class MessageManager
 	{
 		
 		$messages = Message::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$messages = $messages->get();
+		
 		foreach ($ConArr as $key => $value) {
 			$messages = $messages->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$messages = $messages->paginate(5);
 		}
+		if (!$paginate)
+			$messages = $messages->get();
 		return $messages;
 	}
 	

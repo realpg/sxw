@@ -64,14 +64,15 @@ class XCXLogManager
 	{
 		
 		$XCXlogs = XCXLog::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$XCXlogs = $XCXlogs->get();
+		
 		foreach ($ConArr as $key => $value) {
 			$XCXlogs = $XCXlogs->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$XCXlogs = $XCXlogs->paginate(5);
 		}
+		if (!$paginate)
+			$XCXlogs = $XCXlogs->get();
 		return $XCXlogs;
 	}
 	
