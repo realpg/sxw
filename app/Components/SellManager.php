@@ -180,10 +180,12 @@ class SellManager
 		}
 		if (array_key_exists('thumb', $data)) {
 			$data['thumb'] = explode(',', $data['thumb']);
-			$sell->thumb = $data['thumb'][0];
-			$sell->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : ($sell->thumb1 ? $sell->thumb1 : "");
-			$sell->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : ($sell->thumb2 ? $sell->thumb2 : "");
-			$sell->thumbs = join(',', $data['thumb']);
+			if (count($data['thumb']) > 0) {
+				$sell->thumb = $data['thumb'][0];
+				$sell->thumb1 = count($data['thumb']) > 1 ? $data['thumb'][1] : ($sell->thumb1 ? $sell->thumb1 : "");
+				$sell->thumb2 = count($data['thumb']) > 2 ? $data['thumb'][2] : ($sell->thumb2 ? $sell->thumb2 : "");
+				$sell->thumbs = join(',', $data['thumb']);
+			}
 		}
 		if (array_key_exists('telephone', $data)) {
 			$sell->telephone = array_get($data, 'telephone');
@@ -271,11 +273,12 @@ class SellManager
 		)->first() ? true : false;
 		return $sell;
 	}
+	
 	public static function CountInfosByUsername($username, $today = false)
 	{
 		if ($today) {
-			$time0=$today = strtotime(date("Y-m-d"),time());
-			$sells = Sell::where('username', $username)->where("addtime",">=",$time0)->count();
+			$time0 = $today = strtotime(date("Y-m-d"), time());
+			$sells = Sell::where('username', $username)->where("addtime", ">=", $time0)->count();
 //			$buys = Buy::where('username', $username)->where("addtime",">=",$time0)->count();
 //			$fjmys = FJMY::where('username', $username)->where("addtime",">=",$time0)->count();
 		} else {

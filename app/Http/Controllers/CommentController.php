@@ -193,7 +193,10 @@ class CommentController extends Controller
 			}
 			
 			if ($item) {
-				$favorite = FavoriteManager::getByCon(['mid' => $data['mid'], 'tid' => $data['tid'], 'userid' => $data['userid']])->first();
+				$favorite = FavoriteManager::getByCon(['mid' => $data['mid'],
+					'tid' => [$data['tid']],
+					'userid' => [$data['userid']]
+				])->first();
 				
 				if (array_key_exists('cancle', $data)) {
 					if ($favorite) {

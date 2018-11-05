@@ -59,7 +59,7 @@ class SellController
 			return ApiResponse::makeResponse(false, "请先完善资料", ApiResponse::UNKNOW_ERROR);
 		}
 		//检验参数
-		if (checkParam($data, ['title', 'introduce', 'content', 'thumb', 'telephone', 'address'])) {
+		if (checkParam($data, ['title', 'introduce', 'content', 'telephone', 'address'])) {
 			if (array_key_exists('itemid', $data)) {
 				$sell = SellManager::getById($data['itemid']);
 				$sell_data = SellDataManager::getById($data['itemid']);
