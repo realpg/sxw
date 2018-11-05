@@ -84,7 +84,7 @@ class FJMYSearchManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$fjmy_searchs = FJMY_search::orderby($orderby['0'], $orderby['1'])->get();
+		$fjmy_searchs = FJMY_search::query()->orderBy($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
 			$fjmy_searchs = $fjmy_searchs->whereIn($key, $value);
 		}

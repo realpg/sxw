@@ -70,7 +70,7 @@ class CommentManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'desc'])
 	{
-		$comments = Comment::orderby($orderby['0'], $orderby['1'])->get();
+		$comments = Comment::query()->orderBy($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
 			$comments = $comments->whereIn($key, $value);
 		}

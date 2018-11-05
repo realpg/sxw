@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Comment extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_comment';
+    protected $table = 'comment';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
 }

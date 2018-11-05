@@ -57,6 +57,13 @@ class We7UserManager
 		return $user;
 	}
 	
+	public static function getByOpenid($id)
+	{
+		$user = We7User::where('openid', '=', $id)->first();
+		return $user;
+	}
+	
+	
 	/*
 	 * 根据条件数组获取
 	 *
@@ -67,7 +74,7 @@ class We7UserManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['fanid', 'asc'])
 	{
 		
-		$users = We7User::orderby($orderby['0'], $orderby['1']);
+		$users = We7User::query()->orderBy($orderby['0'], $orderby['1']);
 		if (!$paginate)
 			$users = $users->get();
 		foreach ($ConArr as $key => $value) {
@@ -78,6 +85,7 @@ class We7UserManager
 		}
 		return $users;
 	}
+	
 	
 	
 	/*

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tag extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_tag';
+    protected $table = 'tag';
     public $timestamps = false;
 	protected $primaryKey = 'tagid';
 }

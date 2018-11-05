@@ -65,15 +65,16 @@ class BanWordManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['bid', 'asc'])
 	{
 		
-		$banwords = BanWord::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$banwords = $banwords->get();
+		$banwords = BanWord::query()->orderBy($orderby['0'], $orderby['1']);
+		
 		foreach ($ConArr as $key => $value) {
 			$banwords = $banwords->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$banwords = $banwords->paginate(5);
 		}
+		if (!$paginate)
+			$banwords = $banwords->get();
 		return $banwords;
 	}
 	

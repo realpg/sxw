@@ -117,7 +117,7 @@ class FJMYManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['listorder', 'asc'], $paginate = false)
 	{
-		$fjmys = FJMY::orderby($orderby[0], $orderby[1]);
+		$fjmys = FJMY::query()->orderBy($orderby[0], $orderby[1]);
 		$count = count($orderby);
 		$i = 2;
 		while (($count - $i) >= 2) {

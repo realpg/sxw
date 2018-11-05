@@ -15,7 +15,7 @@ class CompanyData extends Model
 {
 
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_company_data';
+    protected $table = 'company_data';
     public $timestamps = false;
 	protected $primaryKey = 'userid';
 }

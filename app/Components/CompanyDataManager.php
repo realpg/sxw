@@ -68,7 +68,7 @@ class CompanyDataManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['userid', 'asc'])
 	{
-		$companyDatas = CompanyData::orderby($orderby['0'], $orderby['1'])->get();
+		$companyDatas = CompanyData::query()->orderBy($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
 			$companyDatas = $companyDatas->whereIn($key, $value);
 		}

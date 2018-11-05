@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FinanceCredit extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_finance_credit';
+    protected $table = 'finance_credit';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
 }

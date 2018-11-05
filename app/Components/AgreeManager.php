@@ -65,7 +65,7 @@ class AgreeManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$agrees = Agree::orderby($orderby['0'], $orderby['1']);
+		$agrees = Agree::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'start_time') {
 				$agrees = $agrees->where('addtime', '>', $value);

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class VIP extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_xcx_vip';
+    protected $table = 'xcx_vip';
     public $timestamps = false;
 	protected $primaryKey = 'id';
 }

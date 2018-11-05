@@ -67,7 +67,7 @@ class We7MemberManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['uid', 'asc'])
 	{
 		
-		$members = We7Member::orderby($orderby['0'], $orderby['1']);
+		$members = We7Member::query()->orderBy($orderby['0'], $orderby['1']);
 		if (!$paginate)
 			$members = $members->get();
 		foreach ($ConArr as $key => $value) {
@@ -97,7 +97,7 @@ class We7MemberManager
 	
 	public static function getByOpenid($openid)
 	{
-		$we7User=We7UserManager::getByCon(['openid'=>[$openid]])->first();
+		$we7User=We7UserManager::getByOpenid($openid);
 		if(!$we7User){
 			return null;
 		}

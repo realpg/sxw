@@ -65,12 +65,12 @@ class ADPlaceManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['pid', 'asc'])
 	{
 		
-		$ad_places = ADPlace::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$ad_places = $ad_places->get();
+		$ad_places = ADPlace::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
 			$ad_places = $ad_places->whereIn($key, $value);
 		}
+		if (!$paginate)
+			$ad_places = $ad_places->get();
 		if ($paginate) {
 			$ad_places = $ad_places->paginate(5);
 		}

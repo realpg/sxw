@@ -110,7 +110,7 @@ class ArticleManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'desc'])
 	{
-		$articles = Article::orderby($orderby['0'], $orderby['1']);
+		$articles = Article::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'userid') {
 				$users = MemberManager::getByCon([$key => $value]);

@@ -66,12 +66,12 @@ class ADManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['itemid', 'asc'])
 	{
 		
-		$ads = AD::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$ads = $ads->get();
+		$ads = AD::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
 			$ads = $ads->whereIn($key, $value);
 		}
+		if (!$paginate)
+			$ads = $ads->get();
 		if ($paginate) {
 			$ads = $ads->paginate(5);
 		}

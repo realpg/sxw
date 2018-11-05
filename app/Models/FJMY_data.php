@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FJMY_data extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_fjmy_data_88';
+    protected $table = 'fjmy_data_88';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
 }

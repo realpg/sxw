@@ -109,25 +109,6 @@ class Kernel extends ConsoleKernel
 					InfoController::Info_Banword($buy, $infodata);
 				}
 			}
-//			$fjmys = FJMYManager::getList();
-//			foreach ($fjmys as $fjmy) {
-//				$user = MemberManager::getByUsername($fjmy->username);
-//				if (!$user) {
-//					$fjmy->delete();
-//				} else {
-//					if ($fjmy->thumbs == '') {
-//						$fjmy->thumbs .= $fjmy->thumb;
-//						$fjmy->thumbs = $fjmy->thumbs ? ($fjmy->thumbs . ',' . $fjmy->thumb1) : $fjmy->thumbs;
-//						$fjmy->thumbs = $fjmy->thumbs ? ($fjmy->thumbs . ',' . $fjmy->thumb2) : $fjmy->thumbs;
-//						$fjmy->save();
-//					}
-//					$searchInfo = FJMYManager::createSearchInfo($fjmy);
-//					$searchInfo->save();
-//
-//					$infodata = FJMYDataManager::getById($fjmy->itemid);
-//					InfoController::Info_Banword($fjmy, $infodata);
-//				}
-//			}
 			Log::info('生成搜索信息：'.now());
 		})->dailyAt('19:00');  //unix时间19点，即北京时间3点
 		
@@ -136,11 +117,6 @@ class Kernel extends ConsoleKernel
 			VIPController::check();
 			Log::info('校验VIP信息：'.now());
 		})->dailyAt('17:00');  //unix时间17点，即北京时间1点
-
-//		$schedule->call(function () {
-//			//每周一清理log
-//			XCXLogManager::clearLog();
-//		})->weekly()->mondays()->at('18:00');
 	}
 	
 	/**

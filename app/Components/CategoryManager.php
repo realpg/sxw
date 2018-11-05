@@ -64,7 +64,7 @@ class CategoryManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['catid', 'asc'])
 	{
-		$categorys = Category::orderby($orderby['0'], $orderby['1'])->get();
+		$categorys = Category::query()->orderBy($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
 			$categorys = $categorys->whereIn($key, $value);
 		}

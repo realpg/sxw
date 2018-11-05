@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Member_update extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_member_update';
+    protected $table = 'member_update';
     public $timestamps = false;
 	protected $primaryKey = 'id';
 }

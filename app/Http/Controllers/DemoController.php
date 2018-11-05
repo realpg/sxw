@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Components\ADManager;
 use App\Components\BanWordManager;
 use App\Components\BuyDataManager;
 use App\Components\BuyManager;
@@ -60,7 +61,8 @@ class DemoController extends Controller
 	
 	public function test(Request $request)
 	{
-		return MemberManager::getList();
+		return ADManager::getByCon(['xcx_pid' => ['1'], 'status' => [3]]);
+//		return MemberManager::getList();
 //		We7Controller::syncCreditRecordFromWe7();
 //		We7Controller::syncCreditToWe7();
 //		dd(getimagesize('https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJO5fFcD8F2R7MVETYPT4r7ibQ85zdcxTu0LXrYRLvzcPgmedYO4eOD5Tu4YvoXZJwqov3CDwb54Jw/132'));

@@ -64,7 +64,7 @@ class FJMYDataManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$fjmyDatas = FJMY_data::orderby($orderby['0'], $orderby['1'])->get();
+		$fjmyDatas = FJMY_data::query()->orderBy($orderby['0'], $orderby['1'])->get();
 		foreach ($ConArr as $key => $value) {
 			$fjmyDatas = $fjmyDatas->whereIn($key, $value);
 		}

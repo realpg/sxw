@@ -69,15 +69,16 @@ class InviteManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$invites = Invite::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$invites = $invites->get();
+		$invites = Invite::query()->orderBy($orderby['0'], $orderby['1']);
+		
 		foreach ($ConArr as $key => $value) {
 			$invites = $invites->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$invites = $invites->paginate(5);
 		}
+		if (!$paginate)
+			$invites = $invites->get();
 		return $invites;
 	}
 	

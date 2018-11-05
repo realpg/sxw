@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class BanWord extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_banword';
+    protected $table = 'banword';
     public $timestamps = false;
 	protected $primaryKey = 'bid';
 }

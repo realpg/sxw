@@ -65,7 +65,7 @@ class FinanceCreditManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['itemid', 'asc'])
 	{
 		
-		$financeCredits = FinanceCredit::orderby($orderby['0'], $orderby['1']);
+		$financeCredits = FinanceCredit::query()->orderBy($orderby['0'], $orderby['1']);
 		if (!$paginate)
 			$financeCredits = $financeCredits->get();
 		foreach ($ConArr as $key => $value) {

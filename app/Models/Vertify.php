@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Vertify extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_vertify';
+    protected $table = 'vertify';
     public $timestamps = false;
 	protected $primaryKey = 'id';
 }

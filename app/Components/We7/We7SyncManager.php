@@ -69,7 +69,7 @@ class We7SyncManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$syncs = We7Sync::orderby($orderby['0'], $orderby['1']);
+		$syncs = We7Sync::query()->orderBy($orderby['0'], $orderby['1']);
 		if (!$paginate)
 			$syncs = $syncs->get();
 		foreach ($ConArr as $key => $value) {

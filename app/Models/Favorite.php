@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Favorite extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_favorite';
+    protected $table = 'favorite';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
 }

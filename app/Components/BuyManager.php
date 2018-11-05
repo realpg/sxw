@@ -117,7 +117,7 @@ class BuyManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['listorder', 'asc'], $paginate = false)
 	{
-		$buys = Buy::orderby($orderby[0], $orderby[1]);
+		$buys = Buy::query()->orderBy($orderby[0], $orderby[1]);
 		$count = count($orderby);
 		$i = 2;
 		while (($count - $i) >= 2) {

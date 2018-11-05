@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class System extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_xcx_system';
+    protected $table = 'xcx_system';
     public $timestamps = true;
 	protected $primaryKey = 'id';
 	public static function deleted($callback)

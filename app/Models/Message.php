@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Message extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_message';
+    protected $table = 'message';
     public $timestamps = false;
 	protected $primaryKey = 'itemid';
 }

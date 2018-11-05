@@ -14,7 +14,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Member extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_member';
+    protected $table = 'member';
     public $timestamps = false;
 	protected $primaryKey = 'userid';
+//	public function we7Member()
+//	{
+//		return $this->hasOne('App\Phone');
+//	}
 }

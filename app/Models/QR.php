@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class QR extends Model
 {
     protected $connection = 'sxwdb';   //数据库名
-    protected $table = 'destoon_xcx_qr';
+    protected $table = 'xcx_qr';
 	protected $primaryKey = 'id';
     protected $dates = ['deleted_at'];  //软删除
 }

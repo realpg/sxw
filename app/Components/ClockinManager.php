@@ -66,15 +66,16 @@ class ClockinManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$clockins = Clockin::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$clockins = $clockins->get();
+		$clockins = Clockin::query()->orderBy($orderby['0'], $orderby['1']);
+		
 		foreach ($ConArr as $key => $value) {
 			$clockins = $clockins->whereIn($key, $value);
 		}
 		if ($paginate) {
 			$clockins = $clockins->paginate(5);
 		}
+		if (!$paginate)
+			$clockins = $clockins->get();
 		return $clockins;
 	}
 	

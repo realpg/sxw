@@ -82,7 +82,7 @@ class CompanyManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['userid', 'asc'])
 	{
 		
-		$companys = Company::orderby($orderby['0'], $orderby['1']);
+		$companys = Company::query()->orderBy($orderby['0'], $orderby['1']);
 		if (!$paginate)
 			$companys = $companys->get();
 		foreach ($ConArr as $key => $value) {
