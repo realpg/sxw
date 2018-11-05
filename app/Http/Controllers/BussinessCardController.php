@@ -66,7 +66,7 @@ class BussinessCardController extends Controller
 			'company' => $member->company,
 			'career' => $member->career,
 			'ywlb_ids' => implode(',', array_arrange(CompanyYWLBManager::getByCon(['userid' => [$member->userid]])->pluck('ywlb_id'))),
-			'ywlb' => array_arrange(CompanyYWLBManager::getByCon(['userid' => $member->userid])),
+			'ywlb' => array_arrange(CompanyYWLBManager::getByCon(['userid' => [$member->userid]])),
 			'address' => $company->address,
 			'business' => $company->business,
 			'introduce' => $company->introduce,
