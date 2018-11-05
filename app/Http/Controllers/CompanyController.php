@@ -83,7 +83,7 @@ class CompanyController extends Controller
 		if (UpgradeManager::getByCon(['userid' => [$user->userid], 'status' => '2'])->count() > 0) {
 			return ApiResponse::makeResponse(false, $ret . "已有等待审核的信息，请耐心等待", ApiResponse::UNKNOW_ERROR);
 		}
-		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business', 'introduce'])) {
+		if (checkParam($data, ['truename', 'mobile', 'company', 'career', 'ywlb_ids', 'address', 'business'])) {
 			
 			$company = CompanyManager::getById($user->userid);
 			$user = MemberManager::setMember($user, $data);
@@ -134,7 +134,7 @@ class CompanyController extends Controller
 			return ApiResponse::makeResponse(true, $ret, ApiResponse::SUCCESS_CODE);
 			
 		} else {
-			return ApiResponse::makeResponse(false, $ret . "修改资料时缺少参数" . array_keys($data), ApiResponse::MISSING_PARAM);
+			return ApiResponse::makeResponse(false, $ret . "修改资料时缺少参数:" . json_encode(array_keys($data)), ApiResponse::MISSING_PARAM);
 		}
 	}
 	

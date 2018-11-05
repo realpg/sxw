@@ -51,7 +51,8 @@ class MemberManager
 	
 	public static function getXCXMembers()
 	{
-		$members = Member::whereNotNull('wx_openId')
+		$members = Member::query()->whereNotNull('wx_openId')
+			->where('wx_openId','<>','')
 //			->where('wx_openId', '<>', '')
 		->get();
 		return $members;
