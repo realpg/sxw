@@ -208,7 +208,7 @@ class CommentController extends Controller
 						return ApiResponse::makeResponse(false, "没有关注记录", ApiResponse::UNKNOW_ERROR);
 					}
 				} else if ($favorite) {
-					return ApiResponse::makeResponse(false, "请不要重复收藏", ApiResponse::UNKNOW_ERROR);
+					return ApiResponse::makeResponse(false, "已收藏", ApiResponse::UNKNOW_ERROR);
 				}
 				$favorite = $favorite ? $favorite : FavoriteManager::createObject();
 				$favorite = FavoriteManager::setFavorite($favorite, $data);
