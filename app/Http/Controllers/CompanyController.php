@@ -36,6 +36,8 @@ class CompanyController extends Controller
 			} else {
 				return ApiResponse::makeResponse(false, "验证码错误！", ApiResponse::UNKNOW_ERROR);
 			}
+		} elseif ($user->groupid == 5) {
+			return ApiResponse::makeResponse(false, "请绑定手机号！", ApiResponse::UNKNOW_ERROR);
 		}
 		if (checkParam($data, ['avatarUrl']))
 			if ($user->avatarUrl != $data['avatarUrl']) {
@@ -98,10 +100,6 @@ class CompanyController extends Controller
 			CompanyManager::setYWLB($company, $ywlbs, 3);
 			$company = CompanyManager::setKeyWords($company, $ywlbs, $user);
 			
-			$user->save();
-			$company->save();
-			$upgrade->save();
-			
 			if (SystemManager::getById(12)->value == '0') {
 				$upgrade->edittime = time();
 				$upgrade->editor = "admin";
@@ -121,10 +119,14 @@ class CompanyController extends Controller
 					'touser' => $user->username
 				]);
 				
-				$user->save();//msql
-				$company->save();//csql
-				$upgrade->save();//gsql
+//				$user->save();//msql
+//				$company->save();//csql
+//				$upgrade->save();//gsql
 			}
+			
+			$user->save();
+			$company->save();
+			$upgrade->save();
 			
 			if ($ret)
 				$ret .= "。";
@@ -161,21 +163,21 @@ class CompanyController extends Controller
 				$ret .= ".";
 			if (SystemManager::getById(12)->value == '0') {
 				$userid = $update->userid;
-				Log::info('自动审核'.$userid);
+				Log::info('自动审核' . $userid);
 				$member = MemberManager::getById($userid);
 				$company = CompanyManager::getById($userid);
 				Member_updateManager::setMember($member, $update)->save();
 				Member_updateManager::setCompany($company, $update)->save();
 				$update->status = 3;
 				$update->save();
-				Log::info('自动审核-公司1'.json_encode($company));
+				Log::info('自动审核-公司1' . json_encode($company));
 				
 				$company_new = CompanyManager::getById($userid);
 				$ywlbs = explode(',', $update->ywlb_ids);
 				CompanyManager::setYWLB($company_new, $ywlbs);
 				$company_new = CompanyManager::setKeyWords($company_new, $ywlbs, $member);
 				$company_new->save();
-				Log::info('自动审核-公司2'.json_encode($company_new));
+				Log::info('自动审核-公司2' . json_encode($company_new));
 				
 				MessageController::sendSystemMessage([
 					'title' => "个人信息审核结果通知",
