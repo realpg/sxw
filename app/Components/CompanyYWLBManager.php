@@ -68,7 +68,10 @@ class CompanyYWLBManager
 		$companyYWLBs = CompanyYWLB::query()->orderby($orderby['0'], $orderby['1']);
 	
 		foreach ($ConArr as $key => $value) {
-			$companyYWLBs = $companyYWLBs->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$companyYWLBs = $companyYWLBs->whereIn($key, $value);
+			else
+				$companyYWLBs = $companyYWLBs->where($key, $value);
 		}
 		if ($paginate) {
 			$companyYWLBs = $companyYWLBs->paginate(5);

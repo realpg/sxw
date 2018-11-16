@@ -84,11 +84,14 @@ class SellSearchManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$sell_searchs = Sell_search::orderby($orderby['0'], $orderby['1'])->get();
+		$sell_searchs = Sell_search::query()->orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$sell_searchs = $sell_searchs->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$sell_searchs = $sell_searchs->whereIn($key, $value);
+			else
+				$sell_searchs = $sell_searchs->where($key, $value);
 		}
-		return $sell_searchs;
+		return $sell_searchs->get();
 	}
 	
 	

@@ -75,14 +75,17 @@ class We7UserManager
 	{
 		
 		$users = We7User::query()->orderBy($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$users = $users->get();
 		foreach ($ConArr as $key => $value) {
-			$users = $users->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$users = $users->whereIn($key, $value);
+			else
+				$users = $users->where($key, $value);
 		}
 		if ($paginate) {
 			$users = $users->paginate(5);
 		}
+		if (!$paginate)
+			$users = $users->get();
 		return $users;
 	}
 	

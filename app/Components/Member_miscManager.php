@@ -71,16 +71,19 @@ class Member_miscManager
 	 */
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['itemid', 'asc'])
 	{
+		$member_miscs = Member_misc::query()->orderby($orderby['0'], $orderby['1']);
 		
-		$member_miscs = Member_misc::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$member_miscs = $member_miscs->get();
 		foreach ($ConArr as $key => $value) {
-			$member_miscs = $member_miscs->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$member_miscs = $member_miscs->whereIn($key, $value);
+			else
+				$member_miscs = $member_miscs->where($key, $value);
 		}
 		if ($paginate) {
 			$member_miscs = $member_miscs->paginate(5);
 		}
+		if (!$paginate)
+			$member_miscs = $member_miscs->get();
 		return $member_miscs;
 	}
 	

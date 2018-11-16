@@ -117,7 +117,7 @@ class SellManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['listorder', 'asc'], $paginate = true)
 	{
-		$sells = Sell::orderby($orderby[0], $orderby[1]);
+		$sells = Sell::query()->orderby($orderby[0], $orderby[1]);
 		$count = count($orderby);
 		$i = 2;
 		while (($count - $i) >= 2) {
@@ -134,7 +134,10 @@ class SellManager
 				
 				$sells = $sells->whereIn('username', $usernames);
 			} else {
-				$sells = $sells->whereIn($key, $value);
+				if (gettype($value) == 'array')
+					$sells = $sells->whereIn($key, $value);
+				else
+					$sells = $sells->where($key, $value);
 			}
 		}
 		if ($paginate)

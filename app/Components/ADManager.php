@@ -68,7 +68,10 @@ class ADManager
 		
 		$ads = AD::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$ads = $ads->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$ads = $ads->whereIn($key, $value);
+			else
+				$ads = $ads->where($key, $value);
 		}
 		if (!$paginate)
 			$ads = $ads->get();

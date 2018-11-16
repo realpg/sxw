@@ -64,11 +64,14 @@ class CategoryManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['catid', 'asc'])
 	{
-		$categorys = Category::query()->orderBy($orderby['0'], $orderby['1'])->get();
+		$categorys = Category::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$categorys = $categorys->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$categorys = $categorys->whereIn($key, $value);
+			else
+				$categorys = $categorys->where($key, $value);
 		}
-		return $categorys;
+		return $categorys->get();
 	}
 	
 	

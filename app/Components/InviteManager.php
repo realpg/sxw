@@ -72,7 +72,10 @@ class InviteManager
 		$invites = Invite::query()->orderBy($orderby['0'], $orderby['1']);
 		
 		foreach ($ConArr as $key => $value) {
-			$invites = $invites->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$invites = $invites->whereIn($key, $value);
+			else
+				$invites = $invites->where($key, $value);
 		}
 		if ($paginate) {
 			$invites = $invites->paginate(5);

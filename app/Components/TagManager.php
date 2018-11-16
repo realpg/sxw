@@ -65,12 +65,16 @@ class TagManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['tagid', 'asc'])
 	{
 		
-		$tags = Tag::orderby($orderby['0'], $orderby['1']);
+		$tags = Tag::query()->orderby($orderby['0'], $orderby['1']);
+		
+		foreach ($ConArr as $key => $value) {
+			if (gettype($value) == 'array')
+				$tags = $tags->whereIn($key, $value);
+			else
+				$tags = $tags->where($key, $value);
+		}
 		if (!$paginate)
 			$tags = $tags->get();
-		foreach ($ConArr as $key => $value) {
-			$tags = $tags->whereIn($key, $value);
-		}
 		if ($paginate) {
 			$tags = $tags->paginate(5);
 		}

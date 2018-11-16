@@ -63,15 +63,19 @@ class XCXLogManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$XCXlogs = XCXLog::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$XCXlogs = $XCXlogs->get();
+		$XCXlogs = XCXLog::query()->orderby($orderby['0'], $orderby['1']);
+		
 		foreach ($ConArr as $key => $value) {
-			$XCXlogs = $XCXlogs->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$XCXlogs = $XCXlogs->whereIn($key, $value);
+			else
+				$XCXlogs = $XCXlogs->where($key, $value);
 		}
 		if ($paginate) {
 			$XCXlogs = $XCXlogs->paginate(5);
 		}
+		if (!$paginate)
+			$XCXlogs = $XCXlogs->get();
 		return $XCXlogs;
 	}
 	

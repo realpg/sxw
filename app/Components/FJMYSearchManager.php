@@ -84,11 +84,14 @@ class FJMYSearchManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$fjmy_searchs = FJMY_search::query()->orderBy($orderby['0'], $orderby['1'])->get();
+		$fjmy_searchs = FJMY_search::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$fjmy_searchs = $fjmy_searchs->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$fjmy_searchs = $fjmy_searchs->whereIn($key, $value);
+			else
+				$fjmy_searchs = $fjmy_searchs->where($key, $value);
 		}
-		return $fjmy_searchs;
+		return $fjmy_searchs->get();
 	}
 	
 	

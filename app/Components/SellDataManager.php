@@ -64,11 +64,14 @@ class SellDataManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$sellDatas = Sell_data::orderby($orderby['0'], $orderby['1'])->get();
+		$sellDatas = Sell_data::query()->orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$sellDatas = $sellDatas->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$sellDatas = $sellDatas->whereIn($key, $value);
+			else
+				$sellDatas = $sellDatas->where($key, $value);
 		}
-		return $sellDatas;
+		return $sellDatas->get();
 	}
 	
 	

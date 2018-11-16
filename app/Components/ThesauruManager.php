@@ -65,15 +65,19 @@ class ThesauruManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$thesaurus = Thesauru::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$thesaurus = $thesaurus->get();
+		$thesaurus = Thesauru::query()->orderby($orderby['0'], $orderby['1']);
+		
 		foreach ($ConArr as $key => $value) {
-			$thesaurus = $thesaurus->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$thesaurus = $thesaurus->whereIn($key, $value);
+			else
+				$thesaurus = $thesaurus->where($key, $value);
 		}
 		if ($paginate) {
 			$thesaurus = $thesaurus->paginate(5);
 		}
+		if (!$paginate)
+			$thesaurus = $thesaurus->get();
 		return $thesaurus;
 	}
 	

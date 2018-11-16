@@ -134,7 +134,10 @@ class BuyManager
 				
 				$buys = $buys->whereIn('username', $usernames);
 			} else {
-				$buys = $buys->whereIn($key, $value);
+				if (gettype($value) == 'array')
+					$buys = $buys->whereIn($key, $value);
+				else
+					$buys = $buys->where($key, $value);
 			}
 		}
 		if ($paginate)

@@ -70,15 +70,19 @@ class Member_updateManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$member_updates = Member_update::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$member_updates = $member_updates->get();
+		$member_updates = Member_update::query()->orderby($orderby['0'], $orderby['1']);
+	
 		foreach ($ConArr as $key => $value) {
-			$member_updates = $member_updates->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$member_updates = $member_updates->whereIn($key, $value);
+			else
+				$member_updates = $member_updates->where($key, $value);
 		}
 		if ($paginate) {
 			$member_updates = $member_updates->paginate(5);
 		}
+		if (!$paginate)
+			$member_updates = $member_updates->get();
 		return $member_updates;
 	}
 	

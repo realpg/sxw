@@ -70,14 +70,17 @@ class We7SyncManager
 	{
 		
 		$syncs = We7Sync::query()->orderBy($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$syncs = $syncs->get();
 		foreach ($ConArr as $key => $value) {
-			$syncs = $syncs->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$syncs = $syncs->whereIn($key, $value);
+			else
+				$syncs = $syncs->where($key, $value);
 		}
 		if ($paginate) {
 			$syncs = $syncs->paginate(5);
 		}
+		if (!$paginate)
+			$syncs = $syncs->get();
 		return $syncs;
 	}
 	

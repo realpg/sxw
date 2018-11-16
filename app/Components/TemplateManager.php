@@ -65,11 +65,14 @@ class TemplateManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$templates = Template::orderby($orderby['0'], $orderby['1']);
+		$templates = Template::query()->orderby($orderby['0'], $orderby['1']);
 		if (!$paginate)
 			$templates = $templates->get();
 		foreach ($ConArr as $key => $value) {
-			$templates = $templates->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$templates = $templates->whereIn($key, $value);
+			else
+				$templates = $templates->where($key, $value);
 		}
 		if ($paginate) {
 			$templates = $templates->paginate(5);

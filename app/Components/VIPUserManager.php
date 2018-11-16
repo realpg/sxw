@@ -66,15 +66,18 @@ class VIPUserManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$vipUsers = VIPUser::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$vipUsers = $vipUsers->get();
+		$vipUsers = VIPUser::query()->orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$vipUsers = $vipUsers->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$vipUsers = $vipUsers->whereIn($key, $value);
+			else
+				$vipUsers = $vipUsers->where($key, $value);
 		}
 		if ($paginate) {
 			$vipUsers = $vipUsers->paginate(5);
 		}
+		if (!$paginate)
+			$vipUsers = $vipUsers->get();
 		return $vipUsers;
 	}
 	

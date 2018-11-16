@@ -66,17 +66,22 @@ class FinanceCreditManager
 	{
 		
 		$financeCredits = FinanceCredit::query()->orderBy($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$financeCredits = $financeCredits->get();
+		
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'start_time') {
 				$financeCredits = $financeCredits->where('addtime', '>', $value);
-			} else
-			$financeCredits = $financeCredits->whereIn($key, $value);
+			} else{
+				if (gettype($value) == 'array')
+					$financeCredits = $financeCredits->whereIn($key, $value);
+				else
+					$financeCredits = $financeCredits->where($key, $value);
+			}
 		}
 		if ($paginate) {
 			$financeCredits = $financeCredits->paginate(10);
 		}
+		if (!$paginate)
+			$financeCredits = $financeCredits->get();
 		return $financeCredits;
 	}
 	

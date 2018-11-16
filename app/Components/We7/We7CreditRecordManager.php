@@ -72,10 +72,13 @@ class We7CreditRecordManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$records = We7CreditRecord::orderby($orderby['0'], $orderby['1']);
+		$records = We7CreditRecord::query()->orderby($orderby['0'], $orderby['1']);
 		
 		foreach ($ConArr as $key => $value) {
-			$records = $records->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$records = $records->whereIn($key, $value);
+			else
+				$records = $records->where($key, $value);
 		}
 		if ($paginate) {
 			$records = $records->paginate(5);

@@ -64,11 +64,14 @@ class BuyDataManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$buyDatas = Buy_data::query()->orderBy($orderby['0'], $orderby['1'])->get();
+		$buyDatas = Buy_data::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$buyDatas = $buyDatas->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$buyDatas = $buyDatas->whereIn($key, $value);
+			else
+				$buyDatas = $buyDatas->where($key, $value);
 		}
-		return $buyDatas;
+		return $buyDatas->get();
 	}
 	
 	

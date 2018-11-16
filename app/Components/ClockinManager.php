@@ -69,7 +69,10 @@ class ClockinManager
 		$clockins = Clockin::query()->orderBy($orderby['0'], $orderby['1']);
 		
 		foreach ($ConArr as $key => $value) {
-			$clockins = $clockins->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$clockins = $clockins->whereIn($key, $value);
+			else
+				$clockins = $clockins->where($key, $value);
 		}
 		if ($paginate) {
 			$clockins = $clockins->paginate(5);

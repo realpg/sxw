@@ -65,9 +65,12 @@ class SystemManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['id', 'asc'])
 	{
-		$systems = System::orderby($orderby['0'], $orderby['1'])->get();
+		$systems = System::query()->orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$systems = $systems->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$systems = $systems->whereIn($key, $value)->get();
+			else
+				$systems = $systems->where($key, $value)->get();
 		}
 		return $systems;
 	}

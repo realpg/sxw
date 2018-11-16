@@ -50,11 +50,14 @@ class TestManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['id', 'asc'])
 	{
-		$Tests = Test::orderby($orderby['0'], $orderby['1'])->get();
+		$Tests = Test::query()->orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$Tests = $Tests->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$Tests = $Tests->whereIn($key, $value);
+			else
+				$Tests = $Tests->where($key, $value);
 		}
-		return $Tests;
+		return $Tests->get();
 	}
 	
 	

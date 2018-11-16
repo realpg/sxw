@@ -65,15 +65,19 @@ class YWLBManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$ywlbs = YWLB::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$ywlbs = $ywlbs->get();
+		$ywlbs = YWLB::query()->orderby($orderby['0'], $orderby['1']);
+		
 		foreach ($ConArr as $key => $value) {
-			$ywlbs = $ywlbs->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$ywlbs = $ywlbs->whereIn($key, $value);
+			else
+				$ywlbs = $ywlbs->where($key, $value);
 		}
 		if ($paginate) {
 			$ywlbs = $ywlbs->paginate(5);
 		}
+		if (!$paginate)
+			$ywlbs = $ywlbs->get();
 		return $ywlbs;
 	}
 	

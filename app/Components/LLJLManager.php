@@ -72,21 +72,24 @@ class LLJLManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$lljls = LLJL::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$lljls = $lljls->get();
+		$lljls = LLJL::query()->orderby($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'timefrom') {
 				$lljls = $lljls->where('time', '>=', $value);
 			} elseif ($key == 'timeto') {
 				$lljls = $lljls->where('time', '<=', $value);
 			} else{
-				$lljls = $lljls->whereIn($key, $value);
+				if (gettype($value) == 'array')
+					$lljls = $lljls->whereIn($key, $value);
+				else
+					$lljls = $lljls->where($key, $value);
 			}
 		}
 		if ($paginate) {
 			$lljls = $lljls->paginate();
 		}
+		if (!$paginate)
+			$lljls = $lljls->get();
 		return $lljls;
 	}
 	

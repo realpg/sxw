@@ -69,8 +69,13 @@ class AgreeManager
 		foreach ($ConArr as $key => $value) {
 			if ($key == 'start_time') {
 				$agrees = $agrees->where('addtime', '>', $value);
-			} else
-				$agrees = $agrees->whereIn($key, $value);
+			} else{
+				if (gettype($value) == 'array')
+					$agrees = $agrees->whereIn($key, $value);
+				else
+					$agrees = $agrees->where($key, $value);
+			}
+			
 		}
 		return $agrees;
 	}

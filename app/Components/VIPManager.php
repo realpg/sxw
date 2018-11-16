@@ -65,15 +65,19 @@ class VIPManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$vips = VIP::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$vips = $vips->get();
+		$vips = VIP::query()->orderby($orderby['0'], $orderby['1']);
+		
 		foreach ($ConArr as $key => $value) {
-			$vips = $vips->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$vips = $vips->whereIn($key, $value);
+			else
+				$vips = $vips->where($key, $value);
 		}
 		if ($paginate) {
 			$vips = $vips->paginate(5);
 		}
+		if (!$paginate)
+			$vips = $vips->get();
 		return $vips;
 	}
 	

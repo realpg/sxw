@@ -84,11 +84,14 @@ class BuySearchManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$buy_searchs = Buy_search::query()->orderBy($orderby['0'], $orderby['1'])->get();
+		$buy_searchs = Buy_search::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$buy_searchs = $buy_searchs->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$buy_searchs = $buy_searchs->whereIn($key, $value);
+			else
+				$buy_searchs = $buy_searchs->where($key, $value);
 		}
-		return $buy_searchs;
+		return $buy_searchs->get();
 	}
 	
 	

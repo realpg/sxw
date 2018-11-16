@@ -70,15 +70,19 @@ class UpgradeManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['itemid', 'asc'])
 	{
 		
-		$upgrades = Upgrade::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$upgrades = $upgrades->get();
+		$upgrades = Upgrade::query()->orderby($orderby['0'], $orderby['1']);
+	
 		foreach ($ConArr as $key => $value) {
-			$upgrades = $upgrades->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$upgrades = $upgrades->whereIn($key, $value);
+			else
+				$upgrades = $upgrades->where($key, $value);
 		}
 		if ($paginate) {
 			$upgrades = $upgrades->paginate(5);
 		}
+		if (!$paginate)
+			$upgrades = $upgrades->get();
 		return $upgrades;
 	}
 	

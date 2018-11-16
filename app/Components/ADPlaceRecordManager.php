@@ -68,7 +68,10 @@ class ADPlaceRecordManager
 		$records = ADPlaceRecord::query()->orderBy($orderby['0'], $orderby['1']);
 		
 		foreach ($ConArr as $key => $value) {
-			$records = $records->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$records = $records->whereIn($key, $value);
+			else
+				$records = $records->where($key, $value);
 		}
 		if ($paginate) {
 			$records = $records->paginate(5);

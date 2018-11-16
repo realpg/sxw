@@ -64,11 +64,14 @@ class ArticleDataManager
 	 */
 	public static function getByCon($ConArr, $orderby = ['itemid', 'asc'])
 	{
-		$articleDatas = Article_data::query()->orderBy($orderby['0'], $orderby['1'])->get();
+		$articleDatas = Article_data::query()->orderBy($orderby['0'], $orderby['1']);
 		foreach ($ConArr as $key => $value) {
-			$articleDatas = $articleDatas->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$articleDatas = $articleDatas->whereIn($key, $value);
+			else
+				$articleDatas = $articleDatas->where($key, $value);
 		}
-		return $articleDatas;
+		return $articleDatas->get();
 	}
 	
 	

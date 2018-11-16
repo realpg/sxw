@@ -134,7 +134,10 @@ class FJMYManager
 				
 				$fjmys = $fjmys->whereIn('username', $usernames);
 			} else {
-				$fjmys = $fjmys->whereIn($key, $value);
+				if (gettype($value) == 'array')
+					$fjmys = $fjmys->whereIn($key, $value);
+				else
+					$fjmys = $fjmys->where($key, $value);
 			}
 		}
 		if ($paginate)

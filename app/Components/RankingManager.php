@@ -66,15 +66,19 @@ class RankingManager
 	public static function getByCon(array $ConArr, $paginate = false, $orderby = ['id', 'asc'])
 	{
 		
-		$rankings = Ranking::orderby($orderby['0'], $orderby['1']);
-		if (!$paginate)
-			$rankings = $rankings->get();
+		$rankings = Ranking::query()->orderby($orderby['0'], $orderby['1']);
+		
 		foreach ($ConArr as $key => $value) {
-			$rankings = $rankings->whereIn($key, $value);
+			if (gettype($value) == 'array')
+				$rankings = $rankings->whereIn($key, $value);
+			else
+				$rankings = $rankings->where($key, $value);
 		}
 		if ($paginate) {
 			$rankings = $rankings->paginate(5);
 		}
+		if (!$paginate)
+			$rankings = $rankings->get();
 		return $rankings;
 	}
 	

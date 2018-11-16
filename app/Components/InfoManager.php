@@ -103,10 +103,10 @@ class InfoManager
 	{
 		switch ($mid) {
 			case 5:
-				$infos = Sell::orderby($orderby['0'], $orderby['1']);
+				$infos = Sell::query()->orderby($orderby['0'], $orderby['1']);
 				break;
 			case 6:
-				$infos = Buy::orderby($orderby['0'], $orderby['1']);
+				$infos = Buy::query()->orderby($orderby['0'], $orderby['1']);
 				break;
 //			case 88:
 //				$infos = FJMY::orderby($orderby['0'], $orderby['1']);
@@ -126,7 +126,10 @@ class InfoManager
 				
 				$infos = $infos->whereIn('username', $usernames);
 			} else {
-				$infos = $infos->whereIn($key, $value);
+				if (gettype($value) == 'array')
+					$infos = $infos->whereIn($key, $value);
+				else
+					$infos = $infos->where($key, $value);
 			}
 		}
 //		$infos = $infos->paginate();
