@@ -110,7 +110,7 @@ class MessageController extends Controller
 	
 	public static function checkMessage($user)
 	{
-		$messages = MessageManager::getByCon(['username' => [$user->username], 'isread' => ['0']]);
+		$messages = MessageManager::getByCon(['username' => $user->username, 'isread' => '0']);
 		$user->message = $messages->count();
 		return $user;
 	}
