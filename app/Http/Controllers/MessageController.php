@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 use App\Components\MemberManager;
 use App\Components\MessageManager;
 use App\Components\VertifyManager;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Request;
 
 class MessageController extends Controller
@@ -50,7 +51,6 @@ class MessageController extends Controller
 //		$data_arr = array(
 //			'keyword1' => array("value" => $value, "color" => $color)
 //		);
-		
 		$post_data = array(
 			// 用户的 openID，可用过 wx.getUserInfo 获取
 			"touser" => $openid,
@@ -74,6 +74,9 @@ class MessageController extends Controller
 		$data = json_encode($post_data, true);
 		// 这里的返回值是一个 JSON，可通过 json_decode() 解码成数组
 		$return = send_post($url, $data);
+		Log::info('发送模版消息：【'.json_encode($post_data).'】
+		返回值为:'.json_encode($return));
+		
 		return json_encode($return);
 		
 	}
