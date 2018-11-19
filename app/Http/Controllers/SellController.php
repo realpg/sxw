@@ -112,12 +112,21 @@ class SellController
 			
 			$sellsh = SystemManager::getById('1');
 			if ($sellsh->value == 0)//自动过审
+			{
 				MessageController::sendSystemMessage([
 					'title' => "您发布的[供应]信息(ID:" . $sell->itemid . ")已经通过审核",
 					'content' => "尊敬的会员：<br/>您发布的[供应]<a href=\"http://dt.chinayarn.com/buy/\" target=\"_blank\">供应信息</a>(ID:" . $sell->itemid . ")已经通过审核！<br/>如果您对此操作有异议，请及时与网站联系。",
 					'touser' => $user->username
 				]);
-			
+				$openid = $user->openid;
+				$templateid = MessageController::$shenhe_template_id;
+				$page = 'pages/particulars/particulars?mid=5&id=' . $sell->itemid;
+				$formid = $sell->formid;
+				$data_arr = array(
+					'keyword1' => array("DATA" => '您发布的[供应]信息已经通过审核'),
+					'keyword2' => array("DATA" => date('Y-m-d'))
+				);
+			}
 			return ApiResponse::makeResponse(true, $sell, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);

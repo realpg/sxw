@@ -111,13 +111,23 @@ class BuyController
 			$searchInfo->save();
 			
 			$buysh = SystemManager::getById('2');
-			if ($buysh->value == 0)//自动过审
+			if ($buysh->value == 0)//自动过审｛｝
+			{
 				MessageController::sendSystemMessage([
 					'title' => "您发布的[求购]信息(ID:" . $buy->itemid . ")已经通过审核",
 					'content' => "尊敬的会员：<br/>您发布的[求购]<a href=\"http://dt.chinayarn.com/buy/\" target=\"_blank\">求购信息</a>(ID:" . $buy->itemid . ")已经通过审核！<br/>如果您对此操作有异议，请及时与网站联系。",
 					'touser' => $user->username
 				]);
-			
+				$openid = $user->openid;
+				$templateid = MessageController::$shenhe_template_id;
+				$page = 'pages/particulars/particulars?mid=6&id=' . $buy->itemid;
+				$formid = $buy->formid;
+				$data_arr = array(
+					'keyword1' => array("DATA" => '您发布的[求购]信息已经通过审核'),
+					'keyword2' => array("DATA" => date('Y-m-d'))
+				);
+				MessageController::sendWXTemplateMessage($openid, $templateid, $page, $formid, $data_arr);
+			}
 			return ApiResponse::makeResponse(true, $buy, ApiResponse::SUCCESS_CODE);
 		} else {
 			return ApiResponse::makeResponse(false, "缺少参数", ApiResponse::MISSING_PARAM);

@@ -101,6 +101,9 @@ class CommentManager
 		if (array_key_exists('star', $data)) {
 			$comment->star = array_get($data, 'star');
 		}
+		if(array_key_exists('formId',$data)){
+			$comment->formId = array_get($data, 'formId');
+		}
 		else{
 			$comment->star = 3;
 		}

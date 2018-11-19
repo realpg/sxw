@@ -64,6 +64,18 @@ class CommentController extends Controller
 			
 			$comment->save();
 			$user = MemberManager::getByUsername($comment->username);
+			
+			//发送模版消息
+			$openid = MemberManager::getByUsername($item->username);
+			$templateid = MessageController::$comment_template_id;
+			$page = 'pages/particulars/particulars?mid=' . $data['item_mid'] . '&id=' . $data['item_id'];
+			$formid = $item->formId;
+			$data_arr = array(
+				'keyword1' => array("DATA" => $comment->content),
+				'keyword2' => array("DATA" => $me->truename),
+				'keyword3' => array("DATA" => date('Y-m-d'))
+			);
+			MessageController::sendWXTemplateMessage($openid, $templateid, $page, $formid, $data_arr);
 			if ($user)
 				$comment->businesscard = BussinessCardController::getByUserid($user->userid, $me);
 			return ApiResponse::makeResponse(true, $comment, ApiResponse::SUCCESS_CODE);

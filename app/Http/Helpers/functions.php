@@ -147,3 +147,24 @@ function makePassword($password, $salt)
 {
 	return md5((preg_match("/^[a-f0-9]{32}$/", $password) ? md5($password) : md5(md5($password))) . $salt);
 }
+
+// 发送 POST 请求的函数
+// 你也可以用 cUrl 或者其他网络库，简单的请求这个函数就够用了
+function send_post($url, $post_data)
+{
+	$options = array(
+		'http' => array(
+			'method' => 'POST',
+			// header 需要设置为 JSON
+			'header' => 'Content-type:application/json',
+			'content' => $post_data,
+			// 超时时间
+			'timeout' => 60
+		)
+	);
+	
+	$context = stream_context_create($options);
+	$result = file_get_contents($url, false, $context);
+	
+	return $result;
+}
