@@ -197,6 +197,9 @@ class SellManager
 		$sell->editor = MemberManager::getById($data['userid'])->username;
 		$sell->editdate = date("Y-m-d");
 		$sell->edittime = time();
+		if(array_key_exists('formId',$data)){
+			$sell->formId = array_get($data, 'formId');
+		}
 		
 		return $sell;
 	}

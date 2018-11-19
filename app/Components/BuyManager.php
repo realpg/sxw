@@ -181,6 +181,7 @@ class BuyManager
 		if (array_key_exists('tag', $data)) {
 			$buy->tag = array_get($data, 'tag');
 		}
+		
 		if (array_key_exists('thumb', $data)) {
 			$data['thumb'] = explode(',', $data['thumb']);
 			$buy->thumb = $data['thumb'][0];
@@ -195,6 +196,9 @@ class BuyManager
 		$buy->editor = MemberManager::getById($data['userid'])->username;
 		$buy->editdate = date("Y-m-d");
 		$buy->edittime = time();
+		if(array_key_exists('formId',$data)){
+			$buy->formId = array_get($data, 'formId');
+		}
 		
 		return $buy;
 	}
